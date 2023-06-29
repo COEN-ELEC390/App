@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "721106214671",
+    "project_id": "coen-390-97ad5",
+    "storage_bucket": "coen-390-97ad5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721106214671:android:5d936c7a3412e4ba57e87a",
+        "android_client_info": {
+          "package_name": "com.example.coen390"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721106214671-il8q1hmd6a3lkna5hj7edf72vhonfhu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo1szLbtGzR6qgbwwKfWLp0etZxA2KbrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721106214671-il8q1hmd6a3lkna5hj7edf72vhonfhu0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721106214671:android:611b6e91c27b601957e87a",
+        "android_client_info": {
+          "package_name": "com.example.coen_390_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721106214671-il8q1hmd6a3lkna5hj7edf72vhonfhu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo1szLbtGzR6qgbwwKfWLp0etZxA2KbrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721106214671-il8q1hmd6a3lkna5hj7edf72vhonfhu0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
