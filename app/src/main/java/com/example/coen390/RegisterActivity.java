@@ -13,17 +13,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.ktx.Firebase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegisterActivity extends AppCompatActivity {
-    EditText emailEdit, passwordEdit;
+    EditText emailEdit, passwordEdit, firstNameEdit, lastNameEdit, countryEdit, provinceEdit, cityEdit, streetEdit, addressEdit, apartmentNumberEdit;
     AppCompatButton registerButton;
     FirebaseAuth mAuth;
     TextView loginTV;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public void onStart() {
@@ -44,6 +52,16 @@ public class RegisterActivity extends AppCompatActivity {
         loginTV = findViewById(R.id.loginLink);
         emailEdit = findViewById(R.id.emailTV);
         passwordEdit = findViewById(R.id.passwordTV);
+        firstNameEdit = findViewById(R.id.firstNameTV);
+        lastNameEdit = findViewById(R.id.lastNameTV);
+        countryEdit = findViewById(R.id.countryTV);
+        provinceEdit = findViewById(R.id.provinceTV);
+        cityEdit = findViewById(R.id.cityTV);
+        streetEdit = findViewById(R.id.streetTV);
+        addressEdit = findViewById(R.id.addressTV);
+        apartmentNumberEdit = findViewById(R.id.unitTV);
+
+
         registerButton = findViewById(R.id.registerButton);
         mAuth = FirebaseAuth.getInstance();
         loginTV.setOnClickListener(new View.OnClickListener() {
@@ -77,9 +95,45 @@ public class RegisterActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     //Log.d(TAG, "createUserWithEmail:success");
-                                    Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
                                     FirebaseUser user = mAuth.getCurrentUser();//don't need?
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+
+                                    //Adding user to db
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("first_name", firstNameEdit.getText().toString());
+                                    userData.put("last_name", lastNameEdit.getText().toString());
+                                    userData.put("uid", user.getUid());
+                                    userData.put("country", countryEdit.getText().toString());
+                                    userData.put("province", provinceEdit.getText().toString());
+                                    userData.put("city", cityEdit.getText().toString());
+                                    userData.put("street", streetEdit.getText().toString());
+                                    userData.put("address", addressEdit.getText().toString());
+                                    userData.put("unit", apartmentNumberEdit.getText().toString());
+                                    userData.put("box_number", null);
+                                    userData.put("access_code", null);
+
+
+
+                                    db.collection("users").document(user.getUid())
+                                            .set(userData)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                                                    //Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    //Log.w(TAG, "Error writing document", e);
+                                                }
+                                            });
+
+
+
+
+                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);//login redirects to main
                                     startActivity(intent);
                                     finish();
                                     //updateUI(user);
