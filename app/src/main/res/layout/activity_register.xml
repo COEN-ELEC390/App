@@ -101,6 +101,7 @@
             android:text="Login Here"
             android:clickable="true"
             android:gravity="center"
+            android:textColor="#996FE3"
             android:id="@+id/loginLink">
         </TextView>
     </LinearLayout>

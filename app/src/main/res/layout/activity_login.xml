@@ -52,13 +52,16 @@
             android:text="Don't have an account yet?">
 
         </TextView>
+
         <TextView
+            android:id="@+id/registerLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register Here"
             android:clickable="true"
             android:gravity="center"
-            android:id="@+id/registerLink">
+
+            android:text="Register Here"
+            android:textColor="#996FE3">
 
         </TextView>
     </LinearLayout>
