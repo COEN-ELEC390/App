@@ -38,9 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             //open home page
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            loginRedirect();
         }
     }
 
@@ -86,46 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     //Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();//needed?
                                     Toast.makeText(LoginActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
+                                    loginRedirect();
 
-                                    db.collection("users")
-                                            .whereEqualTo("uid", user.getUid())
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        String Role = "";
-                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
-                                                            //User userInfo = document.toObject(User.class);
-                                                            Role = String.valueOf(document.getData().get("role"));
-
-                                                        }
-                                                            if(Role.contains("manager"))
-                                                            {//redirects to manager page instead
-                                                                Intent intent;
-                                                                intent = new Intent(LoginActivity.this, ManagerActivity.class);
-                                                                startActivity(intent);
-
-                                                            }
-                                                            else
-                                                            {
-                                                                //updateUI(user);
-                                                                Intent intent;
-                                                                intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                                startActivity(intent);
-
-                                                            }
-                                                            finish();
-
-                                                    } else {
-                                                        Toast.makeText(LoginActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                                                        //Log.d(TAG, "Error getting documents: ", task.getException());
-                                                    }
-                                                }
-                                            });
 
 
                                 } else {
@@ -140,5 +101,47 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    void loginRedirect()
+    {
+        FirebaseUser user = mAuth.getCurrentUser();//needed?
+        db.collection("users")
+                .whereEqualTo("uid", user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String Role = "";
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
+                                //User userInfo = document.toObject(User.class);
+                                Role = String.valueOf(document.getData().get("role"));
+
+                            }
+                            if(Role.contains("manager"))
+                            {//redirects to manager page instead
+                                Intent intent;
+                                intent = new Intent(LoginActivity.this, ManagerActivity.class);
+                                startActivity(intent);
+
+                            }
+                            else
+                            {
+                                //updateUI(user);
+                                Intent intent;
+                                intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+
+                            }
+                            finish();
+
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }
