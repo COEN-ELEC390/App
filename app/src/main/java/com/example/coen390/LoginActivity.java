@@ -7,16 +7,21 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.coen390.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText emailEdit, passwordEdit;
     AppCompatButton loginButton;
     TextView registerTV;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public void onStart() {
@@ -82,10 +88,46 @@ public class LoginActivity extends AppCompatActivity {
                                     //Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();//needed?
                                     Toast.makeText(LoginActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
-                                    //updateUI(user);
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+
+                                    db.collection("users")
+                                            .whereEqualTo("uid", user.getUid())
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        String Role = "";
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
+                                                            //User userInfo = document.toObject(User.class);
+                                                            Role = String.valueOf(document.getData().get("role"));
+
+                                                        }
+                                                            if(Role.contains("manager"))
+                                                            {//redirects to manager page instead
+                                                                Intent intent;
+                                                                intent = new Intent(LoginActivity.this, ManagerActivity.class);
+                                                                startActivity(intent);
+
+                                                            }
+                                                            else
+                                                            {
+                                                                //updateUI(user);
+                                                                Intent intent;
+                                                                intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                                startActivity(intent);
+
+                                                            }
+                                                            finish();
+
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
+                                                        //Log.d(TAG, "Error getting documents: ", task.getException());
+                                                    }
+                                                }
+                                            });
+
+
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     //Log.w(TAG, "signInWithEmail:failure", task.getException());

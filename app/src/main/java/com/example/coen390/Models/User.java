@@ -1,10 +1,27 @@
 package com.example.coen390.Models;
 
 public class User {
-    String firstName, lastName, uid, country, province, city, street, apartmentNumber;
-    int streetNumber, boxNumber, accessCode;
+    String firstName;
+    String lastName;
+    String uid;
+    String country;
+    String province;
+    String city;
+    String street;
+    String apartmentNumber;
 
-    public User(String firstName, String lastName, String uid, String country, String province, String city, String street, int streetNumber, String apartmentNumber, int boxNumber, int accessCode) {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    String role;
+    String address, boxNumber, accessCode;
+
+    public User(String firstName, String lastName, String uid, String country, String province, String city, String street, String streetNumber, String apartmentNumber, String boxNumber, String accessCode, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.uid = uid;
@@ -13,9 +30,10 @@ public class User {
         this.city = city;
         this.street = street;
         this.apartmentNumber = apartmentNumber;
-        this.streetNumber = streetNumber;
+        this.address = streetNumber;
         this.boxNumber = boxNumber;
         this.accessCode = accessCode;
+        this.role = role;
     }
 
     public String getFirstName() {
@@ -82,27 +100,27 @@ public class User {
         this.apartmentNumber = apartmentNumber;
     }
 
-    public int getStreetNumber() {
-        return streetNumber;
+    public String getStreetNumber() {
+        return address;
     }
 
-    public void setStreetNumber(int streetNumber) {
-        this.streetNumber = streetNumber;
+    public void setStreetNumber(String streetNumber) {
+        this.address = streetNumber;
     }
 
-    public int getBoxNumber() {
+    public String getBoxNumber() {
         return boxNumber;
     }
 
-    public void setBoxNumber(int boxNumber) {
+    public void setBoxNumber(String boxNumber) {
         this.boxNumber = boxNumber;
     }
 
-    public int getAccessCode() {
+    public String getAccessCode() {
         return accessCode;
     }
 
-    public void setAccessCode(int accessCode) {
+    public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
     }
 }

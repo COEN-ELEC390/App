@@ -100,8 +100,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     //Adding user to db
                                     Map<String, Object> userData = new HashMap<>();
-                                    userData.put("first_name", firstNameEdit.getText().toString());
-                                    userData.put("last_name", lastNameEdit.getText().toString());
+                                    userData.put("firstName", firstNameEdit.getText().toString());
+                                    userData.put("lastName", lastNameEdit.getText().toString());
                                     userData.put("uid", user.getUid());
                                     userData.put("country", countryEdit.getText().toString());
                                     userData.put("province", provinceEdit.getText().toString());
@@ -109,8 +109,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     userData.put("street", streetEdit.getText().toString());
                                     userData.put("address", addressEdit.getText().toString());
                                     userData.put("unit", apartmentNumberEdit.getText().toString());
-                                    userData.put("box_number", null);
-                                    userData.put("access_code", null);
+                                    userData.put("boxNumber", null);
+                                    userData.put("accessCode", null);
+                                    userData.put("role", "user");//the building manager role must be done directly through database by authorized member.
 
 
 
