@@ -4,36 +4,26 @@ public class User {
     String firstName;
     String lastName;
     String uid;
-    String country;
+    public String country;
     String province;
     String city;
     String street;
-    String apartmentNumber;
 
-    public String getRole() {
-        return role;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
+
+    String unit;
+
 
     String role;
     String address, boxNumber, accessCode;
 
-    public User(String firstName, String lastName, String uid, String country, String province, String city, String street, String streetNumber, String apartmentNumber, String boxNumber, String accessCode, String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.uid = uid;
-        this.country = country;
-        this.province = province;
-        this.city = city;
-        this.street = street;
-        this.apartmentNumber = apartmentNumber;
-        this.address = streetNumber;
-        this.boxNumber = boxNumber;
-        this.accessCode = accessCode;
-        this.role = role;
+    public User() {
     }
 
     public String getFirstName() {
@@ -92,20 +82,21 @@ public class User {
         this.street = street;
     }
 
-    public String getApartmentNumber() {
-        return apartmentNumber;
+
+    public String getRole() {
+        return role;
     }
 
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getStreetNumber() {
+    public String getAddress() {
         return address;
     }
 
-    public void setStreetNumber(String streetNumber) {
-        this.address = streetNumber;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getBoxNumber() {
@@ -123,4 +114,21 @@ public class User {
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
     }
+
+    public User(String firstName, String lastName, String uid, String country, String province, String city, String street, String streetNumber, String unit, String boxNumber, String accessCode, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.uid = uid;
+        this.country = country;
+        this.province = province;
+        this.city = city;
+        this.street = street;
+        this.unit = unit;
+        this.address = streetNumber;
+        this.boxNumber = boxNumber;
+        this.accessCode = accessCode;
+        this.role = role;
+    }
+
+
 }

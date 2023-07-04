@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ManagerActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/profileToolbar"
         android:layout_width="match_parent"
@@ -27,4 +33,27 @@
 
         </androidx.appcompat.widget.AppCompatButton>
     </androidx.appcompat.widget.Toolbar>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="View Users"
+            android:id="@+id/viewUsersButton"
+            android:layout_margin="50dp">
+
+        </Button>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="View Lockers"
+            android:id="@+id/viewLockersButton"
+            android:layout_margin="50dp">
+
+        </Button>
+    </LinearLayout>
+    
+    
 </androidx.constraintlayout.widget.ConstraintLayout>
