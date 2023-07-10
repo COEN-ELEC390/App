@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context = "com.example.coen390.MainActivity">
+    <item
+        android:id="@+id/logOutItem"
+        android:title="Log out">
+
+    </item>
+</menu>

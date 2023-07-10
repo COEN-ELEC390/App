@@ -16,15 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Home">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/logout_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#D62222"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:text="Log Out">
 
-        </androidx.appcompat.widget.AppCompatButton>
     </androidx.appcompat.widget.Toolbar>
 </androidx.constraintlayout.widget.ConstraintLayout>
