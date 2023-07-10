@@ -81,8 +81,27 @@ public class manager_user_list extends DialogFragment {
     {
         ArrayList<User> usersInBuilding = new ArrayList<User>();
 
+        String managerUserAddress= managerUser.getAddress();
+        char ch = '/';
+        int cnt = 0;
+
+        for ( int i = 0; i < managerUserAddress.length(); i++) {
+            if (managerUserAddress.charAt(i) == ch)
+                cnt++;
+        }
+        if(cnt>4)
+        {
+            int lastSlash = managerUserAddress.lastIndexOf("/");
+            String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
+            managerUserAddress.replaceAll(substringToDelete,"");
+        }
+        //String combinedAddress = country + "/" + province + "/" + city + "/" + street + "/" + address+ "/" + unit;
+        //combinedAddress = combinedAddress.toLowerCase();
+        //combinedAddress.replaceAll(" ", "");
+
         CollectionReference ref = db.collection("users");
-        ref.whereEqualTo("country", managerUser.getCountry()).whereEqualTo("province",managerUser.getProvince()).whereEqualTo("city", managerUser.getCity()).whereEqualTo("street", managerUser.getStreet()).whereEqualTo("address", managerUser.getAddress())
+        ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
+                .whereLessThanOrEqualTo("address", managerUserAddress + "\uF7FF")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -100,7 +119,7 @@ public class manager_user_list extends DialogFragment {
                                 if(usersInBuilding == null || usersInBuilding.size() == 0)
                                 {
                                     formatted_data = new String[1];
-                                    formatted_data[0] = "No users to display" + managerUser.country; //+ managerUser.getCountry();
+                                    formatted_data[0] = "No users to display"; //+ managerUser.getCountry();
                                 }
                                 else {
                                     formatted_data = new String[usersInBuilding.size()];
@@ -122,33 +141,27 @@ public class manager_user_list extends DialogFragment {
     }
     void queryCurrentUserData(View view)
     {
-        DocumentReference docRef = db.collection("users").document(user.getUid());
-        Log.d("manager UID IS>>>", "DocumentSnapshot data: " + user.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists())
-                    {
-                        Log.d("manager doc found", "DocumentSnapshot data: " + document.getData());
-                        managerUser = document.toObject(User.class);// new User(firstName, lastName, uid, country, province,city, street, address, unit, boxNumber, accessCode, Role);
-                        queryAllUsersInBuilding(managerUser, view);
+        FirebaseUser user = mAuth.getCurrentUser();//needed?
+        db.collection("users")
+                .whereEqualTo("uid", user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String Role = "";
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
+                                User userInfo = document.toObject(User.class);
+                                queryAllUsersInBuilding(userInfo, view);
+                            }
 
+
+                        } else {
+                            //Toast.makeText(LoginActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
                     }
-                    else
-                    {
-                        Log.d("doc not found", "No such document");
-                    }
-                }
-                else
-                {
-                    //Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-        //--------------------------------------------------------------------------------------------------------------
-
-
- }
+                });
+    }
 }

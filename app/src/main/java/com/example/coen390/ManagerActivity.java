@@ -103,7 +103,10 @@ public class ManagerActivity extends AppCompatActivity {
                                 String lastName =  String.valueOf(document.getData().get("lastName"));
                                 String accessCode = null;
                                 String boxNumber = null;
-                                loggedInUser[0] = new User(firstName, lastName, uid, country, province,city, street, address, unit, boxNumber, accessCode, Role);
+                                String combinedAddress = country + "/" + province + "/" + city + "/" + street + "/" + address;
+                                combinedAddress = combinedAddress.toLowerCase();
+                                combinedAddress.replaceAll(" ", "");
+                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role);
 
                             }
 
