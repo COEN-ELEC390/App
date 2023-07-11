@@ -82,7 +82,7 @@ public class manager_user_list extends DialogFragment {
         ArrayList<User> usersInBuilding = new ArrayList<User>();
 
         String managerUserAddress= managerUser.getAddress();
-        char ch = '/';
+        char ch = '|';
         int cnt = 0;
 
         for ( int i = 0; i < managerUserAddress.length(); i++) {
@@ -91,13 +91,11 @@ public class manager_user_list extends DialogFragment {
         }
         if(cnt>4)
         {
-            int lastSlash = managerUserAddress.lastIndexOf("/");
-            String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            managerUserAddress.replaceAll(substringToDelete,"");
+            int lastSlash = managerUserAddress.lastIndexOf("|");
+            managerUserAddress = managerUserAddress.substring(0,managerUserAddress.length()-1);
+            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
+            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
-        //String combinedAddress = country + "/" + province + "/" + city + "/" + street + "/" + address+ "/" + unit;
-        //combinedAddress = combinedAddress.toLowerCase();
-        //combinedAddress.replaceAll(" ", "");
 
         CollectionReference ref = db.collection("users");
         ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
@@ -129,7 +127,11 @@ public class manager_user_list extends DialogFragment {
                                 else {
                                     formatted_data = new String[usersInBuilding.size()];
                                     for (int i = 0; i < formatted_data.length; i++) {
-                                        formatted_data[i] = usersInBuilding.get(i).getFirstName() +" " + usersInBuilding.get(i).getLastName() + " Unit " + usersInBuilding.get(i).getUnit();
+                                        if(usersInBuilding.get(i).getRole().contains("manager") == false)
+                                            formatted_data[i] = usersInBuilding.get(i).getFirstName() +" " + usersInBuilding.get(i).getLastName() + " Unit " + usersInBuilding.get(i).getUnit();
+                                        else
+                                            formatted_data[i] = usersInBuilding.get(i).getFirstName() +" " + usersInBuilding.get(i).getLastName() + " (Manager)";
+
                                     }
                                 }
                                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1, formatted_data);
