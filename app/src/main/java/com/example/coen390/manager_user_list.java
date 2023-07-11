@@ -112,9 +112,14 @@ public class manager_user_list extends DialogFragment {
                                 Log.d("list of users from manager", document.getId() + " => " + document.getData());
 
                                 User tmp = document.toObject(User.class);//new User(firstName, lastName, uid, country, province,city, street, address, unit, boxNumber, accessCode, Role);
+                                if(tmp.getUnit() == null)
+                                {
+                                    tmp.setUnit("");
+                                }
                                 usersInBuilding.add(tmp);//check for null!
                                 //userArrayList.add(tmp);
                                 String formatted_data[];
+
                                 Log.d("User tmp", tmp.getUnit());
                                 if(usersInBuilding == null || usersInBuilding.size() == 0)
                                 {

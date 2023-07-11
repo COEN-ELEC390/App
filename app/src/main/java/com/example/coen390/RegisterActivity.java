@@ -114,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     userData.put("lastName", lastNameEdit.getText().toString());
                                     userData.put("uid", user.getUid());
                                     userData.put("address", combinedAddress);
+                                    userData.put("unit", unit);
                                     userData.put("boxNumber", null);
                                     userData.put("accessCode", null);
                                     userData.put("role", "user");//the building manager role must be done directly through database by authorized member.

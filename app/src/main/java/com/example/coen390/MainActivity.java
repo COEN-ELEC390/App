@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                                         Timestamp pickupTime = null;
                                         for(Map.Entry<String, Object> eventData : subMap.entrySet())
                                         {
-                                            //Log.d("eventData", eventData.toString());
+                                            Log.d("eventData", eventData.toString());
                                             if(eventData.getKey().toString().contains("deliveryTimestamp"))
                                             {
                                                 deliveryTime = (Timestamp) eventData.getValue();
@@ -179,13 +179,13 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                         if(listAccessCode != null && deliveryTime != null)
                                         {
-                                            while(count<numberOfEvents)
-                                            {
+                                            //while(count<numberOfEvents)
+                                            //{
                                                 //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
                                                 String t = "asd";
                                                 formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
-                                                count++;
-                                            }
+                                                //count++;
+                                            //}
                                         }
                                         else
                                         {
