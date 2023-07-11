@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,9 +48,11 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser user;
     FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public ArrayList<String> formattedEventList;
+    ArrayList<String> formattedEventList = new ArrayList<>();
+    ArrayList<HashMap> unformattedEventList = new ArrayList<>();
+    FragmentManager fragmentManager;
     User currentUser;
-
+    ArrayList<String> deliveriesArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         //eventListView.setAdapter(arrayAdapter);
         toolbar = (Toolbar) findViewById(R.id.profileToolbar);
         setSupportActionBar(toolbar);
-
+        fragmentManager = getSupportFragmentManager();
         if(user == null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -88,6 +92,17 @@ public class MainActivity extends AppCompatActivity {
             arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, formattedEventList);
             eventListView.setAdapter(arrayAdapter);
         }
+
+        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DeliveryDataFragment myDialog = new DeliveryDataFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("HashMap",unformattedEventList.get(position));
+                myDialog.setArguments(bundle);
+                myDialog.show(fragmentManager, "test");
+            }
+        });
 
     }
     @Override
@@ -111,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
     User queryCurrentUserData(Context cc)
     {
         final User[] loggedInUser = new User[1];
-        ArrayList<String> formattedEventList = new ArrayList<>();
         db.collection("users")
                 .whereEqualTo("uid", user.getUid())
                 .get()
@@ -152,7 +166,9 @@ public class MainActivity extends AppCompatActivity {
                                     for(Map.Entry<String, HashMap<String, Object>> e: events.entrySet())
                                     {
                                         HashMap<String, Object> subMap = e.getValue();
+                                        unformattedEventList.add(subMap);
                                         String listAccessCode = null;
+                                        String listBoxNumber = null;
                                         Timestamp deliveryTime = null;
                                         Timestamp pickupTime = null;
                                         for(Map.Entry<String, Object> eventData : subMap.entrySet())
@@ -166,6 +182,12 @@ public class MainActivity extends AppCompatActivity {
                                             {
                                                 pickupTime = (Timestamp) eventData.getValue();
                                             }
+                                            else if(eventData.getKey().toString().contains("boxNumber"))
+                                            {
+                                                String tmp = eventData.getValue().toString();
+                                                int start = tmp.indexOf("[");
+                                                int end = tmp.indexOf("]");
+                                                listBoxNumber = tmp.substring(start+1, end);                                            }
                                             else if(eventData.getKey().toString().contains("accessCode"))
                                             {
                                                 //String[] arr = (String[]) eventData.getValue();
@@ -209,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         return loggedInUser[0];
+        //deliveriesArrayList =
 
     }
 
