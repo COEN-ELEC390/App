@@ -1,5 +1,7 @@
 package com.example.coen390;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.google.firebase.Timestamp;
@@ -76,6 +79,10 @@ public class DeliveryDataFragment extends DialogFragment {
         accessCode = view.findViewById(R.id.accessCodeTV);
         boxNumber = view.findViewById(R.id.boxNumberTV);
         Bundle bundle = this.getArguments();
+        if (getDialog() != null && getDialog().getWindow() != null) {//this is what makes the back window transparent for actual rounded corners
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
         if (bundle != null) {
             map = (HashMap<String, Object>) bundle.getSerializable("HashMap");
             for (Map.Entry<String, Object> eventData : map.entrySet()) {
