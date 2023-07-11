@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coen390.Models.User;
@@ -52,8 +53,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //logoutButton = findViewById(R.id.logout_button);
+
         eventListView = findViewById(R.id.eventLV);
+        TextView titleText = new TextView(this);
+        titleText.setText("Your deliveries");
+        titleText.setGravity(25);
+        titleText.setTextSize(20);
+        eventListView.addHeaderView(titleText);
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         currentUser = queryCurrentUserData(getApplicationContext());
