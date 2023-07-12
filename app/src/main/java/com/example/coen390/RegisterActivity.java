@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.coen390.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,8 +32,8 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     TextView loginTV;
 
+    User userToBeAdded;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     @Override
     public void onStart() {
         super.onStart();
@@ -63,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         registerButton = findViewById(R.id.registerButton);
+
         mAuth = FirebaseAuth.getInstance();
         loginTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,8 +140,6 @@ public class RegisterActivity extends AppCompatActivity {
                                             });
 
 
-
-
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);//login redirects to main
                                     startActivity(intent);
                                     finish();
@@ -156,4 +156,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
