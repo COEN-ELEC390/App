@@ -4,10 +4,6 @@ public class User {
     String firstName;
     String lastName;
     String uid;
-    public String country;
-    String province;
-    String city;
-    String street;
 
     public String getUnit() {
         return unit;
@@ -50,38 +46,6 @@ public class User {
         this.uid = uid;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
 
     public String getRole() {
         return role;
@@ -115,16 +79,12 @@ public class User {
         this.accessCode = accessCode;
     }
 
-    public User(String firstName, String lastName, String uid, String country, String province, String city, String street, String streetNumber, String unit, String boxNumber, String accessCode, String role) {
+    public User(String firstName, String lastName, String uid,String address, String unit, String boxNumber, String accessCode, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.address = address;
         this.uid = uid;
-        this.country = country;
-        this.province = province;
-        this.city = city;
-        this.street = street;
         this.unit = unit;
-        this.address = streetNumber;
         this.boxNumber = boxNumber;
         this.accessCode = accessCode;
         this.role = role;

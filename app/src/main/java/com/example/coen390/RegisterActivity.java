@@ -98,24 +98,30 @@ public class RegisterActivity extends AppCompatActivity {
                                     //Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
                                     FirebaseUser user = mAuth.getCurrentUser();//don't need?
 
+                                    String country= countryEdit.getText().toString();
+                                    String province= provinceEdit.getText().toString();
+                                    String city = cityEdit.getText().toString();
+                                    String street= streetEdit.getText().toString();
+                                    String address= addressEdit.getText().toString();
+                                    String unit= apartmentNumberEdit.getText().toString();
+                                    String combinedAddress = country + "|" + province + "|" + city + "|" + street + "|" + address+ "|" + unit;
+                                    combinedAddress = combinedAddress.toLowerCase();
+                                    combinedAddress.replaceAll(" ", "");
+
                                     //Adding user to db
                                     Map<String, Object> userData = new HashMap<>();
                                     userData.put("firstName", firstNameEdit.getText().toString());
                                     userData.put("lastName", lastNameEdit.getText().toString());
                                     userData.put("uid", user.getUid());
-                                    userData.put("country", countryEdit.getText().toString());
-                                    userData.put("province", provinceEdit.getText().toString());
-                                    userData.put("city", cityEdit.getText().toString());
-                                    userData.put("street", streetEdit.getText().toString());
-                                    userData.put("address", addressEdit.getText().toString());
-                                    userData.put("unit", apartmentNumberEdit.getText().toString());
+                                    userData.put("address", combinedAddress);
+                                    userData.put("unit", unit);
                                     userData.put("boxNumber", null);
                                     userData.put("accessCode", null);
                                     userData.put("role", "user");//the building manager role must be done directly through database by authorized member.
 
 
 
-                                    db.collection("users").document(user.getUid())
+                                    db.collection("users").document(combinedAddress)
                                             .set(userData)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
