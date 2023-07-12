@@ -23,42 +23,55 @@
             tools:ignore="HardcodedText">
 
         </TextView>
+
         <EditText
+            android:id="@+id/emailTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/emailTV"
+            android:layout_marginTop="40dp"
             android:background="@drawable/custom_box_input"
-            android:minHeight="48dp"
-            android:scaleType="center"
             android:drawableStart="@drawable/login_email_1"
-            android:drawableTint="@color/common_google_signin_btn_text_light_focused"
             android:drawablePadding="12dp"
+            android:drawableTint="@color/common_google_signin_btn_text_light_focused"
             android:hint="Email"
             android:importantForAutofill="no"
+            android:minHeight="48dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColorHint="#FAFAFA"
             tools:ignore="HardcodedText,TextFields,VisualLintTextFieldSize">
 
 
         </EditText>
+
         <EditText
+            android:id="@+id/passwordTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/passwordTV"
+            android:layout_marginTop="16dp"
             android:background="@drawable/custom_box_input"
-            android:minHeight="48dp"
             android:drawableStart="@drawable/baseline_lock_24"
             android:drawablePadding="12dp"
-            android:hint="Password"
             android:drawableTint="@color/common_google_signin_btn_text_light_focused"
+            android:hint="Password"
             android:importantForAutofill="no"
+            android:minHeight="48dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColorHint="#FAFAFA"
             tools:ignore="HardcodedText,TextFields,VisualLintTextFieldSize">
 
 
         </EditText>
         <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop = "40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Log in"
             android:id="@+id/login_button"
+            android:background="@drawable/log_in_button"
+            android:textColor="#ffffff"
             tools:ignore="HardcodedText">
 
         </androidx.appcompat.widget.AppCompatButton>
@@ -67,21 +80,29 @@
             android:layout_width="263dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="100dp"
+            android:paddingTop="90dp"
             android:text="Don't have an account yet?"
+            android:layout_marginTop="20dp"
             tools:ignore="HardcodedText">
 
         </TextView>
 
         <TextView
             android:id="@+id/registerLink"
-            android:layout_width="264dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
             android:clickable="true"
             android:gravity="center"
             android:minHeight="48dp"
             android:text="Register Here"
-            android:textColor="#070609"
+            android:textColor="#ffffff"
+            android:background="@drawable/register_button"
             tools:ignore="HardcodedText,KeyboardInaccessibleWidget">
 
         </TextView>
