@@ -155,11 +155,11 @@ public class MainActivity extends AppCompatActivity {
                                 combinedAddress.replaceAll(" ", "");
                                 loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role);
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
+                                Log.d("events map", events.toString());
+                                int numberOfEvents = events.size();
                                 //formattedEventList = new String[numberOfEvents];
                                 if(events != null)
                                 {
-                                    Log.d("events map", events.toString());
-                                    int numberOfEvents = events.size();
                                     int count = 0;
                                     //List<Map<String, Object>> eventEntries = null;// = new List<Map<String, Object>>;
 
