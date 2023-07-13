@@ -93,18 +93,18 @@
             android:id="@+id/registerLink"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="5dp"
-            android:textSize="20sp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/register_button"
             android:clickable="true"
             android:gravity="center"
             android:minHeight="48dp"
             android:text="Register Here"
             android:textColor="#ffffff"
-            android:background="@drawable/register_button"
+            android:textSize="20sp"
             tools:ignore="HardcodedText,KeyboardInaccessibleWidget">
 
         </TextView>
