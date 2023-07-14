@@ -1,108 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/register_background2"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:textSize="20dp"
+            android:gravity="center"
+            android:text="Registration"
+            android:textColor="#263238"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:gravity="center">
+            tools:ignore="HardcodedText,TextSizeCheck">
 
         </TextView>
+
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/firstNameTV"
-            android:hint="First Name">
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/lastNameTV"
-            android:hint="Last Name">
-        </EditText>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/emailTV"
-            android:hint="Email">
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="First Name"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="HardcodedText,TextContrastCheck,TextFields,VisualLintTextFieldSize">
 
         </EditText>
+
         <EditText
+            android:id="@+id/lastNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/last_name"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="SmallSp,TextContrastCheck,VisualLintTextFieldSize" />
+
+        <EditText
+            android:id="@+id/emailTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/email"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize">
+
+        </EditText>
+
+        <EditText
             android:id="@+id/passwordTV"
-            android:hint="Password">
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/password"
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize" />
+
+        <EditText
             android:id="@+id/countryTV"
-            android:hint="Country of residence">
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/country_of_residence"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+        <EditText
             android:id="@+id/provinceTV"
-            android:hint="Province or State">
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/province_or_state"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+        <EditText
             android:id="@+id/cityTV"
-            android:hint="City">
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/city"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+        <EditText
             android:id="@+id/streetTV"
-            android:hint="Street">
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/street"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+        <EditText
             android:id="@+id/addressTV"
-            android:hint="Address">
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/address"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+        <EditText
             android:id="@+id/unitTV"
-            android:hint="Apartment #">
-        </EditText>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/custom_box_register"
+            android:hint="@string/apartment"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColor="@color/black"
+            android:textColorHint="#212121"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/registerButton"
+            android:background="@drawable/register_button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:id="@+id/registerButton">
-
+            android:layout_marginTop="10dp"
+            android:text="@string/register"
+            tools:ignore="DuplicateSpeakableTextCheck">
         </androidx.appcompat.widget.AppCompatButton>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="46dp"
             android:gravity="center"
-            android:paddingTop="100dp"
-            android:text="Already have an account?">
-
+            android:paddingTop="20dp"
+            android:text="@string/already_have_an_account"
+            android:textColor="#4E342E">
         </TextView>
+
         <TextView
+            android:id="@+id/loginLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login Here"
             android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
-            android:textColor="#996FE3"
-            android:id="@+id/loginLink">
-        </TextView>
+            android:minHeight="48dp"
+            android:paddingBottom="15dp"
+            android:text="@string/login_here"
+            android:textColor="#006064"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
