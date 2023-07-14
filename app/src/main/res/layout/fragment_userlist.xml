@@ -7,35 +7,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/listview_shape"
-        tools:ignore="ExtraText,UselessParent">
-
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="12dp"
-            android:paddingTop="0dp"
-            android:text="@string/users"
-            android:textSize="30sp"
+            android:text="Users"
             android:textStyle="bold"
+            android:textSize="40dp"
             android:layout_gravity="center"
-            android:gravity="left"
-            android:background="@drawable/gradient_status_bar"
-            android:id="@+id/profileToolbar"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            tools:ignore="RtlHardcoded,RtlSymmetry">
+            android:gravity="center">
+
         </TextView>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/userListView"
-            android:headerDividersEnabled="true"
-            android:footerDividersEnabled="true"
-            android:dividerHeight="5sp"
-            android:background="@drawable/userlist_layoutborder">
+            android:id="@+id/userListView">
 
         </ListView>
     </LinearLayout>

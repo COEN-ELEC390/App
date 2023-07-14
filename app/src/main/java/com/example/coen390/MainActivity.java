@@ -1,5 +1,7 @@
 package com.example.coen390;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -22,13 +24,17 @@ import android.widget.Toast;
 
 import com.example.coen390.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.type.DateTime;
 
 import java.util.ArrayList;
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     AppCompatButton logoutButton;
 
     ArrayAdapter<String> arrayAdapter;
-
+    String FCM;
     Toolbar toolbar;
     ListView eventListView;
     FirebaseUser user;
@@ -96,13 +102,35 @@ public class MainActivity extends AppCompatActivity {
         eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DeliveryDataFragment myDialog = new DeliveryDataFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("HashMap",unformattedEventList.get(position));
-                myDialog.setArguments(bundle);
-                myDialog.show(fragmentManager, "test");
+                if(position != 0) {
+                    DeliveryDataFragment myDialog = new DeliveryDataFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("HashMap", unformattedEventList.get(position));
+                    myDialog.setArguments(bundle);
+                    myDialog.show(fragmentManager, "test");
+                }
             }
         });
+//-----------------------------------------------------------firebase cloud messaging config
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d( "Fetching FCM registration token failed", task.getException().toString());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        FCM = token;
+                        // Log and toast
+                        //String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        //------------------------------------------------
 
     }
     @Override
@@ -150,16 +178,59 @@ public class MainActivity extends AppCompatActivity {
                                 String lastName =  String.valueOf(document.getData().get("lastName"));
                                 String accessCode = null;
                                 String boxNumber = null;
-                                String combinedAddress = country + "/" + province + "/" + city + "/" + street + "/" + address + "/" + unit;
+                                String combinedAddress = /*country + "/" + province + "/" + city + "/" + street + "/" + */address;// + "/" + unit;
                                 combinedAddress = combinedAddress.toLowerCase();
                                 combinedAddress.replaceAll(" ", "");
                                 loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role);
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
-                                Log.d("events map", events.toString());
-                                int numberOfEvents = events.size();
+
+                                //----------------------------------------
+                                //-----------------------------------------------------------firebase cloud messaging config
+                                DocumentReference userRef = db.collection("users").document(combinedAddress);
+
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<String> task) {
+                                                if (!task.isSuccessful()) {
+                                                    Log.d( "Fetching FCM registration token failed", task.getException().toString());
+                                                    return;
+                                                }
+
+                                                // Get new FCM registration token
+                                                String token = task.getResult();
+                                                FCM = token;
+                                                userRef
+                                                        .update("FCM_TOKEN", FCM)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d("FCM upload successful", "DocumentSnapshot successfully updated!");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w("FCM TOKEN UPLOAD FAILED", "Error updating document", e);
+                                                            }
+                                                        });
+                                                // Log and toast
+                                                //String msg = getString(R.string.msg_token_fmt, token);
+                                                Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
+                                                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                //------------------------------------------------
+
+
+
+                                //-----------------------------------------
+
                                 //formattedEventList = new String[numberOfEvents];
                                 if(events != null)
                                 {
+                                    Log.d("events map", events.toString());
+                                    int numberOfEvents = events.size();
                                     int count = 0;
                                     //List<Map<String, Object>> eventEntries = null;// = new List<Map<String, Object>>;
 
@@ -251,11 +322,12 @@ public class MainActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData());
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
-                                Log.d("events map", events.toString());
-                                int numberOfEvents = events.size();
+
                                 //formattedData = new String[numberOfEvents];
                                 if(events != null)
                                 {
+                                    Log.d("events map", events.toString());
+                                    int numberOfEvents = events.size();
                                     int count = 0;
                                     //List<Map<String, Object>> eventEntries = null;// = new List<Map<String, Object>>;
 
@@ -319,4 +391,12 @@ public class MainActivity extends AppCompatActivity {
         //return loggedInUser[0];
         return null;
     }
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // FCM SDK (and your app) can post notifications.
+                } else {
+                    // TODO: Inform user that that your app will not show notifications.
+                }
+            });
 }
