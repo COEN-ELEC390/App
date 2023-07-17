@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-</resources>
+    <resources>
+
+        <color name="black">#FF000000</color>
+        <color name="white">#FFFFFFFF</color>
+        <color name="colorPrimary">@color/blue_3</color>
+        <color name="colorPrimaryDark">@color/blue_2</color>
+        <color name="colorStatusBar">@color/blue_6</color>
+        <color name="blue_1">#00101f</color>
+        <color name="blue_2">#4290f5</color>
+        <color name="blue_3">#42eff5</color>
+        <color name="blue_5">#0078ff</color>
+        <color name="blue_6">#0349fc</color>
+        <color name="blue_4">#c4ebfe</color>
+        <color name="blue_7">#0078e5</color>
+        <color name="blue_8">#0094df</color>
+        <color name="blue_9">#00f0fa</color>
+        <color name="blue_10">#009dce</color>
+        <color name="blue_11">#006dec</color>
+        <color name="blue_12">#00b8cc</color>
+        <color name="blue_13">#00ccfd</color>
+
+    </resources>
