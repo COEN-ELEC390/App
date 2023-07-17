@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.ktx.Firebase;
 
@@ -90,69 +93,99 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    //Log.d(TAG, "createUserWithEmail:success");
-                                    //Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
-                                    FirebaseUser user = mAuth.getCurrentUser();//don't need?
+                //-------------------------------------------------------------
+                String country1= countryEdit.getText().toString();
+                String province1= provinceEdit.getText().toString();
+                String city1 = cityEdit.getText().toString();
+                String street1= streetEdit.getText().toString();
+                String address1= addressEdit.getText().toString();
+                String unit1= apartmentNumberEdit.getText().toString();
+                String combinedAddress1 = country1 + "|" + province1 + "|" + city1 + "|" + street1 + "|" + address1+ "|" + unit1;
+                combinedAddress1 = combinedAddress1.toLowerCase();
+                combinedAddress1.replaceAll(" ", "");
+                FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+                DocumentReference docIdRef = rootRef.collection("users").document(combinedAddress1);
+                docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Toast.makeText(RegisterActivity.this, "This unit has already been registered. Please consult your building manageer.", Toast.LENGTH_SHORT).show();
+                                Log.d("document exists", task.getResult().toString());
+                            } else {
+                                mAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    // Sign in success, update UI with the signed-in user's information
+                                                    //Log.d(TAG, "createUserWithEmail:success");
+                                                    //Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                                                    FirebaseUser user = mAuth.getCurrentUser();//don't need?
 
-                                    String country= countryEdit.getText().toString();
-                                    String province= provinceEdit.getText().toString();
-                                    String city = cityEdit.getText().toString();
-                                    String street= streetEdit.getText().toString();
-                                    String address= addressEdit.getText().toString();
-                                    String unit= apartmentNumberEdit.getText().toString();
-                                    String combinedAddress = country + "|" + province + "|" + city + "|" + street + "|" + address+ "|" + unit;
-                                    combinedAddress = combinedAddress.toLowerCase();
-                                    combinedAddress.replaceAll(" ", "");
+                                                    String country= countryEdit.getText().toString();
+                                                    String province= provinceEdit.getText().toString();
+                                                    String city = cityEdit.getText().toString();
+                                                    String street= streetEdit.getText().toString();
+                                                    String address= addressEdit.getText().toString();
+                                                    String unit= apartmentNumberEdit.getText().toString();
+                                                    String combinedAddress = country + "|" + province + "|" + city + "|" + street + "|" + address+ "|" + unit;
+                                                    combinedAddress = combinedAddress.toLowerCase();
+                                                    combinedAddress.replaceAll(" ", "");
 
-                                    //Adding user to db
-                                    Map<String, Object> userData = new HashMap<>();
-                                    userData.put("firstName", firstNameEdit.getText().toString());
-                                    userData.put("lastName", lastNameEdit.getText().toString());
-                                    userData.put("uid", user.getUid());
-                                    userData.put("address", combinedAddress);
-                                    userData.put("unit", unit);
-                                    userData.put("boxNumber", null);
-                                    userData.put("accessCode", null);
-                                    userData.put("role", "user");//the building manager role must be done directly through database by authorized member.
+                                                    //Adding user to db
+                                                    Map<String, Object> userData = new HashMap<>();
+                                                    userData.put("firstName", firstNameEdit.getText().toString());
+                                                    userData.put("lastName", lastNameEdit.getText().toString());
+                                                    userData.put("uid", user.getUid());
+                                                    userData.put("address", combinedAddress);
+                                                    userData.put("unit", unit);
+                                                    userData.put("boxNumber", null);
+                                                    userData.put("accessCode", null);
+                                                    userData.put("role", "user");//the building manager role must be done directly through database by authorized member.
 
 
 
-                                    db.collection("users").document(combinedAddress)
-                                            .set(userData)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
-                                                    //Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                    db.collection("users").document(combinedAddress)
+                                                            .set(userData)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                                                                    //Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    //Log.w(TAG, "Error writing document", e);
+                                                                }
+                                                            });
+
+
+                                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);//login redirects to main
+                                                    startActivity(intent);
+                                                    finish();
+                                                    //updateUI(user);
+                                                } else {
+                                                    // If sign in fails, display a message to the user.
+                                                    //Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                    //updateUI(null);
                                                 }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    //Log.w(TAG, "Error writing document", e);
-                                                }
-                                            });
-
-
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);//login redirects to main
-                                    startActivity(intent);
-                                    finish();
-                                    //updateUI(user);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    //Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
-                                }
+                                            }
+                                        });
+                                Log.d("document doesn't exist", "User can be registered");
                             }
-                        });
+                        } else {
+                            Log.d("query failed", "Failed with: ", task.getException());
+                        }
+                    }
+                });
+                //-------------------------------------------------------------
+
             }
         });
     }
