@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
         titleText.setTextSize(20);
-        eventListView.addHeaderView(titleText);
+        //eventListView.addHeaderView(titleText);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -102,13 +102,12 @@ public class MainActivity extends AppCompatActivity {
         eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position != 0) {
                     DeliveryDataFragment myDialog = new DeliveryDataFragment();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("HashMap", unformattedEventList.get(position));
                     myDialog.setArguments(bundle);
                     myDialog.show(fragmentManager, "test");
-                }
+
             }
         });
 //-----------------------------------------------------------firebase cloud messaging config

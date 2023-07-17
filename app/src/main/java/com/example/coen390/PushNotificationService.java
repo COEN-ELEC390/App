@@ -38,6 +38,7 @@ public class PushNotificationService extends FirebaseMessagingService {
             Notification.Builder notification = new Notification.Builder(this, CHANNEL_ID)
                     .setContentTitle(title)
                     .setContentText(body)
+                    .setSmallIcon(R.mipmap.ic_launcher_round)
                     .setAutoCancel(true);
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
