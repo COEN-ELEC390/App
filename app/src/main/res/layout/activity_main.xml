@@ -17,7 +17,7 @@
         android:id="@+id/profileToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_dynamic_secondary70"
+        android:background="@drawable/gradient_status_bar"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/your_deliveries"
-            android:textSize="20sp"
+            android:textSize="24sp"
+            android:textStyle="bold"
             tools:ignore="TextSizeCheck">
         </TextView>
 

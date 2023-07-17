@@ -68,9 +68,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/login_button"
+            android:background="@drawable/register_button"
             android:text="@string/log_in"
-            android:textColorHint="#FFFFFFFF">
+            android:textColor="#ffffff">
         </androidx.appcompat.widget.AppCompatButton>
 
         <TextView
@@ -91,14 +91,14 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/register_button"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
             android:minHeight="48dp"
-            android:text="@string/register_here"
-            android:textColor="#ffffff"
+            android:text="@string/reg_button"
+            android:textColor="@color/black"
             android:textSize="20sp"
+            android:textStyle="bold"
             tools:ignore="TextSizeCheck">
         </TextView>
     </LinearLayout>

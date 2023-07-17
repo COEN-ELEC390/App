@@ -201,14 +201,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/registerButton"
-            android:background="@drawable/register_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="#ffffff"
+            android:background="@drawable/register_button"
             android:text="@string/register"
-            tools:ignore="DuplicateSpeakableTextCheck">
-        </androidx.appcompat.widget.AppCompatButton>
+            android:textColor="#ffffff"
+            tools:ignore="DuplicateSpeakableTextCheck"></androidx.appcompat.widget.AppCompatButton>
 
         <TextView
             android:layout_width="match_parent"
