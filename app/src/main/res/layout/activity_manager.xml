@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        >
+        android:background="@drawable/manager_background2">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/profileToolbar"
         android:layout_width="match_parent"
@@ -20,31 +21,41 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Manage">
-
+        app:title="Management"
+        >
 
     </androidx.appcompat.widget.Toolbar>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="View Users"
-            android:id="@+id/viewUsersButton"
-            android:layout_margin="50dp">
 
-        </Button>
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/viewUsersButton"
+            android:layout_width="300dp"
+            android:layout_height="225dp"
             android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@drawable/manager_buttons"
             android:gravity="center"
-            android:text="View Lockers"
+            android:text="@string/view_users"
+            android:textColor="#00101f"
+            android:textColorHighlight="#000000"
+            android:textSize="40sp"
+            app:backgroundTint="@null">
+        </Button>
+
+        <Button
             android:id="@+id/viewLockersButton"
-            android:layout_margin="50dp">
+            android:layout_width="300dp"
+            android:layout_height="225dp"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:background="@drawable/manager_buttons"
+            android:gravity="center"
+            android:text="@string/view_lockers"
+            android:textColor="#00101f"
+            android:textSize="40sp"
+            app:backgroundTint="@null"
+            tools:ignore="TextSizeCheck">
 
         </Button>
     </LinearLayout>
-    
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>
