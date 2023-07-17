@@ -1,69 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="40dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/safelock"
+            android:textSize="50sp"
             android:textStyle="bold"
-            android:gravity="center">
-
+            android:textColor="@color/cardview_dark_background">
         </TextView>
+
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/emailTV"
-            android:minHeight="48dp"
-            android:hint="Email">
-
-
-        </EditText>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/passwordTV"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/login_textbox"
+            android:drawableStart="@drawable/login_email_icon"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/common_google_signin_btn_text_light_focused"
+            android:hint="@string/email"
+            android:importantForAutofill="no"
             android:minHeight="48dp"
-            android:hint="Password">
-
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColorHint="#FFFFFFFF"
+            tools:ignore="TextFields,VisualLintTextFieldSize">
 
         </EditText>
+
+        <EditText
+            android:id="@+id/passwordTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/login_textbox"
+            android:drawableStart="@drawable/login_password_icon"
+            android:drawablePadding="12dp"
+            android:drawableTint="@color/common_google_signin_btn_text_light_focused"
+            android:hint="@string/password"
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColorHint="#FFFFFFFF"
+            tools:ignore="VisualLintTextFieldSize">
+
+        </EditText>
+
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log in"
-            android:id="@+id/login_button">
-
+            android:layout_marginTop="20dp"
+            android:background="@drawable/login_button"
+            android:text="@string/log_in"
+            android:textColorHint="#FFFFFFFF">
         </androidx.appcompat.widget.AppCompatButton>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="100dp"
-            android:text="Don't have an account yet?">
-
+            android:paddingTop="90dp"
+            android:text="@string/don_t_have_an_account_yet"
+            android:layout_marginTop="20dp">
         </TextView>
 
         <TextView
             android:id="@+id/registerLink"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/register_button"
             android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
-
-            android:text="Register Here"
-            android:textColor="#996FE3">
-
+            android:minHeight="48dp"
+            android:text="@string/register_here"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            tools:ignore="TextSizeCheck">
         </TextView>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
