@@ -24,16 +24,34 @@
         app:title="Home">
     </androidx.appcompat.widget.Toolbar>
 
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewHistoryButton"
+            android:text="View delivery history"
+            android:layout_margin="20dp">
+
+        </Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/refreshFeedButton"
+            android:text="Refresh feed"
+            android:layout_margin="20dp">
+
+        </Button>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/your_deliveries"
+            android:text="Ready for pickup"
             android:textSize="24sp"
             android:textStyle="bold"
-            tools:ignore="TextSizeCheck">
+            tools:ignore="TextSizeCheck"
+            android:layout_marginTop="40dp">
         </TextView>
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

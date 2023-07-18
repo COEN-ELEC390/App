@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     AppCompatButton logoutButton;
+    Button refreshFeed;
 
     ArrayAdapter<String> arrayAdapter;
     String FCM;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         eventListView = findViewById(R.id.eventLV);
+        refreshFeed = findViewById(R.id.refreshFeedButton);
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
@@ -130,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         //------------------------------------------------
+        refreshFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                formattedEventList.clear();
+                unformattedEventList.clear();
+                queryCurrentUserData(getApplicationContext());
+            }
+        });
 
     }
     @Override
@@ -236,7 +247,6 @@ public class MainActivity extends AppCompatActivity {
                                     for(Map.Entry<String, HashMap<String, Object>> e: events.entrySet())
                                     {
                                         HashMap<String, Object> subMap = e.getValue();
-                                        unformattedEventList.add(subMap);
                                         String listAccessCode = null;
                                         String listBoxNumber = null;
                                         Timestamp deliveryTime = null;
@@ -269,6 +279,11 @@ public class MainActivity extends AppCompatActivity {
                                             }
 
                                         }
+                                        if(pickupTime != null)
+                                        {
+                                            continue;
+                                        }
+                                        unformattedEventList.add(subMap);
                                         if(listAccessCode != null && deliveryTime != null)
                                         {
                                             //while(count<numberOfEvents)
@@ -305,91 +320,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    String[] queryCurrentUserEvents()
-    {
-        ArrayList<String> formattedData;
-        final HashMap<String, HashMap<String, Object>> events;
-        //final User[] loggedInUser = new User[1];
-        db.collection("users")
-                .whereEqualTo("uid", user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String Role = "";
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("document STUFFFFF", document.getId() + " => " + document.getData());
-                                Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
-
-                                //formattedData = new String[numberOfEvents];
-                                if(events != null)
-                                {
-                                    Log.d("events map", events.toString());
-                                    int numberOfEvents = events.size();
-                                    int count = 0;
-                                    //List<Map<String, Object>> eventEntries = null;// = new List<Map<String, Object>>;
-
-                                    for(Map.Entry<String, HashMap<String, Object>> e: events.entrySet())
-                                    {
-                                        HashMap<String, Object> subMap = e.getValue();
-                                        String listAccessCode = null;
-                                        Timestamp deliveryTime = null;
-                                        Timestamp pickupTime = null;
-                                        for(Map.Entry<String, Object> eventData : subMap.entrySet())
-                                        {
-                                            //Log.d("eventData", eventData.toString());
-                                            if(eventData.getKey().toString().contains("deliveryTimestamp"))
-                                            {
-                                                deliveryTime = (Timestamp) eventData.getValue();
-                                            }
-                                            else if(eventData.getKey().toString().contains("pickupTimestamp"))
-                                            {
-                                                pickupTime = (Timestamp) eventData.getValue();
-                                            }
-                                            else if(eventData.getKey().toString().contains("accessCode"))
-                                            {
-                                                //String[] arr = (String[]) eventData.getValue();
-                                                //Log.d("accessCode", eventData.getValue().toString());
-                                                String tmp = eventData.getValue().toString();
-                                                int start = tmp.indexOf("[");
-                                                int end = tmp.indexOf("]");
-                                                listAccessCode = tmp.substring(start, end);
-                                            }
-
-                                        }
-                                        if(listAccessCode != null && deliveryTime != null)
-                                        {
-                                            while(count<numberOfEvents)
-                                            {
-                                                //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
-                                                formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
-                                                count++;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            formattedEventList.add("No events to display");
-                                        }
-
-                                        //Map<String, Object> event = e.getValue();
-                                        //eventEntries.add(subMap);
-                                        //Log.d("event entry", e.toString());
-                                        //Log.d("e value",e.getValue());
-                                        //DateTime deliveryDate = e.getValue()
-                                    }
-                                }
-                            }
-
-                        } else {
-                            Toast.makeText(MainActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        //return loggedInUser[0];
-        return null;
-    }
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {

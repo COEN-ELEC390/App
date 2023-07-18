@@ -24,6 +24,8 @@
     <string name="underline"> <u>Login Here</u></string>
     <string name="reg_button"> <u>Register Here</u></string>
     <string name="your_deliveries">Your Deliveries</string>
+    <string name="view_users">View Users</string>
+    <string name="view_lockers">View Lockers</string>
 
 </resources>
 
