@@ -1,13 +1,5 @@
 package com.example.coen390;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +15,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+
 import com.example.coen390.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,17 +36,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.type.DateTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class DeliveryHistoryActivity extends AppCompatActivity {
 
-    AppCompatButton logoutButton;
     Button refreshFeed, viewHistory;
 
     ArrayAdapter<String> arrayAdapter;
@@ -64,11 +60,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_delivery_history);
         eventListView = findViewById(R.id.eventLV);
         refreshFeed = findViewById(R.id.refreshFeedButton);
-        viewHistory = findViewById(R.id.viewHistoryButton);
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
@@ -82,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
         //Log.d("FORMATTED EVENT LIST", formattedEventList.toString());
         //arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, formattedEventList);
         //eventListView.setAdapter(arrayAdapter);
-        toolbar = (Toolbar) findViewById(R.id.profileToolbar);
+        //toolbar = (Toolbar) findViewById(R.id.historyToolbarToolbar);
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
         if(user == null)
         {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(DeliveryHistoryActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -106,33 +100,16 @@ public class MainActivity extends AppCompatActivity {
         eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    DeliveryDataFragment myDialog = new DeliveryDataFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("HashMap", unformattedEventList.get(position));
-                    myDialog.setArguments(bundle);
-                    myDialog.show(fragmentManager, "test");
+                DeliveryDataFragment myDialog = new DeliveryDataFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("HashMap", unformattedEventList.get(position));
+                myDialog.setArguments(bundle);
+                myDialog.show(fragmentManager, "test");
 
             }
         });
 //-----------------------------------------------------------firebase cloud messaging config
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.d( "Fetching FCM registration token failed", task.getException().toString());
-                            return;
-                        }
 
-                        // Get new FCM registration token
-                        String token = task.getResult();
-                        FCM = token;
-                        // Log and toast
-                        //String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
         //------------------------------------------------
         refreshFeed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,15 +119,15 @@ public class MainActivity extends AppCompatActivity {
                 queryCurrentUserData(getApplicationContext());
             }
         });
-        viewHistory.setOnClickListener(new View.OnClickListener() {
+        toolbar = findViewById(R.id.historyToolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(MainActivity.this, DeliveryHistoryActivity.class);
+                Intent intent = new Intent(DeliveryHistoryActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -163,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.logOutItem)
         {
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(DeliveryHistoryActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -288,19 +265,16 @@ public class MainActivity extends AppCompatActivity {
                                             }
 
                                         }
-                                        if(pickupTime != null)
-                                        {
-                                            continue;
-                                        }
+
                                         unformattedEventList.add(subMap);
                                         if(listAccessCode != null && deliveryTime != null)
                                         {
                                             //while(count<numberOfEvents)
                                             //{
-                                                //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
-                                                String t = "asd";
-                                                formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
-                                                //count++;
+                                            //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
+                                            String t = "asd";
+                                            formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
+                                            //count++;
                                             //}
                                         }
                                         else
@@ -319,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
                             arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
                             eventListView.setAdapter(arrayAdapter);
                         } else {
-                            Toast.makeText(MainActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DeliveryHistoryActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
                             //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }

@@ -43,6 +43,11 @@
 
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DeliveryHistoryActivity"
+            android:exported="true">
+
+        </activity>
         <service android:name=".PushNotificationService"
             android:exported="true"
             android:enabled="true">
