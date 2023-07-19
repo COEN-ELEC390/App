@@ -44,6 +44,7 @@ import java.util.Map;
 public class DeliveryHistoryActivity extends AppCompatActivity {
 
     Button refreshFeed, viewHistory;
+    ArrayList<String> currentUserAddress;
 
     ArrayAdapter<String> arrayAdapter;
     String FCM;
@@ -63,6 +64,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delivery_history);
         eventListView = findViewById(R.id.eventLV);
         refreshFeed = findViewById(R.id.refreshFeedButton);
+        currentUserAddress = new ArrayList<>();
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
@@ -139,6 +141,22 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.logOutItem)
         {
+            DocumentReference Ref = db.collection("users").document(currentUserAddress.get(0));
+            Ref
+                    .update("FCM_TOKEN", "")
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("FCM TOKEN SUCCESSFULLY DELETED", Ref.toString());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Error deleting FCM token ", "Error updating document", e);
+                        }
+                    });
+            //---------------------------------------------------------------
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(DeliveryHistoryActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -179,7 +197,8 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                 combinedAddress.replaceAll(" ", "");
                                 loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role);
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
-
+                                currentUserAddress.clear();
+                                currentUserAddress.add(combinedAddress);
                                 //----------------------------------------
                                 //-----------------------------------------------------------firebase cloud messaging config
                                 DocumentReference userRef = db.collection("users").document(combinedAddress);
