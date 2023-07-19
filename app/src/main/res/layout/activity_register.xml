@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Registration"
+            android:text="Create Account"
             android:textColor="#263238"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -31,15 +31,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/register_textbox"
-            android:hint="First Name"
+            android:hint="@string/first_name"
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="HardcodedText,TextContrastCheck,TextFields,VisualLintTextFieldSize">
 
         </EditText>
@@ -57,8 +57,8 @@
             android:paddingStart="20dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="SmallSp,TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
@@ -71,11 +71,11 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize">
 
         </EditText>
@@ -90,11 +90,11 @@
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize" />
 
         <EditText
@@ -107,11 +107,11 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
@@ -124,11 +124,11 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
@@ -141,11 +141,11 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
@@ -158,11 +158,11 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
@@ -175,11 +175,11 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
@@ -192,11 +192,11 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:minHeight="48dp"
-            android:paddingStart="20dp"
+            android:paddingStart="24dp"
             android:paddingEnd="12dp"
             android:scaleType="center"
-            android:textColor="@color/black"
-            android:textColorHint="#212121"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -204,7 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/register_button"
+            android:background="@drawable/button_state_list_animator"
             android:text="@string/register"
             android:textColor="#ffffff"
             tools:ignore="DuplicateSpeakableTextCheck"></androidx.appcompat.widget.AppCompatButton>

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryHistoryActivity">
+    tools:context=".DeliveryHistoryActivity"
+    android:background="@drawable/sidehex">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical"
-        android:background="@drawable/listview_shape">
+        android:background="@color/white"
+        tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/historyToolbar"
@@ -22,27 +24,31 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="Delivery History">
+            app:title="History">
         </androidx.appcompat.widget.Toolbar>
 
         <Button
+            android:id="@+id/refreshFeedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/refreshFeedButton"
-            android:text="Refresh feed"
-            android:layout_margin="20dp">
-
+            android:layout_margin="20dp"
+            android:background="@drawable/manager_buttons"
+            android:text="@string/refresh_feed"
+            android:textColor="@color/black"
+            app:backgroundTint="@null"
+            tools:ignore="VisualLintButtonSize">
         </Button>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/deliveries_bar_gradient"
             android:gravity="center"
-            android:text="All Deliveries"
+            android:text="@string/deliveries"
             android:textSize="24sp"
-            android:textStyle="bold"
-            tools:ignore="TextSizeCheck"
-            android:layout_marginTop="40dp">
-        </TextView>
+            tools:ignore="TextSizeCheck"></TextView>
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,4 +57,4 @@
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

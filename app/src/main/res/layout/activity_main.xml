@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
-        android:background="@drawable/listview_shape">
+        android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/profileToolbar"
@@ -31,7 +30,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/viewHistoryButton"
             android:text="View delivery history"
-            android:layout_margin="20dp">
+            android:layout_margin="20dp"
+            android:background="@drawable/manager_buttons"
+            app:backgroundTint="@null">
 
         </Button>
         <Button
@@ -39,9 +40,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/refreshFeedButton"
             android:text="Refresh feed"
-            android:layout_margin="20dp">
+            android:layout_margin="20dp"
+            android:background="@drawable/manager_buttons"
+            app:backgroundTint="@null">
 
         </Button>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,8 +54,10 @@
             android:textSize="24sp"
             android:textStyle="bold"
             tools:ignore="TextSizeCheck"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="0dp"
+            android:background="@drawable/deliveries_bar_gradient">
         </TextView>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

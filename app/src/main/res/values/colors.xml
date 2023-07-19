@@ -19,5 +19,7 @@
         <color name="blue_11">#006dec</color>
         <color name="blue_12">#00b8cc</color>
         <color name="blue_13">#00ccfd</color>
+        <color name="bg_color">#040507</color>
+        <color name="bg_card_color">#423f5b</color>
 
     </resources>
