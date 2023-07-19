@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     AppCompatButton logoutButton;
     Button refreshFeed, viewHistory;
+    ArrayList<String> currentUserAddress;
 
     ArrayAdapter<String> arrayAdapter;
     String FCM;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         titleText.setGravity(25);
         titleText.setTextSize(20);
         //eventListView.addHeaderView(titleText);
-
+        currentUserAddress = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         currentUser = queryCurrentUserData(getApplicationContext());
@@ -162,6 +163,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.logOutItem)
         {
+            DocumentReference Ref = db.collection("users").document(currentUserAddress.get(0));
+            Ref
+                    .update("FCM_TOKEN", "")
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("FCM TOKEN SUCCESSFULLY DELETED", Ref.toString());
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("Error deleting FCM token ", "Error updating document", e);
+                        }
+                    });
+            //-------------------------------------------------------
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -202,7 +219,8 @@ public class MainActivity extends AppCompatActivity {
                                 combinedAddress.replaceAll(" ", "");
                                 loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role);
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
-
+                                currentUserAddress.clear();
+                                currentUserAddress.add(combinedAddress);
                                 //----------------------------------------
                                 //-----------------------------------------------------------firebase cloud messaging config
                                 DocumentReference userRef = db.collection("users").document(combinedAddress);
@@ -295,13 +313,9 @@ public class MainActivity extends AppCompatActivity {
                                         unformattedEventList.add(subMap);
                                         if(listAccessCode != null && deliveryTime != null)
                                         {
-                                            //while(count<numberOfEvents)
-                                            //{
-                                                //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
                                                 String t = "asd";
                                                 formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
-                                                //count++;
-                                            //}
+
                                         }
                                         else
                                         {
