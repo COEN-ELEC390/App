@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManagerActivity extends AppCompatActivity {
-    Button viewUsersButton;
+    Button viewUsersButton, viewLockersButton;
     User managerUser;
     Toolbar toolbar;
     ArrayList<String> currentUserAddress;
@@ -55,6 +55,7 @@ public class ManagerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //logoutButton = findViewById(R.id.logout_button);
         viewUsersButton = findViewById(R.id.viewUsersButton);
+        viewLockersButton = findViewById(R.id.viewLockersButton);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -77,6 +78,13 @@ public class ManagerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 manager_user_list userListDialog = new manager_user_list();
                 userListDialog.show(getSupportFragmentManager(), "userListDialog");
+            }
+        });
+        viewLockersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manager_locker_list userListDialog = new manager_locker_list();
+                userListDialog.show(getSupportFragmentManager(), "lockerListDialog");
             }
         });
         //-----------------------------------------------------------firebase cloud messaging config
