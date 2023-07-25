@@ -102,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String unit1= apartmentNumberEdit.getText().toString();
                 String combinedAddress1 = country1 + "|" + province1 + "|" + city1 + "|" + street1 + "|" + address1+ "|" + unit1;
                 combinedAddress1 = combinedAddress1.toLowerCase();
-                combinedAddress1.replaceAll(" ", "");
+                combinedAddress1 = combinedAddress1.replaceAll(" ", "");
                 FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
                 DocumentReference docIdRef = rootRef.collection("users").document(combinedAddress1);
                 docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -132,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     String unit= apartmentNumberEdit.getText().toString();
                                                     String combinedAddress = country + "|" + province + "|" + city + "|" + street + "|" + address+ "|" + unit;
                                                     combinedAddress = combinedAddress.toLowerCase();
-                                                    combinedAddress.replaceAll(" ", "");
+                                                    combinedAddress = combinedAddress.replaceAll(" ", "");
 
                                                     //Adding user to db
                                                     Map<String, Object> userData = new HashMap<>();
