@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import com.example.coen390.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -114,11 +117,20 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             String Role = "";
+                            String verified = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
                                 //User userInfo = document.toObject(User.class);
                                 Role = String.valueOf(document.getData().get("role"));
-
+                                verified = document.getData().get("verified").toString();
+                            }
+                            if(verified.contains("false"))
+                            {
+                                FirebaseAuth.getInstance().signOut();
+                                Intent intent;
+                                intent = new Intent(LoginActivity.this, NotVerifiedActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                             if(Role.contains("manager"))
                             {//redirects to manager page instead

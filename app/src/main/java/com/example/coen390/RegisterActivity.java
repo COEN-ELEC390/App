@@ -111,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Toast.makeText(RegisterActivity.this, "This unit has already been registered. Please consult your building manageer.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "This unit has already been registered. Please consult your building manager.", Toast.LENGTH_SHORT).show();
                                 Log.d("document exists", task.getResult().toString());
                             } else {
                                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -144,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     userData.put("boxNumber", null);
                                                     userData.put("accessCode", null);
                                                     userData.put("role", "user");//the building manager role must be done directly through database by authorized member.
-
+                                                    userData.put("verified", false);
 
 
                                                     db.collection("users").document(combinedAddress)
