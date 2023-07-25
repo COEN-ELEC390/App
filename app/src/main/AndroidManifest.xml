@@ -49,6 +49,11 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".ManagerUserProfileActivity"
+            android:exported="true">
+
+        </activity>
         <service android:name=".PushNotificationService"
             android:exported="true"
             android:enabled="true"
