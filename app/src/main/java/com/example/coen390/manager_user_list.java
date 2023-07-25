@@ -1,11 +1,13 @@
 package com.example.coen390;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -41,6 +43,7 @@ public class manager_user_list extends DialogFragment {
     Button viewUserListButton;
     FirebaseUser user;
     FirebaseAuth mAuth;
+    ArrayList<User> usersInBuilding;
     User managerUser;
 
 
@@ -61,7 +64,9 @@ public class manager_user_list extends DialogFragment {
         }
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +76,25 @@ public class manager_user_list extends DialogFragment {
         userListView = view.findViewById(R.id.userListView);
         //testTextView = view.findViewById(R.id.testTV);
         queryCurrentUserData(view);
-
+        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String unitToInspect = usersInBuilding.get(position).getAddress();
+                //Log.d("Selected Unit", unitToInspect);
+                if (unitToInspect == null)
+                {
+                    return;
+                }
+                else {
+                        //dataPasser.onDataPass(unitToInspect);
+                    ManagerActivity managerActivity = ((ManagerActivity) getActivity());
+                    Intent intent;
+                    intent = new Intent(managerActivity, ManagerUserProfileActivity.class);
+                    intent.putExtra("userAddress", unitToInspect);
+                    startActivity(intent);
+                }
+            }
+        });
 
 
         return view;
@@ -79,7 +102,7 @@ public class manager_user_list extends DialogFragment {
 
     void queryAllUsersInBuilding(User managerUser, View view)
     {
-        ArrayList<User> usersInBuilding = new ArrayList<User>();
+        usersInBuilding = new ArrayList<User>();
 
         String managerUserAddress= managerUser.getAddress();
         char ch = '|';
