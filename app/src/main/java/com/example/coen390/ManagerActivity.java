@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.coen390.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +36,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,9 @@ public class ManagerActivity extends AppCompatActivity {
     ArrayList<User> usersInBuilding;
     ArrayList<String> currentUserAddress;
     String FCM;
+    FragmentManager fragmentManager;
+    protected SharedPreferencesHelper spHelper;
+
 
     AppCompatButton logoutButton;
     FirebaseUser user;
@@ -62,9 +68,10 @@ public class ManagerActivity extends AppCompatActivity {
         viewUsersButton = findViewById(R.id.viewUsersButton);
         viewLockersButton = findViewById(R.id.viewLockersButton);
         unverifiedUsersLV = findViewById(R.id.unverifiedUsersLV);
+        spHelper = new SharedPreferencesHelper(ManagerActivity.this);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
+        fragmentManager = getSupportFragmentManager();
         Toast.makeText(this, "Welcome to manager view!", Toast.LENGTH_SHORT).show();
         if(user == null)
         {
@@ -83,6 +90,15 @@ public class ManagerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 manager_user_list userListDialog = new manager_user_list();
                 userListDialog.show(getSupportFragmentManager(), "userListDialog");
+            }
+        });
+        unverifiedUsersLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UnverifiedUserDataFragment myDialog = new UnverifiedUserDataFragment();
+                spHelper.saveUnverifiedUserData(usersInBuilding.get(position));
+                myDialog.show(fragmentManager, "test");
+                recreate();
             }
         });
         viewLockersButton.setOnClickListener(new View.OnClickListener() {
