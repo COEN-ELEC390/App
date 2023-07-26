@@ -13,18 +13,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.coen390.Models.RecyclerViewLockerItem;
 import com.example.coen390.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -118,14 +124,33 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String Role = "";
                             String verified = "";
+                            String address = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
                                 //User userInfo = document.toObject(User.class);
+                                address = document.getData().get("address").toString();
                                 Role = String.valueOf(document.getData().get("role"));
                                 verified = document.getData().get("verified").toString();
                             }
                             if(verified.contains("false"))
                             {
+                                //--------------------------------------notifying manager that someone needs to be verified
+                                db.collection("users").wh()
+                                        .whereEqualTo("role", "manager")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                                    }
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
+                                //-------------------------------------------------------
                                 FirebaseAuth.getInstance().signOut();
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, NotVerifiedActivity.class);
@@ -155,5 +180,51 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    void queryAllManagersInBuilding(User managerUser, View view)
+    {
+        ArrayList<User> managersInBuilding = new ArrayList<User>();
+
+        String managerUserAddress= managerUser.getAddress();
+        char ch = '|';
+        int cnt = 0;
+
+        for ( int i = 0; i < managerUserAddress.length(); i++) {
+            if (managerUserAddress.charAt(i) == ch)
+                cnt++;
+        }
+        if(cnt>4)
+        {
+            int lastSlash = managerUserAddress.lastIndexOf("|");
+            managerUserAddress = managerUserAddress.substring(0,managerUserAddress.length()-1);
+            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
+            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
+        }
+
+        CollectionReference ref = db.collection("users");
+        ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
+                .whereLessThanOrEqualTo("address", managerUserAddress + "\uF7FF")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String Role = "";
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("list of managers from non-verified query", document.getId() + " => " + document.getData());
+
+
+                                //userArrayList.add(tmp);
+                                String formatted_data[];
+
+                            }
+
+                        } else {
+                            //Toast.makeText(manager_user_list.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 }
