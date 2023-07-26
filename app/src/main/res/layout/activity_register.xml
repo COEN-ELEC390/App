@@ -76,6 +76,23 @@
             tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize">
 
         </EditText>
+        <EditText
+            android:id="@+id/phoneTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/register_textbox"
+            android:hint="Phone"
+            android:importantForAutofill="no"
+            android:inputType="phone"
+            android:minHeight="48dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="12dp"
+            android:scaleType="center"
+            android:textColorHint="@color/white"
+            tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize">
+
+        </EditText>
 
         <EditText
             android:id="@+id/passwordTV"
