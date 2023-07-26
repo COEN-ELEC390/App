@@ -97,8 +97,10 @@ public class LoginActivity extends AppCompatActivity {
                                     //Log.d(TAG, "signInWithEmail:success");
                                     Toast.makeText(LoginActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
                                     currentUser = mAuth.getCurrentUser();
-                                    loginRedirect();
-
+                                    if(currentUser != null)
+                                    {
+                                        loginRedirect();
+                                    }
 
 
                                 } else {
@@ -133,7 +135,13 @@ public class LoginActivity extends AppCompatActivity {
                                 //User userInfo = document.toObject(User.class);
                                 address = document.getData().get("address").toString();
                                 Role = String.valueOf(document.getData().get("role"));
-                                verified = document.getData().get("verified").toString();
+                                if(document.getData().get("verified") == null)
+                                {
+                                    verified = "false";
+                                }
+                                else {
+                                    verified = document.getData().get("verified").toString();
+                                }
                             }
                             if(verified.contains("false"))
                             {
@@ -184,11 +192,11 @@ public class LoginActivity extends AppCompatActivity {
         if(cnt>4)
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
-            managerUserAddress = managerUserAddress.substring(0,managerUserAddress.length()-1);
+            managerUserAddress = managerUserAddress.substring(0,lastSlash+1);
             //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
             //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
-
+        Log.d("managerUserAddress", managerUserAddress);
         CollectionReference ref = db.collection("users");
         ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
                 .whereLessThanOrEqualTo("address", managerUserAddress + "\uF7FF")
@@ -200,10 +208,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("list of managers from non-verified query", document.getId() + " => " + document.getData());
                                 if(document.getData().get("role").toString().contains("manager"))
                                 {
-                                HashMap<String, Object> newNotification = new HashMap<>();
+                                    Log.d("list of managers from non-verified query", document.getId() + " => " + document.getData());
+                                    HashMap<String, Object> newNotification = new HashMap<>();
                                 newNotification.put("title", "New User!");
                                 newNotification.put("content", "A new user is requesting verification.");
                                 newNotification.put("userDocName", document.getId());
