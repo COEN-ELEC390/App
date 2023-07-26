@@ -99,12 +99,30 @@ public class UnverifiedUserDataFragment extends DialogFragment {
                         });
                 getActivity().recreate();
                 dismiss();
+                Toast.makeText(getActivity(), "User verified", Toast.LENGTH_SHORT).show();
             }
         });
         rejectBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String email = "";
+                db.collection("users").document(user.getAddress())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(user.getFirstName() + "successfully deleted", "DocumentSnapshot successfully deleted!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("unable to reject " + user.getFirstName(), "Error deleting document", e);
+                            }
+                        });
+                getActivity().recreate();
+                dismiss();
+                Toast.makeText(getActivity(), "User Rejected and Removed", Toast.LENGTH_SHORT).show();
             }
         });
         Bundle bundle = this.getArguments();
