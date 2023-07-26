@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,13 +39,14 @@ public class LoginActivity extends AppCompatActivity {
     EditText emailEdit, passwordEdit;
     AppCompatButton loginButton;
     TextView registerTV;
+    FirebaseUser currentUser;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             //open home page
             loginRedirect();
@@ -94,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     //Log.d(TAG, "signInWithEmail:success");
                                     Toast.makeText(LoginActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
+                                    currentUser = mAuth.getCurrentUser();
                                     loginRedirect();
 
 
@@ -114,9 +117,9 @@ public class LoginActivity extends AppCompatActivity {
 
     void loginRedirect()
     {
-        FirebaseUser user = mAuth.getCurrentUser();//needed?
+        //FirebaseUser user = mAuth.getCurrentUser();//needed?
         db.collection("users")
-                .whereEqualTo("uid", user.getUid())
+                .whereEqualTo("uid", currentUser.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -135,21 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                             if(verified.contains("false"))
                             {
                                 //--------------------------------------notifying manager that someone needs to be verified
-                                db.collection("users").wh()
-                                        .whereEqualTo("role", "manager")
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        Log.d(TAG, document.getId() + " => " + document.getData());
-                                                    }
-                                                } else {
-                                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                                }
-                                            }
-                                        });
+                                queryAllManagersInBuilding(address);
                                 //-------------------------------------------------------
                                 FirebaseAuth.getInstance().signOut();
                                 Intent intent;
@@ -157,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }
-                            if(Role.contains("manager"))
+                            else if(Role.contains("manager"))
                             {//redirects to manager page instead
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, ManagerActivity.class);
@@ -181,11 +170,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-    void queryAllManagersInBuilding(User managerUser, View view)
+    void queryAllManagersInBuilding(String managerUserAddress)
     {
         ArrayList<User> managersInBuilding = new ArrayList<User>();
 
-        String managerUserAddress= managerUser.getAddress();
         char ch = '|';
         int cnt = 0;
 
@@ -204,6 +192,7 @@ public class LoginActivity extends AppCompatActivity {
         CollectionReference ref = db.collection("users");
         ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
                 .whereLessThanOrEqualTo("address", managerUserAddress + "\uF7FF")
+                //.whereEqualTo("role", "manager")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -212,12 +201,32 @@ public class LoginActivity extends AppCompatActivity {
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("list of managers from non-verified query", document.getId() + " => " + document.getData());
+                                if(document.getData().get("role").toString().contains("manager"))
+                                {
+                                HashMap<String, Object> newNotification = new HashMap<>();
+                                newNotification.put("title", "New User!");
+                                newNotification.put("content", "A new user is requesting verification.");
+                                newNotification.put("userDocName", document.getId());
+                                newNotification.put("type", "userVerificationRequest");
 
-
-                                //userArrayList.add(tmp);
-                                String formatted_data[];
+                                db.collection("notifications").document(currentUser.getUid())
+                                        .set(newNotification)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Notification to manager successfully written", "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("Notification to manager failed", "Error writing document", e);
+                                            }
+                                        });
 
                             }
+                            }
+
 
                         } else {
                             //Toast.makeText(manager_user_list.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
