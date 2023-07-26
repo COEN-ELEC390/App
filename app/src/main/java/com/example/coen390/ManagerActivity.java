@@ -191,6 +191,9 @@ public class ManagerActivity extends AppCompatActivity {
                                 String unit =  String.valueOf(document.getData().get("unit"));//not totally necessary for the manager
                                 String firstName =  String.valueOf(document.getData().get("firstName"));
                                 String lastName =  String.valueOf(document.getData().get("lastName"));
+                                String email =  String.valueOf(document.getData().get("email"));
+                                String phone =  String.valueOf(document.getData().get("phone"));
+
                                 String accessCode = null;
                                 String boxNumber = null;
                                 String verif = String.valueOf(document.getData().get("verified"));
@@ -205,7 +208,7 @@ public class ManagerActivity extends AppCompatActivity {
                                 String combinedAddress = address;
                                 combinedAddress = combinedAddress.toLowerCase();
                                 combinedAddress.replaceAll(" ", "");
-                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role, verified);
+                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role, verified, email, phone);
                                 currentUserAddress.clear();
                                 currentUserAddress.add(combinedAddress);
                                 //-----------------------------------------------------------firebase cloud messaging config

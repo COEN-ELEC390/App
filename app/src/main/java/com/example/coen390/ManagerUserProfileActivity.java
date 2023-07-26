@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class ManagerUserProfileActivity extends AppCompatActivity {
     Toolbar toolbar;
-    TextView nameTV, unitTV, roleTV;
+    TextView nameTV, unitTV, roleTV, emailTV, phoneTV;
     FragmentManager fragmentManager;
 
     FirebaseAuth mAuth;
@@ -66,6 +66,8 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         nameTV = findViewById(R.id.nameTV);
         roleTV = findViewById(R.id.roleTV);
         unitTV = findViewById(R.id.unitNumberTV);
+        phoneTV = findViewById(R.id.phoneTV);
+        emailTV = findViewById(R.id.emailTV);
         eventListView = findViewById(R.id.userEventsListView);
         fragmentManager = getSupportFragmentManager();
         //logoutButton = findViewById(R.id.logout_button);
@@ -116,9 +118,18 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                     if (document.exists()) {
                         Log.d("USER PROFILE QUERY SUCCESSFUL", "DocumentSnapshot data: " + document.getData());
                     nameTV.setText(document.getData().get("firstName").toString() + " " + document.getData().get("lastName").toString());
-                    unitTV.setText("Unit: " + document.getData().get("unit").toString());
+                    if(document.getData().get("unit") != null) {
+                        unitTV.setText("Unit: " + document.getData().get("unit").toString());
+                    }
                     roleTV.setText("Role: " + document.getData().get("role").toString());
-                    //--------------------------------------------------------------------eventList config
+                        if(document.getData().get("email")!= null) {
+                            emailTV.setText("Email: " + document.getData().get("email").toString());
+                        }
+                        if(document.getData().get("phone")!= null) {
+                            phoneTV.setText("Phone: " + document.getData().get("phone").toString());
+                        }
+
+                        //--------------------------------------------------------------------eventList config
                         Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
                         if(events != null)
                         {

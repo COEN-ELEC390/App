@@ -76,8 +76,8 @@ public class UnverifiedUserDataFragment extends DialogFragment {
         rejectBTN = view.findViewById(R.id.rejectBTN);
         descriptionTV.setText(user.getFirstName() + " would like to be verified for unit " + user.getUnit());
         //must add contact info at a later date
-        emailTV.setText("Email: ");
-        phoneTV.setText("Phone: ");
+        emailTV.setText("Email: " + user.getEmail());
+        phoneTV.setText("Phone: " + user.getPhone());
         acceptBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

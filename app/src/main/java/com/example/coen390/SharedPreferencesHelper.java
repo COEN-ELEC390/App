@@ -18,8 +18,8 @@ public class SharedPreferencesHelper {
         editor.putString("unverifiedUserUID", user.getUid());
         editor.putString("unverifiedUserAddress", user.getAddress());
         editor.putString("unverifiedUserUnit", user.getUnit());
-        editor.putString("unverifiedUserEmail", "");
-        editor.putString("unverifiedUserPhone", "");
+        editor.putString("unverifiedUserEmail", user.getEmail());
+        editor.putString("unverifiedUserPhone", user.getPhone());
         editor.putString("unverifiedUserRole", user.getRole());
         editor.putBoolean("verified", user.isVerified());
         editor.commit();
@@ -29,11 +29,11 @@ public class SharedPreferencesHelper {
         String name = sharedPreferences.getString("unverifiedUserName", null);
         String address = sharedPreferences.getString("unverifiedUserAddress", null);
         String unit = sharedPreferences.getString("unverifiedUserUnit", null);
-        String email = sharedPreferences.getString("unverifiedUserEmail", null);
-        String phone = sharedPreferences.getString("unverifiedUserPhone", null);
+        String email = sharedPreferences.getString("unverifiedUserEmail", "");
+        String phone = sharedPreferences.getString("unverifiedUserPhone", "");
         String uid = sharedPreferences.getString("unverifiedUserUID", null);
         String role = sharedPreferences.getString("unverifiedUserRole", null);
         Boolean verified = sharedPreferences.getBoolean("verified", false);
-        return new User(name, "", uid, address, unit, "", "", role, verified);
+        return new User(name, "", uid, address, unit, "", "", role, verified, email, phone);
     }
 }

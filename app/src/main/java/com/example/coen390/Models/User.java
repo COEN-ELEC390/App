@@ -5,8 +5,26 @@ public class User {
     String lastName;
     String uid;
     String unit;
+    String email;
+    String phone;
     String role;
     String address, boxNumber, accessCode;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public boolean isVerified() {
         return verified;
@@ -86,7 +104,7 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String uid,String address, String unit, String boxNumber, String accessCode, String role, boolean verified) {
+    public User(String firstName, String lastName, String uid,String address, String unit, String boxNumber, String accessCode, String role, boolean verified, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -96,6 +114,8 @@ public class User {
         this.accessCode = accessCode;
         this.role = role;
         this.verified = verified;
+        this.email = email;
+        this.phone = phone;
     }
 
 
