@@ -4,6 +4,19 @@ public class User {
     String firstName;
     String lastName;
     String uid;
+    String unit;
+    String role;
+    String address, boxNumber, accessCode;
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    boolean verified;
 
     public String getUnit() {
         return unit;
@@ -13,14 +26,6 @@ public class User {
         this.unit = unit;
     }
 
-    String unit;
-
-
-    String role;
-    String address, boxNumber, accessCode;
-
-    public User() {
-    }
 
     public String getFirstName() {
         return firstName;
@@ -78,8 +83,10 @@ public class User {
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
     }
+    public User() {
+    }
 
-    public User(String firstName, String lastName, String uid,String address, String unit, String boxNumber, String accessCode, String role) {
+    public User(String firstName, String lastName, String uid,String address, String unit, String boxNumber, String accessCode, String role, boolean verified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -88,6 +95,7 @@ public class User {
         this.boxNumber = boxNumber;
         this.accessCode = accessCode;
         this.role = role;
+        this.verified = verified;
     }
 
 

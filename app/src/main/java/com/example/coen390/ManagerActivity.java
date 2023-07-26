@@ -1,5 +1,6 @@
 package com.example.coen390;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -36,8 +39,10 @@ import java.util.List;
 
 public class ManagerActivity extends AppCompatActivity {
     Button viewUsersButton, viewLockersButton;
+    ListView unverifiedUsersLV;
     User managerUser;
     Toolbar toolbar;
+    ArrayList<User> usersInBuilding;
     ArrayList<String> currentUserAddress;
     String FCM;
 
@@ -56,6 +61,7 @@ public class ManagerActivity extends AppCompatActivity {
         //logoutButton = findViewById(R.id.logout_button);
         viewUsersButton = findViewById(R.id.viewUsersButton);
         viewLockersButton = findViewById(R.id.viewLockersButton);
+        unverifiedUsersLV = findViewById(R.id.unverifiedUsersLV);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -69,8 +75,7 @@ public class ManagerActivity extends AppCompatActivity {
         else
         {
             //do stuff for authenticated user here
-            managerUser = queryCurrentUserData();
-
+            managerUser = queryCurrentUserData(getApplicationContext());
         }
 
         viewUsersButton.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +150,7 @@ public class ManagerActivity extends AppCompatActivity {
     }
 
 
-    User queryCurrentUserData()
+    User queryCurrentUserData(Context cc)
     {
         final User[] loggedInUser = new User[1];
         db.collection("users")
@@ -172,10 +177,19 @@ public class ManagerActivity extends AppCompatActivity {
                                 String lastName =  String.valueOf(document.getData().get("lastName"));
                                 String accessCode = null;
                                 String boxNumber = null;
+                                String verif = String.valueOf(document.getData().get("verified"));
+                                boolean verified;
+                                if(verif != null && verif.contains("true"))
+                                {
+                                    verified = true;
+                                }
+                                else {
+                                    verified = false;
+                                }
                                 String combinedAddress = address;
                                 combinedAddress = combinedAddress.toLowerCase();
                                 combinedAddress.replaceAll(" ", "");
-                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role);
+                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role, verified);
                                 currentUserAddress.clear();
                                 currentUserAddress.add(combinedAddress);
                                 //-----------------------------------------------------------firebase cloud messaging config
@@ -213,7 +227,9 @@ public class ManagerActivity extends AppCompatActivity {
                                                 //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                                             }
                                         });
-                                //------------------------------------------------
+                                //------------------------------------------------getting unverified users
+                                getUnverifiedUsers(loggedInUser[0], cc);
+
                             }
 
                         } else {
@@ -223,6 +239,80 @@ public class ManagerActivity extends AppCompatActivity {
                     }
                 });
         return loggedInUser[0];
+
+    }
+    void getUnverifiedUsers(User managerUser, Context cc)
+    {
+        usersInBuilding = new ArrayList<User>();
+
+        String managerUserAddress= managerUser.getAddress();
+        char ch = '|';
+        int cnt = 0;
+
+        for ( int i = 0; i < managerUserAddress.length(); i++) {
+            if (managerUserAddress.charAt(i) == ch)
+                cnt++;
+        }
+        if(cnt>4)
+        {
+            int lastSlash = managerUserAddress.lastIndexOf("|");
+            managerUserAddress = managerUserAddress.substring(0,managerUserAddress.length()-1);
+            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
+            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
+        }
+
+        CollectionReference ref = db.collection("users");
+        ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
+                .whereLessThanOrEqualTo("address", managerUserAddress + "\uF7FF")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String Role = "";
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("list of users from manager", document.getId() + " => " + document.getData());
+
+                                User tmp = document.toObject(User.class);//new User(firstName, lastName, uid, country, province,city, street, address, unit, boxNumber, accessCode, Role);
+                                if(tmp.getUnit() == null)
+                                {
+                                    tmp.setUnit("");
+                                }
+                                if(tmp.isVerified() == false) {
+                                    usersInBuilding.add(tmp);//check for null!
+                                }
+                                else {
+                                    continue;
+                                }
+                                //userArrayList.add(tmp);
+                                String formatted_data[];
+
+                                Log.d("User tmp", tmp.getUnit());
+                                if(usersInBuilding == null || usersInBuilding.size() == 0)
+                                {
+                                    formatted_data = new String[1];
+                                    formatted_data[0] = "No users to display"; //+ managerUser.getCountry();
+                                }
+                                else {
+                                    formatted_data = new String[usersInBuilding.size()];
+                                    for (int i = 0; i < formatted_data.length; i++) {
+                                        if(usersInBuilding.get(i).getRole().contains("manager") == false)
+                                            formatted_data[i] = usersInBuilding.get(i).getFirstName() +" " + usersInBuilding.get(i).getLastName() + " Unit " + usersInBuilding.get(i).getUnit();
+                                        else
+                                            formatted_data[i] = usersInBuilding.get(i).getFirstName() +" " + usersInBuilding.get(i).getLastName() + " (Manager)";
+
+                                    }
+                                }
+                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formatted_data);
+                                unverifiedUsersLV.setAdapter(arrayAdapter);
+                            }
+
+                        } else {
+                            //Toast.makeText(manager_user_list.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
     }
     private final ActivityResultLauncher<String> requestPermissionLauncher =

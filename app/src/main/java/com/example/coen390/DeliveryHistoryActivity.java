@@ -192,10 +192,19 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                 String lastName =  String.valueOf(document.getData().get("lastName"));
                                 String accessCode = null;
                                 String boxNumber = null;
+                                String verif = String.valueOf(document.getData().get("verified"));
+                                boolean verified;
+                                if(verif != null && verif.contains("true"))
+                                {
+                                    verified = true;
+                                }
+                                else {
+                                    verified = false;
+                                }
                                 String combinedAddress = /*country + "/" + province + "/" + city + "/" + street + "/" + */address;// + "/" + unit;
                                 combinedAddress = combinedAddress.toLowerCase();
                                 combinedAddress.replaceAll(" ", "");
-                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role);
+                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role, verified);
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
                                 currentUserAddress.clear();
                                 currentUserAddress.add(combinedAddress);
