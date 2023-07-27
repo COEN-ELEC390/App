@@ -154,17 +154,41 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
+                String email, password, firstName, lastName, phone, unit;
+                firstName = firstNameEdit.getText().toString();
+                lastName = lastNameEdit.getText().toString();
                 email = emailEdit.getText().toString();
+                phone = phoneEdit.getText().toString();
                 password = passwordEdit.getText().toString();
-                if(TextUtils.isEmpty(email))
+                unit = apartmentNumberEdit.getText().toString();
+                if(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName))
+                {
+                    Toast.makeText(RegisterActivity.this, "First or last name is empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(TextUtils.isEmpty(email))
                 {
                     Toast.makeText(RegisterActivity.this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(TextUtils.isEmpty(phone))
+                {
+                    Toast.makeText(RegisterActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if(TextUtils.isEmpty(password))
                 {
                     Toast.makeText(RegisterActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(TextUtils.isEmpty(unit))
+                {
+                    Toast.makeText(RegisterActivity.this, "Please enter an apartment", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(TextUtils.isEmpty(country) || TextUtils.isEmpty(province) || TextUtils.isEmpty(city) || TextUtils.isEmpty(street) || TextUtils.isEmpty(streetNumber))
+                {
+                    Toast.makeText(RegisterActivity.this, "Please enter a valid address", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //-------------------------------------------------------------
