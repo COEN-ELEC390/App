@@ -72,7 +72,7 @@ public class ManagerActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         fragmentManager = getSupportFragmentManager();
-        Toast.makeText(this, "Welcome to manager view!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Welcome to manager view!", Toast.LENGTH_SHORT).show();
         if(user == null)
         {
             Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
