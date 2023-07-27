@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText emailEdit, passwordEdit, firstNameEdit, lastNameEdit, countryEdit, provinceEdit, cityEdit, streetEdit, addressEdit, apartmentNumberEdit;
+    EditText emailEdit, passwordEdit, firstNameEdit, lastNameEdit, countryEdit, provinceEdit, cityEdit, streetEdit, addressEdit, apartmentNumberEdit, phoneEdit;
     AppCompatButton registerButton;
     FirebaseAuth mAuth;
     TextView loginTV;
@@ -64,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         streetEdit = findViewById(R.id.streetTV);
         addressEdit = findViewById(R.id.addressTV);
         apartmentNumberEdit = findViewById(R.id.unitTV);
+        phoneEdit = findViewById(R.id.phoneTV);
 
 
         registerButton = findViewById(R.id.registerButton);
@@ -111,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Toast.makeText(RegisterActivity.this, "This unit has already been registered. Please consult your building manageer.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "This unit has already been registered. Please consult your building manager.", Toast.LENGTH_SHORT).show();
                                 Log.d("document exists", task.getResult().toString());
                             } else {
                                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -125,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     FirebaseUser user = mAuth.getCurrentUser();//don't need?
 
                                                     String country= countryEdit.getText().toString();
+                                                    String phone = phoneEdit.getText().toString();
                                                     String province= provinceEdit.getText().toString();
                                                     String city = cityEdit.getText().toString();
                                                     String street= streetEdit.getText().toString();
@@ -144,8 +146,9 @@ public class RegisterActivity extends AppCompatActivity {
                                                     userData.put("boxNumber", null);
                                                     userData.put("accessCode", null);
                                                     userData.put("role", "user");//the building manager role must be done directly through database by authorized member.
-
-
+                                                    userData.put("verified", false);
+                                                    userData.put("email", user.getEmail());
+                                                    userData.put("phone", phone);
 
                                                     db.collection("users").document(combinedAddress)
                                                             .set(userData)
