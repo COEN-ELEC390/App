@@ -25,6 +25,8 @@
 
         </TextView>
 
+
+
         <EditText
             android:id="@+id/firstNameTV"
             android:layout_width="match_parent"
@@ -110,85 +112,8 @@
             android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize" />
 
-        <EditText
-            android:id="@+id/countryTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/country_of_residence"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
-        <EditText
-            android:id="@+id/provinceTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/province_or_state"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
-        <EditText
-            android:id="@+id/cityTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/city"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-
-        <EditText
-            android:id="@+id/streetTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/street"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-
-        <EditText
-            android:id="@+id/addressTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/address"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/unitTV"
@@ -205,6 +130,18 @@
             android:scaleType="center"
             android:textColorHint="@color/white"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:paddingTop="20dp"
+            android:text="Building address"
+            android:textColor="#4E342E">
+        </TextView>
+        <fragment android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/registerButton"
