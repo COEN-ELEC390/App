@@ -115,7 +115,7 @@ public class manager_user_list extends DialogFragment {
         if(cnt>4)
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
-            managerUserAddress = managerUserAddress.substring(0,managerUserAddress.length()-1);
+            managerUserAddress = managerUserAddress.substring(0,lastSlash);
             //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
             //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
@@ -137,7 +137,9 @@ public class manager_user_list extends DialogFragment {
                                 {
                                     tmp.setUnit("");
                                 }
-                                usersInBuilding.add(tmp);//check for null!
+                                if(tmp.isVerified() == true) {
+                                    usersInBuilding.add(tmp);//check for null!
+                                }
                                 //userArrayList.add(tmp);
                                 String formatted_data[];
 
