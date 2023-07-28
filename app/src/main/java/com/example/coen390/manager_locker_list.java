@@ -111,7 +111,7 @@ public class manager_locker_list extends DialogFragment {
         if(cnt>4)
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
-            managerUserAddress = managerUserAddress.substring(0,managerUserAddress.length()-1);
+            managerUserAddress = managerUserAddress.substring(0,lastSlash);
             //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
             //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }

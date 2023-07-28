@@ -207,7 +207,7 @@ public class LoginActivity extends AppCompatActivity {
         if(cnt>4)
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
-            managerUserAddress = managerUserAddress.substring(0,lastSlash+1);
+            managerUserAddress = managerUserAddress.substring(0,lastSlash);
             //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
             //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
