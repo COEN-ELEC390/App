@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -19,9 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PushNotificationService extends FirebaseMessagingService {
-
+    FirebaseAuth mAuth;// = FirebaseAuth.getInstance();
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null)
+        {
+            return;
+        }
         super.onMessageReceived(message);
         String title = message.getNotification().getTitle();
         String body = message.getNotification().getBody();
