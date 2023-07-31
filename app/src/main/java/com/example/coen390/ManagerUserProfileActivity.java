@@ -33,6 +33,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> formattedEventList = new ArrayList<>();
-    ArrayList<HashMap> unformattedEventList = new ArrayList<>();
+    ArrayList<HashMap<String, Object>> unformattedEventList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
     ListView eventListView;
@@ -174,14 +176,15 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
 
                                 }
 
-                                unformattedEventList.add(subMap);
                                 if(listAccessCode != null && deliveryTime != null)
                                 {
+                                    unformattedEventList.add(subMap);
+                                    //unformattedEventList = sortByDate(unformattedEventList);
+                                    sortByDate(unformattedEventList);
                                     //while(count<numberOfEvents)
                                     //{
                                     //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
-                                    String t = "asd";
-                                    formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
+                                    //formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
                                     //count++;
                                     //}
                                 }
@@ -196,6 +199,14 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                                 //Log.d("e value",e.getValue());
                                 //DateTime deliveryDate = e.getValue()
                             }
+                            //unformattedEventList = sortByDate(unformattedEventList);
+                            sortByDate(unformattedEventList);
+
+                            for(int i = 0; i < unformattedEventList.size(); i++)
+                            {
+                                Timestamp thing = (Timestamp) unformattedEventList.get(i).get("deliveryTimestamp");
+                                formattedEventList.add("Delivered on: " + thing.toDate().toString());
+                            }
                         }
                         arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
                         eventListView.setAdapter(arrayAdapter);
@@ -207,5 +218,22 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private static void sortByDate(ArrayList<HashMap<String, Object>> arrayList) {
+        // Create a custom comparator for Firebase timestamps
+        Comparator<HashMap<String, Object>> comparator = new Comparator<HashMap<String, Object>>() {
+            @Override
+            public int compare(HashMap<String, Object> map1, HashMap<String, Object> map2) {
+                // Replace "timestamp" with your actual key for the timestamp value
+                com.google.firebase.Timestamp timestamp1 = (com.google.firebase.Timestamp) map1.get("deliveryTimestamp");
+                com.google.firebase.Timestamp timestamp2 = (com.google.firebase.Timestamp) map2.get("deliveryTimestamp");
+
+                // Compare the timestamps
+                return timestamp1.compareTo(timestamp2);
+            }
+        };
+
+        // Sort the ArrayList using the custom comparator
+        Collections.sort(arrayList, comparator.reversed());
     }
 }

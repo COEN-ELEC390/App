@@ -36,8 +36,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.type.DateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -296,28 +299,27 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
 
                                         }
 
-                                        unformattedEventList.add(subMap);
-                                        unformattedEventList = sortByDate(unformattedEventList);
                                         if(listAccessCode != null && deliveryTime != null)
                                         {
+                                            unformattedEventList.add(subMap);
+                                            //unformattedEventList = sortByDate(unformattedEventList);
+                                            sortByDate(unformattedEventList);
                                             //while(count<numberOfEvents)
                                             //{
                                             //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
-                                            String t = "asd";
-                                            formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
+                                            //formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
                                             //count++;
                                             //}
                                         }
-                                        else
-                                        {
-                                            formattedEventList.add("No events to display");
-                                        }
 
-                                        //Map<String, Object> event = e.getValue();
-                                        //eventEntries.add(subMap);
-                                        //Log.d("event entry", e.toString());
-                                        //Log.d("e value",e.getValue());
-                                        //DateTime deliveryDate = e.getValue()
+                                    }
+                                    //unformattedEventList = sortByDate(unformattedEventList);
+                                    sortByDate(unformattedEventList);
+
+                                    for(int i = 0; i < unformattedEventList.size(); i++)
+                                    {
+                                            Timestamp thing = (Timestamp) unformattedEventList.get(i).get("deliveryTimestamp");
+                                            formattedEventList.add("Delivered on: " + thing.toDate().toString());
                                     }
                                 }
                             }
@@ -333,36 +335,22 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         //deliveriesArrayList =
 
     }
-    ArrayList<HashMap<String,Object>> sortByDate(ArrayList<HashMap<String,Object>> arrayList)
-    {
-        Timestamp deliveryTime1 = new Timestamp(new Date());
-        Timestamp deliveryTime2 = new Timestamp(new Date());
-        HashMap<String, Object> tmp;
-        for(int i = 0; i < arrayList.size()-1; i++) {
-            for (Map.Entry<String, Object> eventData : arrayList.get(i).entrySet()) {
-                //Log.d("eventData", eventData.toString());
-                if (eventData.getKey().toString().contains("deliveryTimestamp")) {
-                    deliveryTime1 = (Timestamp) eventData.getValue();
-                    break;
-                }
+        private static void sortByDate(ArrayList<HashMap<String, Object>> arrayList) {
+        // Create a custom comparator for Firebase timestamps
+        Comparator<HashMap<String, Object>> comparator = new Comparator<HashMap<String, Object>>() {
+            @Override
+            public int compare(HashMap<String, Object> map1, HashMap<String, Object> map2) {
+                // Replace "timestamp" with your actual key for the timestamp value
+                com.google.firebase.Timestamp timestamp1 = (com.google.firebase.Timestamp) map1.get("deliveryTimestamp");
+                com.google.firebase.Timestamp timestamp2 = (com.google.firebase.Timestamp) map2.get("deliveryTimestamp");
 
+                // Compare the timestamps
+                return timestamp1.compareTo(timestamp2);
             }
-            for (Map.Entry<String, Object> eventData : arrayList.get(i+1).entrySet()) {
-                //Log.d("eventData", eventData.toString());
-                if (eventData.getKey().toString().contains("deliveryTimestamp")) {
-                    deliveryTime2 = (Timestamp) eventData.getValue();
-                    break;
-                }
+        };
 
-            }
-            if(deliveryTime1.toDate().after(deliveryTime2.toDate()))
-            {
-                tmp = arrayList.get(i);
-                arrayList.set(i, arrayList.get(i+1));
-                arrayList.set(i+1, tmp);
-            }
-        }
-        return arrayList;
+        // Sort the ArrayList using the custom comparator
+        Collections.sort(arrayList, comparator.reversed());
     }
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
