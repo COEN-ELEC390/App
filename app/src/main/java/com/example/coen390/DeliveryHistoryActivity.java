@@ -38,6 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> formattedEventList = new ArrayList<>();
-    ArrayList<HashMap> unformattedEventList = new ArrayList<>();
+    ArrayList<HashMap<String, Object>> unformattedEventList = new ArrayList<HashMap<String, Object>>();
     FragmentManager fragmentManager;
     User currentUser;
     ArrayList<String> deliveriesArrayList;
@@ -258,7 +259,6 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                     Log.d("events map", events.toString());
                                     int numberOfEvents = events.size();
                                     int count = 0;
-                                    //List<Map<String, Object>> eventEntries = null;// = new List<Map<String, Object>>;
 
                                     for(Map.Entry<String, HashMap<String, Object>> e: events.entrySet())
                                     {
@@ -297,6 +297,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                         }
 
                                         unformattedEventList.add(subMap);
+                                        unformattedEventList = sortByDate(unformattedEventList);
                                         if(listAccessCode != null && deliveryTime != null)
                                         {
                                             //while(count<numberOfEvents)
@@ -331,6 +332,37 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         return loggedInUser[0];
         //deliveriesArrayList =
 
+    }
+    ArrayList<HashMap<String,Object>> sortByDate(ArrayList<HashMap<String,Object>> arrayList)
+    {
+        Timestamp deliveryTime1 = new Timestamp(new Date());
+        Timestamp deliveryTime2 = new Timestamp(new Date());
+        HashMap<String, Object> tmp;
+        for(int i = 0; i < arrayList.size()-1; i++) {
+            for (Map.Entry<String, Object> eventData : arrayList.get(i).entrySet()) {
+                //Log.d("eventData", eventData.toString());
+                if (eventData.getKey().toString().contains("deliveryTimestamp")) {
+                    deliveryTime1 = (Timestamp) eventData.getValue();
+                    break;
+                }
+
+            }
+            for (Map.Entry<String, Object> eventData : arrayList.get(i+1).entrySet()) {
+                //Log.d("eventData", eventData.toString());
+                if (eventData.getKey().toString().contains("deliveryTimestamp")) {
+                    deliveryTime2 = (Timestamp) eventData.getValue();
+                    break;
+                }
+
+            }
+            if(deliveryTime1.toDate().after(deliveryTime2.toDate()))
+            {
+                tmp = arrayList.get(i);
+                arrayList.set(i, arrayList.get(i+1));
+                arrayList.set(i+1, tmp);
+            }
+        }
+        return arrayList;
     }
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
