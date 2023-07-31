@@ -1,6 +1,5 @@
-package com.example.coen390;
+package com.example.coen390.fragments;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,15 +15,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.coen390.ManagerActivity;
 import com.example.coen390.Models.User;
+import com.example.coen390.R;
+import com.example.coen390.SharedPreferencesHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UnverifiedUserDataFragment extends DialogFragment {
 

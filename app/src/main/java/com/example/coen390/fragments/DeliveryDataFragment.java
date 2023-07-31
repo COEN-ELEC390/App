@@ -1,4 +1,4 @@
-package com.example.coen390;
+package com.example.coen390.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.example.coen390.R;
 import com.google.firebase.Timestamp;
 
 import java.util.HashMap;

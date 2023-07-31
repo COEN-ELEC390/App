@@ -1,6 +1,5 @@
-package com.example.coen390;
+package com.example.coen390.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,28 +10,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.coen390.ManagerActivity;
+import com.example.coen390.ManagerUserProfileActivity;
 import com.example.coen390.Models.User;
+import com.example.coen390.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class manager_user_list extends DialogFragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -80,6 +75,9 @@ public class manager_user_list extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String unitToInspect = usersInBuilding.get(position).getAddress();
+                String lastName = usersInBuilding.get(position).getLastName();
+                String firstName = usersInBuilding.get(position).getFirstName();
+                String unitNum = usersInBuilding.get(position).getUnit();
                 //Log.d("Selected Unit", unitToInspect);
                 if (unitToInspect == null)
                 {
@@ -91,6 +89,9 @@ public class manager_user_list extends DialogFragment {
                     Intent intent;
                     intent = new Intent(managerActivity, ManagerUserProfileActivity.class);
                     intent.putExtra("userAddress", unitToInspect);
+                    intent.putExtra("userFN", firstName);
+                    intent.putExtra("userLN", lastName);
+                    intent.putExtra("userUnitNum", unitNum);
                     startActivity(intent);
                 }
             }

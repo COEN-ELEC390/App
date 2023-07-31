@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,12 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.coen390.Models.User;
+import com.example.coen390.fragments.DeleteUserCheckFragment;
+import com.example.coen390.fragments.DeliveryDataFragment;
+import com.example.coen390.fragments.manager_user_list;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,9 +32,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +55,7 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
     ListView eventListView;
 
     FirebaseUser user;
-    String userAddress;
+    String userAddress, userFN, userLN, userUnitNum;
 
 
     @Override
@@ -65,6 +66,10 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Intent dataIntent = getIntent();
         userAddress = dataIntent.getStringExtra("userAddress");
+        userFN = dataIntent.getStringExtra("userFN");
+        userLN = dataIntent.getStringExtra("userLN");
+        userUnitNum = dataIntent.getStringExtra("userUnitNum");
+
         nameTV = findViewById(R.id.nameTV);
         roleTV = findViewById(R.id.roleTV);
         unitTV = findViewById(R.id.unitNumberTV);
@@ -86,7 +91,6 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         else
         {
             //do stuff for authenticated user here
-            //managerUser = queryCurrentUserData();
 
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -108,6 +112,31 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.manager_user_profile_activity_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.deleteUserItem)
+        {
+            DeleteUserCheckFragment deleteFrag = new DeleteUserCheckFragment();
+            Bundle args = new Bundle();
+            args.putString("address", userAddress);
+            args.putString("fn", userFN);
+            args.putString("ln", userLN);
+            args.putString("unit", userUnitNum);
+
+            deleteFrag.setArguments(args);
+            deleteFrag.show(getSupportFragmentManager(), "userListDialog");
+
+
+        }
+        return super.onOptionsItemSelected(item);
     }
     void getUserProfileData(Context cc)
     {
