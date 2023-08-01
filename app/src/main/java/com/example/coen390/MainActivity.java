@@ -3,6 +3,7 @@ package com.example.coen390;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -33,7 +34,10 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> currentUserAddress;
 
     ArrayAdapter<String> arrayAdapter;
-    String FCM;
+    String FCM, userAddy;
     Toolbar toolbar;
     ListView eventListView;
     FirebaseUser user;
@@ -60,13 +64,15 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> formattedEventList = new ArrayList<>();
     ArrayList<HashMap<String, Object>> unformattedEventList = new ArrayList<>();
     FragmentManager fragmentManager;
+    SharedPreferencesHelper spHelper;
     User currentUser;
     ArrayList<String> deliveriesArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        spHelper = new SharedPreferencesHelper(MainActivity.this);
+        userAddy = spHelper.getSignedInUserAddress();
         eventListView = findViewById(R.id.eventLV);
         refreshFeed = findViewById(R.id.refreshFeedButton);
         viewHistory = findViewById(R.id.viewHistoryButton);
@@ -151,7 +157,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+//-----------------------------------------document listener
+        //if(userAddy != null) {
+            final DocumentReference docRef = db.collection("users").document(userAddy);
+            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w("user doc snapshot listener failed", "Listen failed.", e);
+                        return;
+                    }
 
+                    if (snapshot != null && snapshot.exists()) {
+                        formattedEventList.clear();
+                        unformattedEventList.clear();
+                        queryCurrentUserData(getApplicationContext());
+                        Log.d("Current user data", "Current data: " + snapshot.getData());
+                    } else {
+                        Log.d("Current user data is null", "Current data: null");
+                    }
+                }
+            });
+        //}
+        //----------------------------------------------
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -180,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                     });
             //-------------------------------------------------------
             FirebaseAuth.getInstance().signOut();
+            spHelper.saveSignedInUserAddress("");
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -277,6 +307,8 @@ public class MainActivity extends AppCompatActivity {
                                 //formattedEventList = new String[numberOfEvents];
                                 if(events != null)
                                 {
+                                    unformattedEventList.clear();
+                                    formattedEventList.clear();
                                     Log.d("events map", events.toString());
                                     int numberOfEvents = events.size();
                                     int count = 0;

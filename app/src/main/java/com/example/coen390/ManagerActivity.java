@@ -159,6 +159,7 @@ public class ManagerActivity extends AppCompatActivity {
                     });
             //------------------------------------------------------
             FirebaseAuth.getInstance().signOut();
+            spHelper.saveSignedInUserAddress("");
             Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();

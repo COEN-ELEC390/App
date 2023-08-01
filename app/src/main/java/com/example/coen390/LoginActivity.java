@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     EditText emailEdit, passwordEdit;
     AppCompatButton loginButton;
+    SharedPreferencesHelper spHelper;
     TextView registerTV;
     FirebaseUser currentUser;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        spHelper = new SharedPreferencesHelper(LoginActivity.this);
 
         //------------------------------------------notification request
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -173,6 +175,7 @@ public class LoginActivity extends AppCompatActivity {
                             {//redirects to manager page instead
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, ManagerActivity.class);
+                                spHelper.saveSignedInUserAddress(address);
                                 startActivity(intent);
 
                             }
@@ -181,6 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                                 //updateUI(user);
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, MainActivity.class);
+                                spHelper.saveSignedInUserAddress(address);
                                 startActivity(intent);
 
                             }

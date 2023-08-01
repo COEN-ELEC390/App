@@ -11,6 +11,18 @@ public class SharedPreferencesHelper {
     {
         sharedPreferences = context.getSharedPreferences("sharedPreference", Context.MODE_PRIVATE );
     }
+    public void saveSignedInUserAddress(String address)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("loggedInUserAddress", address);
+        editor.commit();
+    }
+    public String getSignedInUserAddress()
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String addy = sharedPreferences.getString("loggedInUserAddress", "");
+        return addy;
+    }
     public void saveUnverifiedUserData(User user)//String name,String uid, String address, String unit,String role, Boolean verified, String email, String phone)
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -50,6 +50,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
 
     ArrayAdapter<String> arrayAdapter;
     String FCM;
+    SharedPreferencesHelper spHelper;
     Toolbar toolbar;
     ListView eventListView;
     FirebaseUser user;
@@ -66,6 +67,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delivery_history);
         eventListView = findViewById(R.id.eventLV);
         refreshFeed = findViewById(R.id.refreshFeedButton);
+        spHelper = new SharedPreferencesHelper(DeliveryHistoryActivity.this);
         currentUserAddress = new ArrayList<>();
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
@@ -160,6 +162,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                     });
             //---------------------------------------------------------------
             FirebaseAuth.getInstance().signOut();
+            spHelper.saveSignedInUserAddress("");
             Intent intent = new Intent(DeliveryHistoryActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
