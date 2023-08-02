@@ -319,12 +319,15 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
 
                                     for(int i = 0; i < unformattedEventList.size(); i++)
                                     {
-                                            Timestamp thing = (Timestamp) unformattedEventList.get(i).get("deliveryTimestamp");
-                                            formattedEventList.add("Delivered on: " + thing.toDate().toString());
+                                        Timestamp thing = (Timestamp) unformattedEventList.get(i).get("deliveryTimestamp");
+                                        String formattedDate = thing.toDate().toString();
+                                        formattedDate = formattedDate.substring(0, formattedDate.length()-12);
+                                        formattedEventList.add("" + formattedDate);
                                     }
                                 }
                             }
-                            arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
+                            arrayAdapter = new EventListAdapter(DeliveryHistoryActivity.this, formattedEventList);
+                            //arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
                             eventListView.setAdapter(arrayAdapter);
                         } else {
                             Toast.makeText(DeliveryHistoryActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();

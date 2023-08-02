@@ -369,11 +369,16 @@ public class MainActivity extends AppCompatActivity {
                                     for(int i = 0; i < unformattedEventList.size(); i++)
                                     {
                                         Timestamp thing = (Timestamp) unformattedEventList.get(i).get("deliveryTimestamp");
-                                        formattedEventList.add("Delivered on: " + thing.toDate().toString());
+                                        String formattedDate = thing.toDate().toString();
+                                        formattedDate = formattedDate.substring(0, formattedDate.length()-12);
+                                        formattedEventList.add("" + formattedDate);
                                     }
                                 }
                             }
-                            arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
+                            arrayAdapter = new EventListAdapter(MainActivity.this, formattedEventList);
+                            //binding.listview.setAdapter(listAdapter);
+                            //binding.listview.setClickable(true);
+                            //arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
                             eventListView.setAdapter(arrayAdapter);
                         } else {
                             Toast.makeText(MainActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
