@@ -57,6 +57,7 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="10.0sp"
             tools:listitem="@layout/event_list_design"
+            android:layout_marginBottom="25dp"
             android:id="@+id/eventLV">
         </ListView>
 
