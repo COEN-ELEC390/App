@@ -49,13 +49,22 @@
         <ListView
             android:id="@+id/eventLV"
             android:layout_width="match_parent"
-            android:layout_height="444dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="25dp"
             android:divider="@android:color/transparent"
             android:dividerHeight="10.0sp"
             android:scrollbars="vertical"
             tools:listitem="@layout/event_list_design"></ListView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/noDeliveries"
+            android:text=""
+            android:gravity="center"
+            android:alpha="0.6">
+
+        </TextView>
 
     </LinearLayout>
 

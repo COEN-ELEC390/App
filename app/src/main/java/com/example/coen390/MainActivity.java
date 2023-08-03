@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     AppCompatButton logoutButton;
     Button refreshFeed;
     ArrayList<String> currentUserAddress;
-
+    TextView nothingReadyForPickup;
     ArrayAdapter<String> arrayAdapter;
     String FCM, userAddy;
     Toolbar toolbar;
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         spHelper = new SharedPreferencesHelper(MainActivity.this);
         userAddy = spHelper.getSignedInUserAddress();
+        nothingReadyForPickup = findViewById(R.id.noDeliveries);
         eventListView = findViewById(R.id.eventLV);
         refreshFeed = findViewById(R.id.refreshFeedButton);
         TextView titleText = new TextView(this);
@@ -216,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
     User queryCurrentUserData(Context cc)
     {
+        nothingReadyForPickup.setText("");
         final User[] loggedInUser = new User[1];
         db.collection("users")
                 .whereEqualTo("uid", user.getUid())
@@ -371,6 +373,10 @@ public class MainActivity extends AppCompatActivity {
                                         formattedEventList.add("" + formattedDate);
                                     }
                                 }
+                            }
+                            if(unformattedEventList.size() == 0)
+                            {
+                                nothingReadyForPickup.setText("You have no deliveries that are ready for pickup");
                             }
                             arrayAdapter = new EventListAdapter(MainActivity.this, formattedEventList);
                             //binding.listview.setAdapter(listAdapter);
