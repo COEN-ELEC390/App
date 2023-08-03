@@ -63,7 +63,7 @@
             app:boxCornerRadiusBottomEnd="20dp"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/login_password_icon"
-            app:passwordToggleEnabled="false"
+            app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
