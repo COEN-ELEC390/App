@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,7 +12,6 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">
-
 
         <TextView
             android:layout_width="match_parent"
@@ -22,121 +22,176 @@
             android:textSize="28sp"
             android:textStyle="bold"
             tools:ignore="HardcodedText,TextSizeCheck">
-
         </TextView>
 
-
-
-        <EditText
-            android:id="@+id/firstNameTV"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/first_name"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="HardcodedText,TextContrastCheck,TextFields,VisualLintTextFieldSize">
+            android:layout_marginTop="8dp"
+            app:boxStrokeColor="@color/blue_2"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/register_person"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-        </EditText>
 
-        <EditText
-            android:id="@+id/lastNameTV"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:hint="First Name"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="@drawable/shadow_selector_2"
+                tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,VisualLintTextFieldSize">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/last_name"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="SmallSp,TextContrastCheck,VisualLintTextFieldSize" />
+            android:layout_marginTop="8dp"
+            app:boxStrokeColor="@color/blue_2"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/register_person"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-        <EditText
-            android:id="@+id/emailTV"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:id="@+id/lastNameTV"
+                android:hint="Last Name"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="@drawable/shadow_selector_2"
+                tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/email"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize">
+            android:layout_marginTop="8dp"
+            app:boxStrokeColor="@color/blue_2"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/login_email_icon"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-        </EditText>
-        <EditText
-            android:id="@+id/phoneTV"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:id="@+id/emailTV"
+                android:hint="Email"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:hintTextColor="@color/black"
+                android:background="@drawable/shadow_selector_2"
+                tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="Phone"
-            android:importantForAutofill="no"
-            android:inputType="phone"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize">
+            android:layout_marginTop="8dp"
+            app:boxStrokeColor="@color/blue_2"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/register_phone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-        </EditText>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:id="@+id/phoneTV"
+                android:hint="Phone Number"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="@drawable/shadow_selector_2"
+                tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
-        <EditText
-            android:id="@+id/passwordTV"
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/password"
-            android:importantForAutofill="no"
-            android:inputType="textPassword"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,TextFields,VisualLintTextFieldSize" />
+            android:layout_marginTop="8dp"
+            app:boxStrokeColor="@color/blue_2"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/login_password_icon"
+            app:passwordToggleEnabled="false"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:hint="Password"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:hintTextColor="@color/black"
+                android:background="@drawable/shadow_selector_2"
+                tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
-
-        <EditText
-            android:id="@+id/unitTV"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/register_textbox"
-            android:hint="@string/apartment"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="12dp"
-            android:scaleType="center"
-            android:textColorHint="@color/white"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:paddingTop="20dp"
-            android:text="Building address"
-            android:textColor="#4E342E">
-        </TextView>
+            android:layout_marginTop="8dp"
+            app:boxStrokeColor="@color/blue_2"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/app_register_num"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:id="@+id/unitTV"
+                android:hint="Appartment Number"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="@drawable/shadow_selector_2"
+                tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
         <fragment android:id="@+id/autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -151,6 +206,7 @@
             android:background="@drawable/button_state_list_animator"
             android:text="@string/register"
             android:textColor="#ffffff"
+            android:paddingTop="10dp"
             tools:ignore="DuplicateSpeakableTextCheck"></androidx.appcompat.widget.AppCompatButton>
 
         <TextView
@@ -177,4 +233,5 @@
             android:textStyle="bold"
             tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

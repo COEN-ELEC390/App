@@ -28,6 +28,8 @@
     <string name="details">Details</string>
     <string name="refresh_feed">Refresh feed</string>
     <string name="deliveries">Deliveries</string>
+    <string name="email_login">Email</string>
+    <string name="password_login">Password</string>
 
 </resources>
 
