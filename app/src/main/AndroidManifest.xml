@@ -58,7 +58,7 @@
             android:name=".NotVerifiedActivity"
             android:exported="true">
         </activity>
-        <service android:name=".PushNotificationService"
+        <service android:name=".services.PushNotificationService"
             android:exported="true"
             android:enabled="true"
             android:permission="TODO">

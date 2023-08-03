@@ -18,7 +18,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.coen390.ManagerActivity;
 import com.example.coen390.Models.User;
 import com.example.coen390.R;
-import com.example.coen390.SharedPreferencesHelper;
+import com.example.coen390.services.SharedPreferencesHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

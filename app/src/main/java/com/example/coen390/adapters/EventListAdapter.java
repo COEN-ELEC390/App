@@ -1,4 +1,4 @@
-package com.example.coen390;
+package com.example.coen390.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.coen390.Models.EventListItem;
+import com.example.coen390.R;
 
 public class EventListAdapter extends ArrayAdapter<String> {
     public EventListAdapter(@NonNull Context context, ArrayList<String> dataArrayList) {

@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.coen390.LockerRecyclerViewAdapter;
+import com.example.coen390.adapters.LockerRecyclerViewAdapter;
 import com.example.coen390.Models.RecyclerViewLockerItem;
 import com.example.coen390.Models.User;
 import com.example.coen390.R;

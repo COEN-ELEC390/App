@@ -1,4 +1,4 @@
-package com.example.coen390;
+package com.example.coen390.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
