@@ -153,6 +153,7 @@
                 android:id="@+id/passwordTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:background="@drawable/shadow_selector_2"
                 android:gravity="left"
                 android:hint="Password"
