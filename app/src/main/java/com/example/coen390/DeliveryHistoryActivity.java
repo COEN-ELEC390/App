@@ -47,7 +47,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
 
     Button refreshFeed, viewHistory;
     ArrayList<String> currentUserAddress;
-
+    TextView nothingReadyForPickup;
     ArrayAdapter<String> arrayAdapter;
     String FCM;
     SharedPreferencesHelper spHelper;
@@ -67,6 +67,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delivery_history);
         eventListView = findViewById(R.id.eventLV);
         refreshFeed = findViewById(R.id.refreshFeedButton);
+        nothingReadyForPickup = findViewById(R.id.noDeliveries);
         spHelper = new SharedPreferencesHelper(DeliveryHistoryActivity.this);
         currentUserAddress = new ArrayList<>();
         TextView titleText = new TextView(this);
@@ -172,6 +173,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
 
     User queryCurrentUserData(Context cc)
     {
+        nothingReadyForPickup.setText("");
         final User[] loggedInUser = new User[1];
         db.collection("users")
                 .whereEqualTo("uid", user.getUid())
@@ -325,6 +327,10 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                         formattedEventList.add("" + formattedDate);
                                     }
                                 }
+                            }
+                            if(unformattedEventList.size() == 0)
+                            {
+                                nothingReadyForPickup.setText("You have no deliveries that are ready for pickup");
                             }
                             arrayAdapter = new EventListAdapter(DeliveryHistoryActivity.this, formattedEventList);
                             //arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);

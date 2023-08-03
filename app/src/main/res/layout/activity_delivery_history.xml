@@ -60,6 +60,15 @@
             android:layout_marginBottom="25dp"
             android:id="@+id/eventLV">
         </ListView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/noDeliveries"
+            android:text=""
+            android:gravity="center"
+            android:alpha="0.6">
+
+        </TextView>
 
     </LinearLayout>
 
