@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
@@ -34,7 +35,10 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -51,7 +55,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
     ArrayList<String> currentUserAddress;
     TextView nothingReadyForPickup;
     ArrayAdapter<String> arrayAdapter;
-    String FCM;
+    String FCM, userAddy;
     SharedPreferencesHelper spHelper;
     Toolbar toolbar;
     ListView eventListView;
@@ -71,6 +75,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         refreshFeed = findViewById(R.id.refreshFeedButton);
         nothingReadyForPickup = findViewById(R.id.noDeliveries);
         spHelper = new SharedPreferencesHelper(DeliveryHistoryActivity.this);
+        userAddy = spHelper.getSignedInUserAddress();
         currentUserAddress = new ArrayList<>();
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
@@ -137,6 +142,30 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //-----------------------------------------document listener
+        //if(userAddy != null) {
+        final DocumentReference docRef = db.collection("users").document(userAddy);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("user doc snapshot listener failed", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    formattedEventList.clear();
+                    unformattedEventList.clear();
+                    queryCurrentUserData(getApplicationContext());
+                    Log.d("Current user data", "Current data: " + snapshot.getData());
+                } else {
+                    Log.d("Current user data is null", "Current data: null");
+                }
+            }
+        });
+        //}
+        //----------------------------------------------
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -264,6 +293,8 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                 //formattedEventList = new String[numberOfEvents];
                                 if(events != null)
                                 {
+                                    unformattedEventList.clear();
+                                    formattedEventList.clear();
                                     Log.d("events map", events.toString());
                                     int numberOfEvents = events.size();
                                     int count = 0;
