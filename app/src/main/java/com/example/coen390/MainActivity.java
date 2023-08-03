@@ -51,7 +51,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     AppCompatButton logoutButton;
-    Button refreshFeed, viewHistory;
+    Button refreshFeed;
     ArrayList<String> currentUserAddress;
 
     ArrayAdapter<String> arrayAdapter;
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         userAddy = spHelper.getSignedInUserAddress();
         eventListView = findViewById(R.id.eventLV);
         refreshFeed = findViewById(R.id.refreshFeedButton);
-        viewHistory = findViewById(R.id.viewHistoryButton);
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
@@ -149,14 +148,6 @@ public class MainActivity extends AppCompatActivity {
                 queryCurrentUserData(getApplicationContext());
             }
         });
-        viewHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(MainActivity.this, DeliveryHistoryActivity.class);
-                startActivity(intent);
-            }
-        });
 //-----------------------------------------document listener
         //if(userAddy != null) {
             final DocumentReference docRef = db.collection("users").document(userAddy);
@@ -213,6 +204,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
+        }
+        else if(item.getItemId() == R.id.viewHistoryItem)
+        {
+            Intent intent;
+            intent = new Intent(MainActivity.this, DeliveryHistoryActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context = "com.example.coen390.MainActivity">
     <item
+        android:id="@+id/viewHistoryItem"
+        android:title="View Delivery History">
+
+    </item>
+    <item
         android:id="@+id/logOutItem"
         android:title="Log out">
 

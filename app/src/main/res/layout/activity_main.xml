@@ -23,18 +23,6 @@
         app:title="Home">
     </androidx.appcompat.widget.Toolbar>
 
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/viewHistoryButton"
-            android:text="View delivery history"
-            android:layout_margin="20dp"
-            android:background="@drawable/manager_buttons"
-            app:backgroundTint="@null">
-
-        </Button>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
