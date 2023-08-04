@@ -27,17 +27,6 @@
             app:title="History">
         </androidx.appcompat.widget.Toolbar>
 
-        <Button
-            android:id="@+id/refreshFeedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/manager_buttons"
-            android:text="@string/refresh_feed"
-            android:textColor="@color/black"
-            app:backgroundTint="@null"
-            tools:ignore="VisualLintButtonSize">
-        </Button>
 
         <TextView
             android:layout_width="match_parent"
@@ -48,6 +37,20 @@
             android:text="@string/deliveries"
             android:textSize="24sp"
             tools:ignore="TextSizeCheck"></TextView>
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/noDeliveries"
+        android:text=""
+        android:gravity="center"
+        android:alpha="0.6">
+
+    </TextView>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefreshlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <ListView
             android:layout_width="match_parent"
@@ -60,15 +63,8 @@
             android:layout_marginBottom="25dp"
             android:id="@+id/eventLV">
         </ListView>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/noDeliveries"
-            android:text=""
-            android:gravity="center"
-            android:alpha="0.6">
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </TextView>
 
     </LinearLayout>
 
