@@ -9,21 +9,26 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.coen390.ManagerActivity;
 import com.example.coen390.adapters.LockerRecyclerViewAdapter;
 import com.example.coen390.Models.RecyclerViewLockerItem;
 import com.example.coen390.Models.User;
 import com.example.coen390.R;
+import com.example.coen390.services.SharedPreferencesHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -38,11 +43,13 @@ public class manager_locker_list extends DialogFragment {
     ListView lockerListView;
     Button viewUserListButton;
     FirebaseUser user;
+    String userAddy;
     ArrayList<String> lockers;
     ArrayList<RecyclerViewLockerItem> lockerItemArrayList;
     RecyclerView recyclerView;
     FirebaseAuth mAuth;
     LockerRecyclerViewAdapter adapter;
+    SharedPreferencesHelper spHelper;
     User managerUser;
 
 
@@ -64,6 +71,9 @@ public class manager_locker_list extends DialogFragment {
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        ManagerActivity managerActivity = ((ManagerActivity) getActivity());
+        spHelper = new SharedPreferencesHelper(managerActivity);
+        userAddy = spHelper.getSignedInUserAddress();
 
     }
 
@@ -82,17 +92,47 @@ public class manager_locker_list extends DialogFragment {
         //lockerListView = view.findViewById(R.id.lockersListView);
         //testTextView = view.findViewById(R.id.testTV);
         queryCurrentUserData(view);
+        //-----------------------------------
+        String managerUserAddress = userAddy;
+        char ch = '|';
+        int cnt = 0;
 
-
+        for ( int i = 0; i < managerUserAddress.length(); i++) {
+            if (managerUserAddress.charAt(i) == ch)
+                cnt++;
+        }
+        if(cnt>4)
+        {
+            int lastSlash = managerUserAddress.lastIndexOf("|");
+            managerUserAddress = managerUserAddress.substring(0,lastSlash);
+            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
+            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
+        }
+        CollectionReference ref = db.collection("boxes");
+        ref.whereGreaterThanOrEqualTo("boxAddress", managerUserAddress)
+                .whereLessThanOrEqualTo("boxAddress", managerUserAddress + "\uF7FF")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("box list listener failed", "Listen failed.", e);
+                            return;
+                        }
+                        lockerItemArrayList.clear();
+                        queryAllBoxesInBuilding(userAddy, view);
+                        Log.d("box list listener established", "Successful establishment listener for boxes");
+                    }
+                });
 
         return view;
     }
 
-    void queryAllUsersInBuilding(User managerUser, View view)
+    void queryAllBoxesInBuilding(String managerUserAddy, View view)
     {
         ArrayList<User> usersInBuilding = new ArrayList<User>();
 
-        String managerUserAddress= managerUser.getAddress();
+        String managerUserAddress= managerUserAddy;
         char ch = '|';
         int cnt = 0;
 
@@ -116,6 +156,7 @@ public class manager_locker_list extends DialogFragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            lockerItemArrayList.clear();
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("list of lockers from manager", document.getId() + " => " + document.getData());
@@ -163,7 +204,7 @@ public class manager_locker_list extends DialogFragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 //Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
                                 User userInfo = document.toObject(User.class);
-                                queryAllUsersInBuilding(userInfo, view);
+                                queryAllBoxesInBuilding(userInfo.getAddress(), view);
                             }
 
 

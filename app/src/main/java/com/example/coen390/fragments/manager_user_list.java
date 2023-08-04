@@ -12,18 +12,22 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.coen390.ManagerActivity;
 import com.example.coen390.ManagerUserProfileActivity;
 import com.example.coen390.Models.User;
 import com.example.coen390.R;
+import com.example.coen390.services.SharedPreferencesHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -38,6 +42,8 @@ public class manager_user_list extends DialogFragment {
     Button viewUserListButton;
     FirebaseUser user;
     FirebaseAuth mAuth;
+    String userAddy;
+    SharedPreferencesHelper spHelper;
     ArrayList<User> usersInBuilding;
     User managerUser;
 
@@ -59,7 +65,9 @@ public class manager_user_list extends DialogFragment {
         }
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
+        ManagerActivity managerActivity = ((ManagerActivity) getActivity());
+        spHelper = new SharedPreferencesHelper(managerActivity);
+        userAddy = spHelper.getSignedInUserAddress();
     }
 
 
@@ -96,16 +104,47 @@ public class manager_user_list extends DialogFragment {
                 }
             }
         });
+        //-----------------------------------
+        String managerUserAddress = userAddy;
+        char ch = '|';
+        int cnt = 0;
 
+        for ( int i = 0; i < managerUserAddress.length(); i++) {
+            if (managerUserAddress.charAt(i) == ch)
+                cnt++;
+        }
+        if(cnt>4)
+        {
+            int lastSlash = managerUserAddress.lastIndexOf("|");
+            managerUserAddress = managerUserAddress.substring(0,lastSlash);
+            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
+            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
+        }
+        CollectionReference ref = db.collection("users");
+        ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
+                .whereLessThanOrEqualTo("address", managerUserAddress + "\uF7FF")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("user list listener failed", "Listen failed.", e);
+                            return;
+                        }
+
+                        queryAllUsersInBuilding(userAddy, view);
+                        Log.d("user list listener established", "Successful establishment listener for users");
+                    }
+                });
 
         return view;
     }
 
-    void queryAllUsersInBuilding(User managerUser, View view)
+    void queryAllUsersInBuilding(String managerUserAddy, View view)
     {
         usersInBuilding = new ArrayList<User>();
 
-        String managerUserAddress= managerUser.getAddress();
+        String managerUserAddress= managerUserAddy;
         char ch = '|';
         int cnt = 0;
 
@@ -184,9 +223,8 @@ public class manager_user_list extends DialogFragment {
                         if (task.isSuccessful()) {
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
                                 User userInfo = document.toObject(User.class);
-                                queryAllUsersInBuilding(userInfo, view);
+                                queryAllUsersInBuilding(userInfo.getAddress(), view);
                             }
 
 

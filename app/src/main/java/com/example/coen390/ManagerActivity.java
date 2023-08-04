@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
@@ -35,7 +36,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -49,7 +52,7 @@ public class ManagerActivity extends AppCompatActivity {
     Toolbar toolbar;
     ArrayList<User> usersInBuilding;
     ArrayList<String> currentUserAddress;
-    String FCM;
+    String FCM, userAddy;
     FragmentManager fragmentManager;
     protected SharedPreferencesHelper spHelper;
 
@@ -71,6 +74,7 @@ public class ManagerActivity extends AppCompatActivity {
         viewLockersButton = findViewById(R.id.viewLockersButton);
         unverifiedUsersLV = findViewById(R.id.unverifiedUsersLV);
         spHelper = new SharedPreferencesHelper(ManagerActivity.this);
+        userAddy = spHelper.getSignedInUserAddress();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         fragmentManager = getSupportFragmentManager();
@@ -130,7 +134,38 @@ public class ManagerActivity extends AppCompatActivity {
                     }
                 });
         //------------------------------------------------
+        String managerUserAddress = userAddy;
+        char ch = '|';
+        int cnt = 0;
 
+        for ( int i = 0; i < managerUserAddress.length(); i++) {
+            if (managerUserAddress.charAt(i) == ch)
+                cnt++;
+        }
+        if(cnt>4)
+        {
+            int lastSlash = managerUserAddress.lastIndexOf("|");
+            managerUserAddress = managerUserAddress.substring(0,lastSlash);
+            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
+            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
+        }
+
+        CollectionReference ref = db.collection("users");
+        ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
+                .whereLessThanOrEqualTo("address", managerUserAddress + "\uF7FF")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("unverified user listener failed", "Listen failed.", e);
+                            return;
+                        }
+
+                        getUnverifiedUsers(userAddy, getApplicationContext());
+                        Log.d("Unverified user listener established", "Successful establishment listener for unverified users");
+                    }
+                });
 
     }
     @Override
@@ -250,7 +285,7 @@ public class ManagerActivity extends AppCompatActivity {
                                             }
                                         });
                                 //------------------------------------------------getting unverified users
-                                getUnverifiedUsers(loggedInUser[0], cc);
+                                getUnverifiedUsers(loggedInUser[0].getAddress(), cc);
 
                             }
 
@@ -263,11 +298,11 @@ public class ManagerActivity extends AppCompatActivity {
         return loggedInUser[0];
 
     }
-    void getUnverifiedUsers(User managerUser, Context cc)
+    void getUnverifiedUsers(String managerUserAddressInput, Context cc)
     {
         usersInBuilding = new ArrayList<User>();
 
-        String managerUserAddress= managerUser.getAddress();
+        String managerUserAddress= managerUserAddressInput;
         char ch = '|';
         int cnt = 0;
 

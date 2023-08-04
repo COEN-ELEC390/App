@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
@@ -31,7 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,6 +115,27 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
 
             }
         });
+        //--------------------document listener
+        final DocumentReference docRef = db.collection("users").document(userAddress);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("selected user doc snapshot listener failed", "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    formattedEventList.clear();
+                    unformattedEventList.clear();
+                    getUserProfileData(getApplicationContext());
+                    Log.d("selected user data", "Current data: " + snapshot.getData());
+                } else {
+                    Log.d("Selected user data is null", "Current data: null");
+                }
+            }
+        });
     }
 
     @Override
@@ -164,6 +188,8 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                         Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
                         if(events != null)
                         {
+                            formattedEventList.clear();
+                            unformattedEventList.clear();
                             Log.d("events map", events.toString());
                             int numberOfEvents = events.size();
                             int count = 0;
