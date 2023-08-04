@@ -20,19 +20,10 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Home">
+        app:title="Dashboard">
     </androidx.appcompat.widget.Toolbar>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/refreshFeedButton"
-            android:text="Refresh feed"
-            android:layout_margin="20dp"
-            android:background="@drawable/manager_buttons"
-            app:backgroundTint="@null">
 
-        </Button>
 
         <TextView
             android:layout_width="match_parent"
@@ -46,25 +37,38 @@
             android:background="@drawable/deliveries_bar_gradient">
         </TextView>
 
-        <ListView
-            android:id="@+id/eventLV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="25dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10.0sp"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/event_list_design"></ListView>
         <TextView
+            android:id="@+id/noDeliveries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/noDeliveries"
-            android:text=""
+            android:alpha="0.6"
             android:gravity="center"
-            android:alpha="0.6">
+            android:text="">
 
         </TextView>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefreshlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <ListView
+           android:id="@+id/eventLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="25dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/event_list_design">
+
+
+            </ListView>
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
