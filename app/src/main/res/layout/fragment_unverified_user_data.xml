@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/pop_up_notification_window"
+
         android:padding="12dp">
 <TextView
     android:layout_width="match_parent"
@@ -42,6 +42,8 @@
             android:id="@+id/acceptBTN"
             android:text="Verify User"
             android:layout_weight="0.5"
+            android:background="@drawable/button_state_list_animator"
+            >
             ></Button>
         <Button
             android:layout_width="wrap_content"
