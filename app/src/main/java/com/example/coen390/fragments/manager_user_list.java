@@ -168,6 +168,7 @@ public class manager_user_list extends DialogFragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            usersInBuilding.clear();
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("list of users from manager", document.getId() + " => " + document.getData());

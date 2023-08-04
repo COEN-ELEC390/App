@@ -55,6 +55,7 @@ public class ManagerActivity extends AppCompatActivity {
     String FCM, userAddy;
     FragmentManager fragmentManager;
     protected SharedPreferencesHelper spHelper;
+    ArrayList<String> formatted_data;
 
 
     AppCompatButton logoutButton;
@@ -301,7 +302,7 @@ public class ManagerActivity extends AppCompatActivity {
     void getUnverifiedUsers(String managerUserAddressInput, Context cc)
     {
         usersInBuilding = new ArrayList<User>();
-
+        formatted_data = new ArrayList<String>();
         String managerUserAddress= managerUserAddressInput;
         char ch = '|';
         int cnt = 0;
@@ -326,6 +327,8 @@ public class ManagerActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            usersInBuilding.clear();
+                            formatted_data.clear();
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("list of users from manager", document.getId() + " => " + document.getData());
@@ -337,28 +340,28 @@ public class ManagerActivity extends AppCompatActivity {
                                 }
                                 if(tmp.isVerified() == false) {
                                     usersInBuilding.add(tmp);//check for null!
+                                    if(tmp.getRole().contains("manager") == false) {
+                                        formatted_data.add(tmp.getFirstName() + " " + tmp.getLastName() + " Unit " + tmp.getUnit());
+                                    }
+                                    else
+                                    {
+                                        formatted_data.add(tmp.getFirstName() + " " + tmp.getLastName() + " (Manager)");
+                                    }
                                 }
                                 else {
                                     continue;
                                 }
                                 //userArrayList.add(tmp);
-                                String formatted_data[];
 
                                 Log.d("User tmp", tmp.getUnit());
                                 if(usersInBuilding == null || usersInBuilding.size() == 0)
                                 {
-                                    formatted_data = new String[1];
-                                    formatted_data[0] = "No users to display"; //+ managerUser.getCountry();
+                                    formatted_data.clear();
+                                    //formatted_data = new String[1];
+                                    formatted_data.add("No users to display"); //+ managerUser.getCountry();
                                 }
                                 else {
-                                    formatted_data = new String[usersInBuilding.size()];
-                                    for (int i = 0; i < formatted_data.length; i++) {
-                                        if(usersInBuilding.get(i).getRole().contains("manager") == false)
-                                            formatted_data[i] = usersInBuilding.get(i).getFirstName() +" " + usersInBuilding.get(i).getLastName() + " Unit " + usersInBuilding.get(i).getUnit();
-                                        else
-                                            formatted_data[i] = usersInBuilding.get(i).getFirstName() +" " + usersInBuilding.get(i).getLastName() + " (Manager)";
 
-                                    }
                                 }
                                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formatted_data);
                                 unverifiedUsersLV.setAdapter(arrayAdapter);
