@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.AutoSizeableTextView;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.coen390.ManagerActivity;

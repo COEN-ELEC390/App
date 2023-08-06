@@ -3,55 +3,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".fragments.UnverifiedUserDataFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.UnverifiedUserDataFragment"
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-
-        android:padding="12dp">
+        android:padding="12sp">
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="User requires verification"
-    android:textSize="22dp"
+    android:text="Resident requires verification"
+    android:gravity="center"
+    android:textSize="22sp"
     android:textStyle="bold">
 </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/descriptionTV">
+            android:id="@+id/descriptionTV"
+            app:drawableLeftCompat="@drawable/register_person"
+            android:textStyle="italic">
         </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/emailTV">
+            android:id="@+id/emailTV"
+            app:drawableLeftCompat="@drawable/login_email_icon"
+            android:textStyle="italic">
         </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/phoneNumberTV">
+            android:id="@+id/phoneNumberTV"
+            app:drawableLeftCompat="@drawable/register_phone"
+            android:textStyle="italic">
         </TextView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <Button
+
+         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/acceptBTN"
             android:text="Verify User"
-            android:layout_weight="0.5"
+             android:textColor="@drawable/button_text_color"
+            android:layout_weight="1"
+            style="?android:attr/buttonStyle"
             android:background="@drawable/button_state_list_animator"
             >
-            ></Button>
-        <Button
+            </androidx.appcompat.widget.AppCompatButton>
+
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@drawable/button_text_color"
             android:id="@+id/rejectBTN"
             android:text="Reject User"
-            android:layout_weight="0.5"
-            ></Button>
+            android:layout_weight="1"
+            style="?android:attr/buttonStyle"
+            android:background="@drawable/button_state_list_animator"
+            ></androidx.appcompat.widget.AppCompatButton>
+
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
