@@ -44,7 +44,6 @@
                 android:gravity="left"
                 android:hint="@string/email_login"
                 android:textColor="@color/black"
-                android:textColorHint="#2196F3"
                 android:textStyle="bold"
                 android:background="@drawable/shadow_selector_2"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize,TextContrastCheck">
@@ -74,7 +73,6 @@
                 android:gravity="left"
                 android:hint="@string/password_login"
                 android:textColor="@color/black"
-                android:textColorHint="#2196F3"
                 android:textStyle="bold"
                 android:background="@drawable/shadow_selector_2"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize,TextContrastCheck">
