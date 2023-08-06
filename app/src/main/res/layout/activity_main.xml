@@ -24,12 +24,13 @@
     </androidx.appcompat.widget.Toolbar>
 
         <Button
+            android:id="@+id/refreshFeedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/refreshFeedButton"
-            android:text="Refresh feed"
+            android:textColor="@color/black"
             android:layout_margin="20dp"
             android:background="@drawable/manager_buttons"
+            android:text="Refresh feed"
             app:backgroundTint="@null">
 
         </Button>

@@ -4,19 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.manager_locker_list">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Lockers"
             android:textStyle="bold"
-            android:textSize="40dp"
+            android:textSize="20dp"
             android:layout_gravity="center"
-            android:gravity="center">
-
+            android:gravity="left"
+            android:background="@drawable/gradient_status_bar">
         </TextView>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,7 @@
             android:id="@+id/lockersListView">
 
         </androidx.recyclerview.widget.RecyclerView>
+
     </LinearLayout>
 
 </FrameLayout>
