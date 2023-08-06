@@ -24,31 +24,41 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/nameTV">
+            android:id="@+id/nameTV"
+            android:gravity="center"
+            android:drawableStart="@drawable/register_person">
 
         </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/unitNumberTV">
+            android:id="@+id/unitNumberTV"
+            android:gravity="center"
+            android:drawableStart="@drawable/app_register_num">
 
         </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/roleTV">
+            android:id="@+id/roleTV"
+            android:gravity="center"
+            android:drawableStart="@drawable/logo_size">
 
         </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/emailTV">
+            android:id="@+id/emailTV"
+            android:drawableStart="@drawable/login_email_icon"
+            android:gravity="center">
 
         </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/phoneTV">
+            android:id="@+id/phoneTV"
+            android:gravity="center"
+            android:drawableStart="@drawable/register_phone">
 
         </TextView>
         <TextView

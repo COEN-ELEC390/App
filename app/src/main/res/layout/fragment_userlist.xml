@@ -11,9 +11,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Users"
+            android:text="Residents"
+            android:drawableLeft="@drawable/logo_size"
             android:textStyle="bold"
-            android:textSize="40dp"
+            android:textSize="32dp"
             android:layout_gravity="center"
             android:gravity="center">
 
@@ -23,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/userListView">
+
 
         </ListView>
     </LinearLayout>

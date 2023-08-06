@@ -183,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:id="@+id/unitTV"
-                android:hint="Appartment Number"
+                android:hint="Apartment Number"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:background="@drawable/shadow_selector_2"
