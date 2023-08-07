@@ -4,27 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManagerActivity">
+    tools:context=".ManagerActivity"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/login_background2">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/profileToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gradient_status_bar"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Management"
         >
 
-    </androidx.appcompat.widget.Toolbar>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/profileToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/blue_2"
+            android:elevation="4dp"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Management"
+           >
+
+        </androidx.appcompat.widget.Toolbar>
 
         <Button
             android:id="@+id/viewUsersButton"

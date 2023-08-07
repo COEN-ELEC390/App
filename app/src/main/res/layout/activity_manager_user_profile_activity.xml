@@ -2,30 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ManagerUserProfileActivity"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/userProfileToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gradient_status_bar"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="User Profile">
-    </androidx.appcompat.widget.Toolbar>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/userProfileToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/blue_2"
+            android:elevation="4dp"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="User Profile"></androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/nameTV"
-            android:gravity="center"
             android:drawableStart="@drawable/register_person">
 
         </TextView>
@@ -33,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/unitNumberTV"
-            android:gravity="center"
             android:drawableStart="@drawable/app_register_num">
 
         </TextView>
@@ -41,7 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/roleTV"
-            android:gravity="center"
             android:drawableStart="@drawable/logo_size">
 
         </TextView>
@@ -50,14 +49,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/emailTV"
             android:drawableStart="@drawable/login_email_icon"
-            android:gravity="center">
+            >
 
         </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/phoneTV"
-            android:gravity="center"
+
             android:drawableStart="@drawable/register_phone">
 
         </TextView>
@@ -73,7 +72,8 @@
 <ListView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/userEventsListView">
+    android:id="@+id/userEventsListView"
+  >
 
 </ListView>
     </LinearLayout>

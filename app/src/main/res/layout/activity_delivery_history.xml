@@ -17,9 +17,9 @@
             android:id="@+id/historyToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/gradient_status_bar"
+            android:background="@color/blue_2"
             android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:title="History">

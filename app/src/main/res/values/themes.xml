@@ -3,7 +3,8 @@
     <style name="Base.Theme.COEN390" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:statusBarColor">#458BFE</item>
+        <item name="android:statusBarColor">@color/blue_7</item>
+        <item name="toolbarStyle">@color/blue_2</item>
 
     </style>
 

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -78,12 +80,13 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         unitTV = findViewById(R.id.unitNumberTV);
         phoneTV = findViewById(R.id.phoneTV);
         emailTV = findViewById(R.id.emailTV);
-        eventListView = findViewById(R.id.userEventsListView);
+        eventListView =findViewById(R.id.userEventsListView);
         fragmentManager = getSupportFragmentManager();
         //logoutButton = findViewById(R.id.logout_button);
         getUserProfileData(getApplicationContext());
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
 
         if(user == null)
         {
@@ -144,6 +147,7 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         inflater.inflate(R.menu.manager_user_profile_activity_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.deleteUserItem)
@@ -291,4 +295,5 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         // Sort the ArrayList using the custom comparator
         Collections.sort(arrayList, comparator.reversed());
     }
+
 }

@@ -3,5 +3,7 @@
     <style name="Base.Theme.COEN390" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+<item name="android:statusBarColor">@color/bg_color</item>
+        <item name="toolbarStyle">@color/blue_1</item>
     </style>
 </resources>
