@@ -24,6 +24,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.coen390.Models.User;
+import com.example.coen390.adapters.EventListAdapter;
+import com.example.coen390.adapters.UnverifiedUserListAdapter;
 import com.example.coen390.fragments.UnverifiedUserDataFragment;
 import com.example.coen390.fragments.manager_locker_list;
 import com.example.coen390.fragments.manager_user_list;
@@ -341,7 +343,7 @@ public class ManagerActivity extends AppCompatActivity {
                                 if(tmp.isVerified() == false) {
                                     usersInBuilding.add(tmp);//check for null!
                                     if(tmp.getRole().contains("manager") == false) {
-                                        formatted_data.add(tmp.getFirstName() + " " + tmp.getLastName() + " Unit " + tmp.getUnit());
+                                        formatted_data.add(tmp.getFirstName() + " " + tmp.getLastName() + ": Unit " + tmp.getUnit());
                                     }
                                     else
                                     {
@@ -363,7 +365,7 @@ public class ManagerActivity extends AppCompatActivity {
                                 else {
 
                                 }
-                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formatted_data);
+                                ArrayAdapter<String> arrayAdapter = new UnverifiedUserListAdapter(ManagerActivity.this, formatted_data);
                                 unverifiedUsersLV.setAdapter(arrayAdapter);
                             }
 
