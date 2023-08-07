@@ -144,10 +144,12 @@ public class LoginActivity extends AppCompatActivity {
                             String Role = "";
                             String verified = "";
                             String address = "";
+                            String firstName = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
                                 //User userInfo = document.toObject(User.class);
                                 address = document.getData().get("address").toString();
+                                firstName = document.getData().get("firstName").toString();
                                 Role = String.valueOf(document.getData().get("role"));
                                 if(document.getData().get("verified") == null)
                                 {
@@ -173,6 +175,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, ManagerActivity.class);
                                 spHelper.saveSignedInUserAddress(address);
+                                spHelper.saveSignedInUserFirstName(firstName);
                                 startActivity(intent);
 
                             }
@@ -182,6 +185,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, MainActivity.class);
                                 spHelper.saveSignedInUserAddress(address);
+                                spHelper.saveSignedInUserFirstName(firstName);
                                 startActivity(intent);
 
                             }

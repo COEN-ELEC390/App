@@ -17,6 +17,18 @@ public class SharedPreferencesHelper {
         editor.putString("loggedInUserAddress", address);
         editor.commit();
     }
+    public String getSignedInUserFirstName()
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String addy = sharedPreferences.getString("loggedInUserFirstName", "");
+        return addy;
+    }
+    public void saveSignedInUserFirstName(String name)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("loggedInUserFirstName", name);
+        editor.commit();
+    }
     public String getSignedInUserAddress()
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();

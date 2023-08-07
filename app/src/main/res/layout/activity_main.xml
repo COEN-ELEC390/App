@@ -22,7 +22,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="Dashboard">
         </androidx.appcompat.widget.Toolbar>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome!"
+            android:textSize="24sp"
+            android:id="@+id/welcomeMessageTV"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="36dp"
+            tools:ignore="TextSizeCheck"
+            android:layout_marginTop="0dp">
+        </TextView>
 
 
         <TextView

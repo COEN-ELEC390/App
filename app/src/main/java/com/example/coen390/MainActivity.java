@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
     AppCompatButton logoutButton;
     Button refreshFeed;
     ArrayList<String> currentUserAddress;
-    TextView nothingReadyForPickup;
+    TextView nothingReadyForPickup, welcomeMessageTV;
     ArrayAdapter<String> arrayAdapter;
-    String FCM, userAddy;
+    String FCM, userAddy, userFirstName;
     Toolbar toolbar;
     ListView eventListView;
     FirebaseUser user;
@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         userAddy = spHelper.getSignedInUserAddress();
         nothingReadyForPickup = findViewById(R.id.noDeliveries);
         eventListView = findViewById(R.id.eventLV);
+        welcomeMessageTV = findViewById(R.id.welcomeMessageTV);
+        userFirstName = spHelper.getSignedInUserFirstName();
+        welcomeMessageTV.setText("Welcome " + userFirstName + "");
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefreshlayout);
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
