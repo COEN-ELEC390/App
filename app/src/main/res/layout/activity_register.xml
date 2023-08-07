@@ -193,12 +193,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
-        <fragment android:id="@+id/autocomplete_fragment"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            />
+            android:background="@drawable/shadow_selector_2"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="0dp"
+            >
+
+            <fragment
+                android:id="@+id/autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="344dp"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/registerButton"

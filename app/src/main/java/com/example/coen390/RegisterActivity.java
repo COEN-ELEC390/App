@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -91,6 +93,10 @@ public class RegisterActivity extends AppCompatActivity {
         autocompleteSupportFragment.setHint("Building address");
         //List<String> placeTypes = new ArrayList<String>();
         //placeTypes.add()
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextSize(12.0f);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextColor(Color.BLACK);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setHintTextColor(Color.BLACK);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTypeface(null, Typeface.BOLD);
         autocompleteSupportFragment.setTypesFilter(Arrays.asList(PlaceTypes.ADDRESS));
 
         autocompleteSupportFragment.setCountries("CA");
