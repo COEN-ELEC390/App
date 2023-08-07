@@ -190,27 +190,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.logOutItem)
         {
-            DocumentReference Ref = db.collection("users").document(currentUserAddress.get(0));
-            Ref
-                    .update("FCM_TOKEN", "")
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("FCM TOKEN SUCCESSFULLY DELETED", Ref.toString());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w("Error deleting FCM token ", "Error updating document", e);
-                        }
-                    });
-            //-------------------------------------------------------
-            FirebaseAuth.getInstance().signOut();
-            spHelper.saveSignedInUserAddress("");
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+            signUserOut();
         }
         else if(item.getItemId() == R.id.viewHistoryItem)
         {
@@ -416,7 +396,30 @@ public class MainActivity extends AppCompatActivity {
         // Sort the ArrayList using the custom comparator
         Collections.sort(arrayList, comparator.reversed());
     }
-
+    public void signUserOut()
+    {
+        DocumentReference Ref = db.collection("users").document(currentUserAddress.get(0));
+        Ref
+                .update("FCM_TOKEN", "")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("FCM TOKEN SUCCESSFULLY DELETED", Ref.toString());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error deleting FCM token ", "Error updating document", e);
+                    }
+                });
+        //-------------------------------------------------------
+        FirebaseAuth.getInstance().signOut();
+        spHelper.saveSignedInUserAddress("");
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
