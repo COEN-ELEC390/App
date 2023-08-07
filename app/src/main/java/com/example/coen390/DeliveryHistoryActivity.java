@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.coen390.Models.User;
 import com.example.coen390.adapters.EventListAdapter;
@@ -72,7 +73,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_history);
         eventListView = findViewById(R.id.eventLV);
-        refreshFeed = findViewById(R.id.refreshFeedButton);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefreshlayout);
         nothingReadyForPickup = findViewById(R.id.noDeliveries);
         spHelper = new SharedPreferencesHelper(DeliveryHistoryActivity.this);
         userAddy = spHelper.getSignedInUserAddress();
@@ -125,13 +126,15 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
 //-----------------------------------------------------------firebase cloud messaging config
 
         //------------------------------------------------
-        refreshFeed.setOnClickListener(new View.OnClickListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh() {
                 formattedEventList.clear();
                 unformattedEventList.clear();
                 queryCurrentUserData(getApplicationContext());
-            }
+                swipeRefreshLayout.setRefreshing(false);
+            };
+
         });
         toolbar = findViewById(R.id.historyToolbar);
         setSupportActionBar(toolbar);
@@ -363,7 +366,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                             }
                             if(unformattedEventList.size() == 0)
                             {
-                                nothingReadyForPickup.setText("You have no deliveries that are ready for pickup");
+                                nothingReadyForPickup.setText("You have no deliveries on record");
                             }
                             arrayAdapter = new EventListAdapter(DeliveryHistoryActivity.this, formattedEventList);
                             //arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
@@ -378,7 +381,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         //deliveriesArrayList =
 
     }
-        private static void sortByDate(ArrayList<HashMap<String, Object>> arrayList) {
+    private static void sortByDate(ArrayList<HashMap<String, Object>> arrayList) {
         // Create a custom comparator for Firebase timestamps
         Comparator<HashMap<String, Object>> comparator = new Comparator<HashMap<String, Object>>() {
             @Override

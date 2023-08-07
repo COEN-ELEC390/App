@@ -1,17 +1,9 @@
 package com.example.coen390;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +15,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.coen390.Models.User;
 import com.example.coen390.adapters.EventListAdapter;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         userAddy = spHelper.getSignedInUserAddress();
         nothingReadyForPickup = findViewById(R.id.noDeliveries);
         eventListView = findViewById(R.id.eventLV);
-        refreshFeed = findViewById(R.id.refreshFeedButton);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefreshlayout);
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
@@ -115,11 +117,11 @@ public class MainActivity extends AppCompatActivity {
         eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    DeliveryDataFragment myDialog = new DeliveryDataFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("HashMap", unformattedEventList.get(position));
-                    myDialog.setArguments(bundle);
-                    myDialog.show(fragmentManager, "test");
+                DeliveryDataFragment myDialog = new DeliveryDataFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("HashMap", unformattedEventList.get(position));
+                myDialog.setArguments(bundle);
+                myDialog.show(fragmentManager, "test");
 
             }
         });
@@ -143,36 +145,38 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         //------------------------------------------------
-        refreshFeed.setOnClickListener(new View.OnClickListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh() {
                 formattedEventList.clear();
                 unformattedEventList.clear();
                 queryCurrentUserData(getApplicationContext());
-            }
+                swipeRefreshLayout.setRefreshing(false);
+            };
+
         });
 //-----------------------------------------document listener
         //if(userAddy != null) {
-            final DocumentReference docRef = db.collection("users").document(userAddy);
-            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                    @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.w("user doc snapshot listener failed", "Listen failed.", e);
-                        return;
-                    }
-
-                    if (snapshot != null && snapshot.exists()) {
-                        formattedEventList.clear();
-                        unformattedEventList.clear();
-                        queryCurrentUserData(getApplicationContext());
-                        Log.d("Current user data", "Current data: " + snapshot.getData());
-                    } else {
-                        Log.d("Current user data is null", "Current data: null");
-                    }
+        final DocumentReference docRef = db.collection("users").document(userAddy);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("user doc snapshot listener failed", "Listen failed.", e);
+                    return;
                 }
-            });
+
+                if (snapshot != null && snapshot.exists()) {
+                    formattedEventList.clear();
+                    unformattedEventList.clear();
+                    queryCurrentUserData(getApplicationContext());
+                    Log.d("Current user data", "Current data: " + snapshot.getData());
+                } else {
+                    Log.d("Current user data is null", "Current data: null");
+                }
+            }
+        });
         //}
         //----------------------------------------------
     }
@@ -218,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     User queryCurrentUserData(Context cc)
-    {
+    {Log.d("queryCurrentUserData() being called on the swipe to refresh!", "WOOOOOOOOOOOOHOOOOOOOOO");
         nothingReadyForPickup.setText("");
         final User[] loggedInUser = new User[1];
         db.collection("users")

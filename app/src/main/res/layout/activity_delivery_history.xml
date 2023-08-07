@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryHistoryActivity"
-    android:background="@drawable/sidehex">
+    tools:context=".DeliveryHistoryActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical"
-        android:background="@color/white"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
@@ -27,39 +25,15 @@
             app:title="History">
         </androidx.appcompat.widget.Toolbar>
 
-        <Button
-            android:id="@+id/refreshFeedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/manager_buttons"
-            android:text="@string/refresh_feed"
-            android:textColor="@color/black"
-            app:backgroundTint="@null"
-            tools:ignore="VisualLintButtonSize">
-        </Button>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
-            android:background="@drawable/deliveries_bar_gradient"
             android:gravity="center"
             android:text="@string/deliveries"
             android:textSize="24sp"
             tools:ignore="TextSizeCheck"></TextView>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:layout_marginTop="12dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10.0sp"
-            tools:listitem="@layout/event_list_design"
-            android:layout_marginBottom="25dp"
-            android:id="@+id/eventLV">
-        </ListView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,6 +43,25 @@
             android:alpha="0.6">
 
         </TextView>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefreshlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:layout_marginTop="12dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp"
+                tools:listitem="@layout/event_list_design"
+                android:layout_marginBottom="25dp"
+                android:id="@+id/eventLV">
+            </ListView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 
