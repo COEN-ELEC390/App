@@ -93,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
         autocompleteSupportFragment.setHint("Building address");
         //List<String> placeTypes = new ArrayList<String>();
         //placeTypes.add()
-        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextSize(12.0f);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextSize(15.0f);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextColor(Color.BLACK);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setHintTextColor(Color.BLACK);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTypeface(null, Typeface.BOLD);
