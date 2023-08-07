@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -88,9 +91,13 @@ public class RegisterActivity extends AppCompatActivity {
         Places.initialize(getApplicationContext(), "AIzaSyBiKqXMPMqJTYFcddKoE0Axu3jVphGKFao");
         PlacesClient placesClient = Places.createClient(this);
         autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteSupportFragment.setHint("Building address");
+        autocompleteSupportFragment.setHint("Building Address");
         //List<String> placeTypes = new ArrayList<String>();
         //placeTypes.add()
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextSize(12.0f);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextColor(Color.BLACK);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setHintTextColor(Color.BLACK);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTypeface(null, Typeface.BOLD);
         autocompleteSupportFragment.setTypesFilter(Arrays.asList(PlaceTypes.ADDRESS));
 
         autocompleteSupportFragment.setCountries("CA");

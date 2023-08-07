@@ -33,6 +33,7 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/login_email_icon"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -46,6 +47,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:background="@drawable/shadow_selector_2"
+                android:maxLength="26"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize,TextContrastCheck">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -60,6 +62,7 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/login_password_icon"
             app:passwordToggleEnabled="true"
@@ -75,6 +78,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:background="@drawable/shadow_selector_2"
+                android:maxLength="26"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize,TextContrastCheck">
 
             </com.google.android.material.textfield.TextInputEditText>

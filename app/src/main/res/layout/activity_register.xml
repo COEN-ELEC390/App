@@ -27,27 +27,29 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:boxStrokeColor="@color/blue_2"
             app:boxCornerRadiusTopStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
+            android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/register_person"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/firstNameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shadow_selector_2"
                 android:gravity="left"
                 android:hint="First Name"
-                android:textStyle="bold"
+                android:maxLength="30"
                 android:textColor="@color/black"
-                android:background="@drawable/shadow_selector_2"
-                tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,VisualLintTextFieldSize">
+                android:textColorHint="@color/black"
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -61,6 +63,7 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/register_person"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -72,8 +75,10 @@
                 android:id="@+id/lastNameTV"
                 android:hint="Last Name"
                 android:textStyle="bold"
+                android:textColorHint="@color/black"
                 android:textColor="@color/black"
                 android:background="@drawable/shadow_selector_2"
+                android:maxLength="30"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -88,20 +93,23 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/login_email_icon"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:id="@+id/emailTV"
-                android:hint="Email"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                app:hintTextColor="@color/black"
                 android:background="@drawable/shadow_selector_2"
+                android:gravity="left"
+                android:hint="Email"
+                android:maxLength="30"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textStyle="bold"
+                app:hintTextColor="@color/black"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -116,20 +124,23 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/register_phone"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:id="@+id/phoneTV"
-                android:hint="Phone Number"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:inputType="phone"
                 android:background="@drawable/shadow_selector_2"
+                android:gravity="left"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:maxLength="30"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textStyle="bold"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -144,9 +155,11 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/login_password_icon"
             app:passwordToggleEnabled="true"
+
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -158,8 +171,9 @@
                 android:gravity="left"
                 android:hint="Password"
                 android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 android:textStyle="bold"
-                app:hintTextColor="@color/black"
+                android:maxLength="30"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -174,6 +188,7 @@
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
+            android:textColorHint="@color/black"
             app:hintTextColor="@color/black"
             app:startIconDrawable="@drawable/app_register_num"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -186,19 +201,29 @@
                 android:hint="Appartment Number"
                 android:textStyle="bold"
                 android:textColor="@color/black"
+                android:textColorHint="@color/black"
                 android:background="@drawable/shadow_selector_2"
+                android:maxLength="30"
                 tools:ignore="RtlHardcoded,VisualLintTextFieldSize">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-        <fragment android:id="@+id/autocomplete_fragment"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            />
+            android:background="@drawable/fragment_background"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="0dp"
+            >
+
+            <fragment
+                android:id="@+id/autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="344dp"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/registerButton"
@@ -209,7 +234,9 @@
             android:text="@string/register"
             android:textColor="#ffffff"
             android:paddingTop="10dp"
-            tools:ignore="DuplicateSpeakableTextCheck"></androidx.appcompat.widget.AppCompatButton>
+            tools:ignore="DuplicateSpeakableTextCheck">
+
+        </androidx.appcompat.widget.AppCompatButton>
 
         <TextView
             android:layout_width="match_parent"
