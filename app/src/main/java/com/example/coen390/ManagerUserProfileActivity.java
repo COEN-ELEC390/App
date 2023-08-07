@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.coen390.adapters.EventListAdapter;
 import com.example.coen390.fragments.DeleteUserCheckFragment;
 import com.example.coen390.fragments.DeliveryDataFragment;
 import com.example.coen390.fragments.manager_user_list;
@@ -264,10 +265,12 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                             for(int i = 0; i < unformattedEventList.size(); i++)
                             {
                                 Timestamp thing = (Timestamp) unformattedEventList.get(i).get("deliveryTimestamp");
-                                formattedEventList.add("Delivered on: " + thing.toDate().toString());
+                                String formattedDate = thing.toDate().toString();
+                                formattedDate = formattedDate.substring(0, formattedDate.length()-12);
+                                formattedEventList.add("" + formattedDate);
                             }
                         }
-                        arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
+                        arrayAdapter = new EventListAdapter(ManagerUserProfileActivity.this, formattedEventList);
                         eventListView.setAdapter(arrayAdapter);
                     } else {
                         Log.d("DOCUMENT NOT FOUND", "No such document");
