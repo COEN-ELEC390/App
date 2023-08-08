@@ -174,40 +174,6 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         //}
         //----------------------------------------------
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.logOutItem)
-        {
-            DocumentReference Ref = db.collection("users").document(currentUserAddress.get(0));
-            Ref
-                    .update("FCM_TOKEN", "")
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("FCM TOKEN SUCCESSFULLY DELETED", Ref.toString());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w("Error deleting FCM token ", "Error updating document", e);
-                        }
-                    });
-            //---------------------------------------------------------------
-            FirebaseAuth.getInstance().signOut();
-            spHelper.saveSignedInUserAddress("");
-            Intent intent = new Intent(DeliveryHistoryActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     User queryCurrentUserData(Context cc)
     {
