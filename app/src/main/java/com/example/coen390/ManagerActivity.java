@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -54,7 +55,8 @@ public class ManagerActivity extends AppCompatActivity {
     Toolbar toolbar;
     ArrayList<User> usersInBuilding;
     ArrayList<String> currentUserAddress;
-    String FCM, userAddy;
+    String FCM, userAddy, authToken;
+    boolean firstCall;
     FragmentManager fragmentManager;
     protected SharedPreferencesHelper spHelper;
     ArrayList<String> formatted_data;
@@ -72,6 +74,7 @@ public class ManagerActivity extends AppCompatActivity {
         currentUserAddress = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.profileToolbar);
         setSupportActionBar(toolbar);
+        firstCall = true;
         //logoutButton = findViewById(R.id.logout_button);
         viewUsersButton = findViewById(R.id.viewUsersButton);
         viewLockersButton = findViewById(R.id.viewLockersButton);
@@ -91,7 +94,38 @@ public class ManagerActivity extends AppCompatActivity {
         else
         {
             //do stuff for authenticated user here
-            managerUser = queryCurrentUserData(getApplicationContext());
+            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+            mUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+                                spHelper.saveSignedInUserAuthToken(idToken);
+                                authToken = idToken;
+                                Log.d("AUTH TOKEN", idToken);
+                                DocumentReference userRef = db.collection("users").document(userAddy);
+                                userRef
+                                        .update("authToken", authToken)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Auth token updated", "DocumentSnapshot successfully updated!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("AuthToken error", "Error updating document", e);
+                                            }
+                                        });
+                                // Send token to your backend via HTTPS
+                                // ...
+                            } else {
+                                // Handle error -> task.getException();
+                            }
+                        }
+                    });
+            //managerUser = queryCurrentUserData(getApplicationContext());
         }
 
         viewUsersButton.setOnClickListener(new View.OnClickListener() {
@@ -164,9 +198,11 @@ public class ManagerActivity extends AppCompatActivity {
                             Log.w("unverified user listener failed", "Listen failed.", e);
                             return;
                         }
-
-                        getUnverifiedUsers(userAddy, getApplicationContext());
-                        Log.d("Unverified user listener established", "Successful establishment listener for unverified users");
+                        if(user != null) {
+                            queryCurrentUserData(getApplicationContext());
+                            getUnverifiedUsers(userAddy, getApplicationContext());
+                            Log.d("Unverified user listener established", "Successful establishment listener for unverified users");
+                        }
                     }
                 });
 
@@ -238,6 +274,15 @@ public class ManagerActivity extends AppCompatActivity {
                                 String accessCode = null;
                                 String boxNumber = null;
                                 String verif = String.valueOf(document.getData().get("verified"));
+                                String userAuthToken = String.valueOf(document.getData().get("authToken"));
+                                String savedAuthToken = spHelper.getSignedInUserAuthToken();
+                                if(userAuthToken.compareTo(savedAuthToken) != 0 && firstCall == false)
+                                {
+                                    Toast.makeText(cc, "Account accessed on another device. signing you out", Toast.LENGTH_SHORT).show();
+                                    signUserOut();
+                                    return;
+                                }
+                                firstCall = false;
                                 boolean verified;
                                 if(verif != null && verif.contains("true"))
                                 {
@@ -376,6 +421,16 @@ public class ManagerActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+    public void signUserOut()
+    {
+        //-------------------------------------------------------
+        FirebaseAuth.getInstance().signOut();
+        user = null;
+        spHelper.saveSignedInUserAddress("");
+        Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

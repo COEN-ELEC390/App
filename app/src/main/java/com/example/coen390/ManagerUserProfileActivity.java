@@ -22,10 +22,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.coen390.Models.User;
 import com.example.coen390.adapters.EventListAdapter;
 import com.example.coen390.fragments.DeleteUserCheckFragment;
 import com.example.coen390.fragments.DeliveryDataFragment;
 import com.example.coen390.fragments.manager_user_list;
+import com.example.coen390.services.SharedPreferencesHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +40,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +54,8 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView nameTV, unitTV, roleTV, emailTV, phoneTV;
     FragmentManager fragmentManager;
-
+    boolean firstCall;
+    SharedPreferencesHelper spHelper;
     FirebaseAuth mAuth;
     ListView userEventListView;
 
@@ -61,7 +67,7 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
     ListView eventListView;
 
     FirebaseUser user;
-    String userAddress, userFN, userLN, userUnitNum;
+    String userAddress, userFN, userLN, userUnitNum, authToken, FCM;
 
 
     @Override
@@ -75,7 +81,8 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         userFN = dataIntent.getStringExtra("userFN");
         userLN = dataIntent.getStringExtra("userLN");
         userUnitNum = dataIntent.getStringExtra("userUnitNum");
-
+        firstCall = true;
+        spHelper = new SharedPreferencesHelper(ManagerUserProfileActivity.this);
         nameTV = findViewById(R.id.nameTV);
         roleTV = findViewById(R.id.roleTV);
         unitTV = findViewById(R.id.unitNumberTV);
@@ -131,10 +138,13 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    formattedEventList.clear();
-                    unformattedEventList.clear();
-                    getUserProfileData(getApplicationContext());
-                    Log.d("selected user data", "Current data: " + snapshot.getData());
+                    if(user != null) {
+                        formattedEventList.clear();
+                        unformattedEventList.clear();
+                        queryCurrentUserData(getApplicationContext());
+                        getUserProfileData(getApplicationContext());
+                        Log.d("selected user data", "Current data: " + snapshot.getData());
+                    }
                 } else {
                     Log.d("Selected user data is null", "Current data: null");
                 }
@@ -297,6 +307,118 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
 
         // Sort the ArrayList using the custom comparator
         Collections.sort(arrayList, comparator.reversed());
+    }
+    User queryCurrentUserData(Context cc)
+    {
+        final User[] loggedInUser = new User[1];
+        db.collection("users")
+                .whereEqualTo("uid", user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String Role = "";
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("document STUFFFFF", document.getId() + " => " + document.getData());
+                                //User userInfo = document.toObject(User.class);
+                                //Log.d("userInfo UID", userInfo.getUid());
+                                Role = String.valueOf(document.getData().get("role"));
+                                String country =  String.valueOf(document.getData().get("country"));
+                                String province =  String.valueOf(document.getData().get("province"));
+                                String city =  String.valueOf(document.getData().get("city"));
+                                String street =  String.valueOf(document.getData().get("street"));
+                                String address =  String.valueOf(document.getData().get("address"));
+                                String uid =  String.valueOf(document.getData().get("uid"));
+                                String unit =  String.valueOf(document.getData().get("unit"));//not totally necessary for the manager
+                                String firstName =  String.valueOf(document.getData().get("firstName"));
+                                String lastName =  String.valueOf(document.getData().get("lastName"));
+                                String email =  String.valueOf(document.getData().get("email"));
+                                String phone =  String.valueOf(document.getData().get("phone"));
+
+                                String accessCode = null;
+                                String boxNumber = null;
+                                String verif = String.valueOf(document.getData().get("verified"));
+                                String userAuthToken = String.valueOf(document.getData().get("authToken"));
+                                String savedAuthToken = spHelper.getSignedInUserAuthToken();
+                                if(userAuthToken.compareTo(savedAuthToken) != 0 && firstCall == false)
+                                {
+                                    Toast.makeText(cc, "Account accessed on another device. signing you out", Toast.LENGTH_SHORT).show();
+                                    signUserOut();
+                                    return;
+                                }
+                                firstCall = false;
+                                boolean verified;
+                                if(verif != null && verif.contains("true"))
+                                {
+                                    verified = true;
+                                }
+                                else {
+                                    verified = false;
+                                }
+                                String combinedAddress = address;
+                                combinedAddress = combinedAddress.toLowerCase();
+                                combinedAddress.replaceAll(" ", "");
+                                loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role, verified, email, phone);
+                                //currentUserAddress.clear();
+                                //currentUserAddress.add(combinedAddress);
+                                //-----------------------------------------------------------firebase cloud messaging config
+                                DocumentReference userRef = db.collection("users").document(combinedAddress);
+
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<String> task) {
+                                                if (!task.isSuccessful()) {
+                                                    Log.d( "Fetching FCM registration token failed", task.getException().toString());
+                                                    return;
+                                                }
+
+                                                // Get new FCM registration token
+                                                String token = task.getResult();
+                                                FCM = token;
+                                                userRef
+                                                        .update("FCM_TOKEN", FCM)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d("FCM upload successful", "DocumentSnapshot successfully updated!");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w("FCM TOKEN UPLOAD FAILED", "Error updating document", e);
+                                                            }
+                                                        });
+                                                // Log and toast
+                                                //String msg = getString(R.string.msg_token_fmt, token);
+                                                Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
+                                                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                //------------------------------------------------getting unverified users
+
+                            }
+
+                        } else {
+                            Toast.makeText(ManagerUserProfileActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return loggedInUser[0];
+
+    }
+    public void signUserOut()
+    {
+        //-------------------------------------------------------
+        FirebaseAuth.getInstance().signOut();
+        user = null;
+        spHelper.saveSignedInUserAddress("");
+        Intent intent = new Intent(ManagerUserProfileActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

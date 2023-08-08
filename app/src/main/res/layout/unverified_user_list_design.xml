@@ -11,7 +11,7 @@
     app:cardElevation="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -24,6 +24,16 @@
                 android:textSize="20sp"
                 android:layout_margin="10dp"
                 android:layout_marginStart="30dp" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="30dp"
+            android:id="@+id/chev"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_chevron_right"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:layout_weight="0.5"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

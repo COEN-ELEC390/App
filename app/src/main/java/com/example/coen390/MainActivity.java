@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -56,10 +57,11 @@ public class MainActivity extends AppCompatActivity {
 
     AppCompatButton logoutButton;
     Button refreshFeed;
+    boolean firstCall;
     ArrayList<String> currentUserAddress;
     TextView nothingReadyForPickup, welcomeMessageTV;
     ArrayAdapter<String> arrayAdapter;
-    String FCM, userAddy, userFirstName;
+    String FCM, userAddy, userFirstName, authToken;
     Toolbar toolbar;
     ListView eventListView;
     FirebaseUser user;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        firstCall = true;
         spHelper = new SharedPreferencesHelper(MainActivity.this);
         userAddy = spHelper.getSignedInUserAddress();
         nothingReadyForPickup = findViewById(R.id.noDeliveries);
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         currentUserAddress = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        currentUser = queryCurrentUserData(getApplicationContext());
+        //currentUser = queryCurrentUserData(getApplicationContext());
         Log.d("eventListView", eventListView.toString());
         //Log.d("FORMATTED EVENT LIST", formattedEventList.toString());
         //arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, formattedEventList);
@@ -108,6 +111,37 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             //do stuff for authenticated user here
+            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+            mUser.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+                                spHelper.saveSignedInUserAuthToken(idToken);
+                                authToken = idToken;
+                                Log.d("AUTH TOKEN", idToken);
+                                DocumentReference userRef = db.collection("users").document(userAddy);
+                                userRef
+                                        .update("authToken", authToken)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Auth token updated", "DocumentSnapshot successfully updated!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("AuthToken error", "Error updating document", e);
+                                            }
+                                        });
+                                // Send token to your backend via HTTPS
+                                // ...
+                            } else {
+                                // Handle error -> task.getException();
+                            }
+                        }
+                    });
 
         }
 
@@ -171,11 +205,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    formattedEventList.clear();
-                    unformattedEventList.clear();
-                    queryCurrentUserData(getApplicationContext());
-                    Log.d("Current user data", "Current data: " + snapshot.getData());
-                } else {
+                    if(user != null) {
+                        formattedEventList.clear();
+                        unformattedEventList.clear();
+                        queryCurrentUserData(getApplicationContext());
+                        Log.d("Current user data", "Current data: " + snapshot.getData());
+                    }
+
+                    } else {
                     Log.d("Current user data is null", "Current data: null");
                 }
             }
@@ -205,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     User queryCurrentUserData(Context cc)
-    {Log.d("queryCurrentUserData() being called on the swipe to refresh!", "WOOOOOOOOOOOOHOOOOOOOOO");
+    {
         nothingReadyForPickup.setText("");
         final User[] loggedInUser = new User[1];
         db.collection("users")
@@ -235,6 +272,15 @@ public class MainActivity extends AppCompatActivity {
                                 String accessCode = null;
                                 String boxNumber = null;
                                 String verif = String.valueOf(document.getData().get("verified"));
+                                String userAuthToken = String.valueOf(document.getData().get("authToken"));
+                                String savedAuthToken = spHelper.getSignedInUserAuthToken();
+                                if(userAuthToken.compareTo(savedAuthToken) != 0 && firstCall == false)
+                                {
+                                    Toast.makeText(cc, "Account accessed on another device. signing you out", Toast.LENGTH_SHORT).show();
+                                    signUserOut();
+                                    return;
+                                }
+                                firstCall = false;
                                 boolean verified;
                                 if(verif != null && verif.contains("true"))
                                 {
@@ -347,7 +393,6 @@ public class MainActivity extends AppCompatActivity {
                                             unformattedEventList.add(subMap);
                                             //unformattedEventList = sortByDate(unformattedEventList);
                                             sortByDate(unformattedEventList);
-
                                         }
 
                                     }
@@ -401,23 +446,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void signUserOut()
     {
-        DocumentReference Ref = db.collection("users").document(currentUserAddress.get(0));
-        Ref
-                .update("FCM_TOKEN", "")
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("FCM TOKEN SUCCESSFULLY DELETED", Ref.toString());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Error deleting FCM token ", "Error updating document", e);
-                    }
-                });
         //-------------------------------------------------------
         FirebaseAuth.getInstance().signOut();
+        user = null;
         spHelper.saveSignedInUserAddress("");
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
