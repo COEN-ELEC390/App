@@ -11,6 +11,18 @@ public class SharedPreferencesHelper {
     {
         sharedPreferences = context.getSharedPreferences("sharedPreference", Context.MODE_PRIVATE );
     }
+    public String getSignedInUserAuthToken()
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String addy = sharedPreferences.getString("loggedInUserAuthToken", "");
+        return addy;
+    }
+    public void saveSignedInUserAuthToken(String name)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("loggedInUserAuthToken", name);
+        editor.commit();
+    }
     public void saveSignedInUserAddress(String address)
     {
         SharedPreferences.Editor editor = sharedPreferences.edit();
