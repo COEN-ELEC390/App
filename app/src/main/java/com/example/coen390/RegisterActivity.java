@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -87,13 +88,15 @@ public class RegisterActivity extends AppCompatActivity {
         //addressEdit = findViewById(R.id.addressTV);
         apartmentNumberEdit = findViewById(R.id.unitTV);
         phoneEdit = findViewById(R.id.phoneTV);
+        EditText phoneNumber = (EditText)findViewById(R.id.phoneTV);
+        phoneNumber.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         Places.initialize(getApplicationContext(), "AIzaSyBiKqXMPMqJTYFcddKoE0Axu3jVphGKFao");
         PlacesClient placesClient = Places.createClient(this);
         autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteSupportFragment.setHint("Building address");
+        autocompleteSupportFragment.setHint("Building Address");
         //List<String> placeTypes = new ArrayList<String>();
         //placeTypes.add()
-        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextSize(15.0f);
+        ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextSize(14.5f);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextColor(Color.BLACK);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setHintTextColor(Color.BLACK);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTypeface(null, Typeface.BOLD);

@@ -45,9 +45,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:hint="First Name"
+                android:maxLength="30"
+                android:singleLine="true"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:background="@drawable/shadow_selector_2"
+
                 tools:ignore="DuplicateSpeakableTextCheck,RtlHardcoded,VisualLintTextFieldSize">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -72,6 +75,9 @@
                 android:gravity="left"
                 android:id="@+id/lastNameTV"
                 android:hint="Last Name"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:background="@drawable/shadow_selector_2"
@@ -100,6 +106,8 @@
                 android:id="@+id/emailTV"
                 android:hint="Email"
                 android:textStyle="bold"
+                android:maxLength="30"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 app:hintTextColor="@color/black"
                 android:background="@drawable/shadow_selector_2"
@@ -127,6 +135,8 @@
                 android:gravity="left"
                 android:id="@+id/phoneTV"
                 android:hint="Phone Number"
+                android:maxLength="14"
+                android:singleLine="true"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:inputType="phone"
@@ -158,6 +168,8 @@
                 android:background="@drawable/shadow_selector_2"
                 android:gravity="left"
                 android:hint="Password"
+                android:maxLength="30"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:hintTextColor="@color/black"
@@ -185,6 +197,8 @@
                 android:gravity="left"
                 android:id="@+id/unitTV"
                 android:hint="Apartment Number"
+                android:maxLength="30"
+                android:singleLine="true"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:background="@drawable/shadow_selector_2"
@@ -200,6 +214,8 @@
             android:background="@drawable/shadow_selector_2"
             android:layout_marginTop="8dp"
             android:paddingLeft="0dp"
+            android:scrollIndicators="right"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             >
 
             <fragment
