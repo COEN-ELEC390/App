@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                                 String savedAuthToken = spHelper.getSignedInUserAuthToken();
                                 if(userAuthToken.compareTo(savedAuthToken) != 0 && firstCall == false)
                                 {
+                                    Toast.makeText(cc, "Account accessed on another device. signing you out", Toast.LENGTH_SHORT).show();
                                     signUserOut();
                                     return;
                                 }
@@ -392,7 +393,6 @@ public class MainActivity extends AppCompatActivity {
                                             unformattedEventList.add(subMap);
                                             //unformattedEventList = sortByDate(unformattedEventList);
                                             sortByDate(unformattedEventList);
-
                                         }
 
                                     }
