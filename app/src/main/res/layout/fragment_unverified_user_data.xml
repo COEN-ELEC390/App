@@ -34,6 +34,7 @@
             android:id="@+id/emailTV"
             app:drawableLeftCompat="@drawable/login_email_icon"
             android:textStyle="italic"
+            android:layout_margin="10dp"
             android:textColor="@color/white">
         </TextView>
         <TextView
@@ -42,6 +43,7 @@
             android:id="@+id/phoneNumberTV"
             app:drawableLeftCompat="@drawable/register_phone"
             android:textStyle="italic"
+            android:layout_margin="10dp"
             android:textColor="@color/white">
         </TextView>
         <LinearLayout
@@ -57,7 +59,8 @@
              android:textColor="@drawable/button_text_color"
             android:layout_weight="1"
             style="?android:attr/buttonStyle"
-            android:background="@drawable/button_state_list_animator"
+             android:layout_margin="10dp"
+            android:background="@drawable/confirm_button"
             >
             </androidx.appcompat.widget.AppCompatButton>
 
@@ -70,6 +73,7 @@
             android:backgroundTint="#FFF44336"
             android:layout_weight="1"
             style="?android:attr/buttonStyle"
+            android:layout_margin="10dp"
             android:background="@drawable/button_state_list_animator"
             ></androidx.appcompat.widget.AppCompatButton>
 
