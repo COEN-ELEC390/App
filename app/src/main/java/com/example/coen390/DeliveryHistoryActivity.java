@@ -57,6 +57,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
     TextView nothingReadyForPickup;
     ArrayAdapter<String> arrayAdapter;
     String FCM, userAddy;
+    boolean firstCall;
     SharedPreferencesHelper spHelper;
     Toolbar toolbar;
     ListView eventListView;
@@ -73,6 +74,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_history);
         eventListView = findViewById(R.id.eventLV);
+        firstCall = true;
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefreshlayout);
         nothingReadyForPickup = findViewById(R.id.noDeliveries);
         spHelper = new SharedPreferencesHelper(DeliveryHistoryActivity.this);
@@ -158,10 +160,12 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    formattedEventList.clear();
-                    unformattedEventList.clear();
-                    queryCurrentUserData(getApplicationContext());
-                    Log.d("Current user data", "Current data: " + snapshot.getData());
+                    if(user != null) {
+                        formattedEventList.clear();
+                        unformattedEventList.clear();
+                        queryCurrentUserData(getApplicationContext());
+                        Log.d("Current user data", "Current data: " + snapshot.getData());
+                    }
                 } else {
                     Log.d("Current user data is null", "Current data: null");
                 }
@@ -236,6 +240,15 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                 String accessCode = null;
                                 String boxNumber = null;
                                 String verif = String.valueOf(document.getData().get("verified"));
+                                String userAuthToken = String.valueOf(document.getData().get("authToken"));
+                                String savedAuthToken = spHelper.getSignedInUserAuthToken();
+                                if(userAuthToken.compareTo(savedAuthToken) != 0 && firstCall == false)
+                                {
+                                    Toast.makeText(cc, "Account accessed on another device. signing you out", Toast.LENGTH_SHORT).show();
+                                    signUserOut();
+                                    return;
+                                }
+                                firstCall = false;
                                 boolean verified;
                                 if(verif != null && verif.contains("true"))
                                 {
@@ -398,7 +411,16 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         // Sort the ArrayList using the custom comparator
         Collections.sort(arrayList, comparator.reversed());
     }
-
+    public void signUserOut()
+    {
+        //-------------------------------------------------------
+        FirebaseAuth.getInstance().signOut();
+        user = null;
+        spHelper.saveSignedInUserAddress("");
+        Intent intent = new Intent(DeliveryHistoryActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {

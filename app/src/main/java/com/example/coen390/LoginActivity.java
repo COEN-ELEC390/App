@@ -27,7 +27,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -175,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, ManagerActivity.class);
                                 spHelper.saveSignedInUserAddress(address);
+                                saveAuthToken(address);
                                 spHelper.saveSignedInUserFirstName(firstName);
                                 startActivity(intent);
 
@@ -185,6 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, MainActivity.class);
                                 spHelper.saveSignedInUserAddress(address);
+                                saveAuthToken(address);
                                 spHelper.saveSignedInUserFirstName(firstName);
                                 startActivity(intent);
 
@@ -263,5 +267,40 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+    public void saveAuthToken(String userAddy)
+    {
+        FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUser.getIdToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()) {
+                            String authToken;
+                            String idToken = task.getResult().getToken();
+                            spHelper.saveSignedInUserAuthToken(idToken);
+                            authToken = idToken;
+                            Log.d("AUTH TOKEN", idToken);
+                            DocumentReference userRef = db.collection("users").document(userAddy);
+                            userRef
+                                    .update("authToken", authToken)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("Auth token updated", "DocumentSnapshot successfully updated!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("AuthToken error", "Error updating document", e);
+                                        }
+                                    });
+                            // Send token to your backend via HTTPS
+                            // ...
+                        } else {
+                            // Handle error -> task.getException();
+                        }
+                    }
+                });
     }
 }
