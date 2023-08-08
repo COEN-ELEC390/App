@@ -322,7 +322,7 @@ public class ManagerActivity extends AppCompatActivity {
 
                                                 // Get new FCM registration token
                                                 String token = task.getResult();
-                                                FCM = token;
+                                                //FCM = token;
                                                 userRef
                                                         .update("FCM_TOKEN", FCM)
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -435,7 +435,24 @@ public class ManagerActivity extends AppCompatActivity {
     }
     public void signUserOut()
     {
+        FCM = "";
+        DocumentReference userRef = db.collection("users").document(userAddy);
+        userRef
+                .update("FCM_TOKEN", FCM)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("FCM upload successful", "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("FCM TOKEN UPLOAD FAILED", "Error updating document", e);
+                    }
+                });
         //-------------------------------------------------------
+        FCM = "";
         FirebaseAuth.getInstance().signOut();
         user = null;
         spHelper.saveSignedInUserAddress("");
