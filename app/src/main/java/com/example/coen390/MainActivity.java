@@ -2,6 +2,7 @@ package com.example.coen390;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -47,9 +48,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         eventListView = findViewById(R.id.eventLV);
         welcomeMessageTV = findViewById(R.id.welcomeMessageTV);
         userFirstName = spHelper.getSignedInUserFirstName();
-        welcomeMessageTV.setText("Welcome " + userFirstName + "");
+        setWelcomeMessage();
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefreshlayout);
         TextView titleText = new TextView(this);
         titleText.setText("Your deliveries");
@@ -453,6 +458,27 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+    public void setWelcomeMessage()
+    {
+        welcomeMessageTV.setText("Welcome " + userFirstName + "");
+        Date date = new Date();
+        Calendar currentTime = Calendar.getInstance();
+        currentTime.setTime(date);
+
+        if(currentTime.get(Calendar.HOUR_OF_DAY)<12)
+        {
+            welcomeMessageTV.setText("Good Morning " + userFirstName);
+        }
+        else if(currentTime.HOUR_OF_DAY>20)
+        {
+            welcomeMessageTV.setText("Good Evening " + userFirstName);
+        }
+        else {
+            welcomeMessageTV.setText("Good Afternoon " + userFirstName);
+
+        }
+
     }
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

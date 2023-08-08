@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -46,10 +47,16 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ManagerActivity extends AppCompatActivity {
     Button viewUsersButton, viewLockersButton;
+    TextView welcomeMessageTV;
+    String userFirstName;
     ListView unverifiedUsersLV;
     User managerUser;
     Toolbar toolbar;
@@ -80,6 +87,9 @@ public class ManagerActivity extends AppCompatActivity {
         viewLockersButton = findViewById(R.id.viewLockersButton);
         unverifiedUsersLV = findViewById(R.id.unverifiedUsersLV);
         spHelper = new SharedPreferencesHelper(ManagerActivity.this);
+        welcomeMessageTV = findViewById(R.id.welcomeMessageTV);
+        userFirstName = spHelper.getSignedInUserFirstName();
+        setWelcomeMessage();
         userAddy = spHelper.getSignedInUserAddress();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -431,6 +441,27 @@ public class ManagerActivity extends AppCompatActivity {
         Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+    public void setWelcomeMessage()
+    {
+        welcomeMessageTV.setText("Welcome " + userFirstName + "");
+        Date date = new Date();
+        Calendar currentTime = Calendar.getInstance();
+        currentTime.setTime(date);
+
+        if(currentTime.get(Calendar.HOUR_OF_DAY)<12)
+        {
+            welcomeMessageTV.setText("Good Morning " + userFirstName);
+        }
+        else if(currentTime.HOUR_OF_DAY>20)
+        {
+            welcomeMessageTV.setText("Good Evening " + userFirstName);
+        }
+        else {
+            welcomeMessageTV.setText("Good Afternoon " + userFirstName);
+
+        }
+
     }
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {

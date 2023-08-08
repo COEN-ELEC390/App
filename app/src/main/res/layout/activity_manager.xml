@@ -26,13 +26,24 @@
            >
 
         </androidx.appcompat.widget.Toolbar>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome!"
+            android:textSize="24sp"
+            android:id="@+id/welcomeMessageTV"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="36dp"
+            tools:ignore="TextSizeCheck"
+            android:layout_marginTop="0dp">
+        </TextView>
         <Button
             android:id="@+id/viewUsersButton"
             android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:background="@drawable/manager_buttons"
             android:gravity="center"
             android:text="@string/view_users"
@@ -63,7 +74,8 @@
             android:gravity="center"
             android:textSize="22dp"
             android:textStyle="bold"
-            android:text="Pending Verification">
+            android:paddingTop="10dp"
+            android:text="Verification Requests">
 
         </TextView>
         <ListView
