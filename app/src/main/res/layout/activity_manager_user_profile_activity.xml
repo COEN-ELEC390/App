@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/nameTV"
+            android:padding="5dp"
             android:drawableStart="@drawable/register_person">
 
         </TextView>
@@ -34,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/unitNumberTV"
+            android:padding="5dp"
             android:drawableStart="@drawable/app_register_num">
 
         </TextView>
@@ -41,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/roleTV"
+            android:padding="5dp"
             android:drawableStart="@drawable/logo_size">
 
         </TextView>
@@ -48,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/emailTV"
+            android:padding="5dp"
             android:drawableStart="@drawable/login_email_icon"
             >
 
@@ -56,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/phoneTV"
-
+            android:padding="5dp"
             android:drawableStart="@drawable/register_phone">
 
         </TextView>
