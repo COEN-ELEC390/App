@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_gravity="center"
-        android:text="Your account is not yet verified.">
+        android:text="Your account is not yet verified."
+        android:theme="@style/Theme.MaterialComponents.Light">
 
     </TextView>
         <TextView
@@ -24,7 +25,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="Please contact your building administrator.">
+            android:text="Please contact your building administrator."
+            android:theme="@style/Theme.MaterialComponents.Light">
 
         </TextView>
         <androidx.appcompat.widget.AppCompatButton
