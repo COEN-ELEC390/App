@@ -53,6 +53,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class ManagerActivity extends AppCompatActivity {
     Button viewUsersButton, viewLockersButton;
@@ -464,14 +465,14 @@ public class ManagerActivity extends AppCompatActivity {
     {
         welcomeMessageTV.setText("Welcome " + userFirstName + "");
         Date date = new Date();
-        Calendar currentTime = Calendar.getInstance();
-        currentTime.setTime(date);
-
+        Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("GMT-4"));
+        //currentTime.setTime(date);
+        Log.d("CURRENT TIME", String.valueOf(currentTime.get(Calendar.HOUR_OF_DAY)));
         if(currentTime.get(Calendar.HOUR_OF_DAY)<12)
         {
             welcomeMessageTV.setText("Good Morning " + userFirstName);
         }
-        else if(currentTime.HOUR_OF_DAY>20)
+        else if(currentTime.get(Calendar.HOUR_OF_DAY)>=20)
         {
             welcomeMessageTV.setText("Good Evening " + userFirstName);
         }
