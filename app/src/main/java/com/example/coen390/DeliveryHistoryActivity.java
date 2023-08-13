@@ -84,16 +84,10 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
         titleText.setTextSize(20);
-        //eventListView.addHeaderView(titleText);
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         currentUser = queryCurrentUserData(getApplicationContext());
         Log.d("eventListView", eventListView.toString());
-        //Log.d("FORMATTED EVENT LIST", formattedEventList.toString());
-        //arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, formattedEventList);
-        //eventListView.setAdapter(arrayAdapter);
-        //toolbar = (Toolbar) findViewById(R.id.historyToolbarToolbar);
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
         if(user == null)
@@ -148,7 +142,6 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
             }
         });
         //-----------------------------------------document listener
-        //if(userAddy != null) {
         final DocumentReference docRef = db.collection("users").document(userAddy);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -189,8 +182,6 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData());
-                                //User userInfo = document.toObject(User.class);
-                                //Log.d("userInfo UID", userInfo.getUid());
                                 Role = String.valueOf(document.getData().get("role"));
                                 String country =  String.valueOf(document.getData().get("country"));
                                 String province =  String.valueOf(document.getData().get("province"));
@@ -230,7 +221,6 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
                                 currentUserAddress.clear();
                                 currentUserAddress.add(combinedAddress);
-                                //----------------------------------------
                                 //-----------------------------------------------------------firebase cloud messaging config
                                 DocumentReference userRef = db.collection("users").document(combinedAddress);
 
@@ -261,9 +251,7 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                                             }
                                                         });
                                                 // Log and toast
-                                                //String msg = getString(R.string.msg_token_fmt, token);
                                                 Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
-                                                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                 //------------------------------------------------
@@ -272,7 +260,6 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
 
                                 //-----------------------------------------
 
-                                //formattedEventList = new String[numberOfEvents];
                                 if(events != null)
                                 {
                                     unformattedEventList.clear();
@@ -320,18 +307,11 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                         if(listAccessCode != null && deliveryTime != null)
                                         {
                                             unformattedEventList.add(subMap);
-                                            //unformattedEventList = sortByDate(unformattedEventList);
                                             sortByDate(unformattedEventList);
-                                            //while(count<numberOfEvents)
-                                            //{
-                                            //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
-                                            //formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
-                                            //count++;
-                                            //}
+
                                         }
 
                                     }
-                                    //unformattedEventList = sortByDate(unformattedEventList);
                                     sortByDate(unformattedEventList);
 
                                     for(int i = 0; i < unformattedEventList.size(); i++)
@@ -348,16 +328,13 @@ public class DeliveryHistoryActivity extends AppCompatActivity {
                                 nothingReadyForPickup.setText("You have no deliveries on record");
                             }
                             arrayAdapter = new EventListAdapter(DeliveryHistoryActivity.this, formattedEventList);
-                            //arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
                             eventListView.setAdapter(arrayAdapter);
                         } else {
                             Toast.makeText(DeliveryHistoryActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
         return loggedInUser[0];
-        //deliveriesArrayList =
 
     }
     private static void sortByDate(ArrayList<HashMap<String, Object>> arrayList) {

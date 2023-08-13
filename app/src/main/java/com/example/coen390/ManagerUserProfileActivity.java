@@ -57,8 +57,6 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
     boolean firstCall;
     SharedPreferencesHelper spHelper;
     FirebaseAuth mAuth;
-    ListView userEventListView;
-
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> formattedEventList = new ArrayList<>();
     ArrayList<HashMap<String, Object>> unformattedEventList = new ArrayList<>();
@@ -90,7 +88,6 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
         emailTV = findViewById(R.id.emailTV);
         eventListView =findViewById(R.id.userEventsListView);
         fragmentManager = getSupportFragmentManager();
-        //logoutButton = findViewById(R.id.logout_button);
         getUserProfileData(getApplicationContext());
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -208,7 +205,6 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                             Log.d("events map", events.toString());
                             int numberOfEvents = events.size();
                             int count = 0;
-                            //List<Map<String, Object>> eventEntries = null;// = new List<Map<String, Object>>;
 
                             for(Map.Entry<String, HashMap<String, Object>> e: events.entrySet())
                             {
@@ -236,8 +232,6 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                                         listBoxNumber = tmp.substring(start+1, end);                                            }
                                     else if(eventData.getKey().toString().contains("accessCode"))
                                     {
-                                        //String[] arr = (String[]) eventData.getValue();
-                                        //Log.d("accessCode", eventData.getValue().toString());
                                         String tmp = eventData.getValue().toString();
                                         int start = tmp.indexOf("[");
                                         int end = tmp.indexOf("]");
@@ -249,27 +243,15 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                                 if(listAccessCode != null && deliveryTime != null)
                                 {
                                     unformattedEventList.add(subMap);
-                                    //unformattedEventList = sortByDate(unformattedEventList);
                                     sortByDate(unformattedEventList);
-                                    //while(count<numberOfEvents)
-                                    //{
-                                    //Log.d("deliveryTime", new Date(deliveryTime.getSeconds()*1000).toString());
-                                    //formattedEventList.add("Delivered on: " + deliveryTime.toDate().toString());
-                                    //count++;
-                                    //}
+
                                 }
                                 else
                                 {
                                     formattedEventList.add("No events to display");
                                 }
 
-                                //Map<String, Object> event = e.getValue();
-                                //eventEntries.add(subMap);
-                                //Log.d("event entry", e.toString());
-                                //Log.d("e value",e.getValue());
-                                //DateTime deliveryDate = e.getValue()
                             }
-                            //unformattedEventList = sortByDate(unformattedEventList);
                             sortByDate(unformattedEventList);
 
                             for(int i = 0; i < unformattedEventList.size(); i++)
@@ -321,8 +303,6 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData());
-                                //User userInfo = document.toObject(User.class);
-                                //Log.d("userInfo UID", userInfo.getUid());
                                 Role = String.valueOf(document.getData().get("role"));
                                 String country =  String.valueOf(document.getData().get("country"));
                                 String province =  String.valueOf(document.getData().get("province"));
@@ -360,8 +340,7 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                                 combinedAddress = combinedAddress.toLowerCase();
                                 combinedAddress.replaceAll(" ", "");
                                 loggedInUser[0] =  new User(firstName, lastName, uid, combinedAddress, unit, boxNumber, accessCode, Role, verified, email, phone);
-                                //currentUserAddress.clear();
-                                //currentUserAddress.add(combinedAddress);
+
                                 //-----------------------------------------------------------firebase cloud messaging config
                                 DocumentReference userRef = db.collection("users").document(combinedAddress);
 
@@ -397,13 +376,11 @@ public class ManagerUserProfileActivity extends AppCompatActivity {
                                                 //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                                             }
                                         });
-                                //------------------------------------------------getting unverified users
 
                             }
 
                         } else {
                             Toast.makeText(ManagerUserProfileActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });

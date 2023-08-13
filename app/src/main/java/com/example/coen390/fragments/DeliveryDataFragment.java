@@ -108,8 +108,6 @@ public class DeliveryDataFragment extends DialogFragment {
                     int end = tmp.indexOf("]");
                     boxNumber.setText("Box Number: " + tmp.substring(start + 1, end));
                 } else if (eventData.getKey().toString().contains("accessCode")) {
-                    //String[] arr = (String[]) eventData.getValue();
-                    //Log.d("accessCode", eventData.getValue().toString());
                     String tmp = eventData.getValue().toString();
                     int start = tmp.indexOf("[");
                     int end = tmp.indexOf("]");

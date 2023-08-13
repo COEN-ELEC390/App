@@ -84,13 +84,9 @@ public class manager_locker_list extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_lockerlist, container);
         recyclerView = view.findViewById(R.id.lockersListView);
         lockerItemArrayList = new ArrayList<>();
-        //lockerItemArrayList.add(new RecyclerViewLockerItem("String accessCode", "String boxNumber", "String userDocName", new Timestamp(123,12), new Timestamp(123,12), false));
-        //lockerItemArrayList.add(new RecyclerViewLockerItem("String accessCode", "another boxNumber", "String userDocName", new Timestamp(123,12), new Timestamp(123,12), false));
         adapter = new LockerRecyclerViewAdapter(lockerItemArrayList, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
-        //lockerListView = view.findViewById(R.id.lockersListView);
-        //testTextView = view.findViewById(R.id.testTV);
         queryCurrentUserData(view);
         //-----------------------------------
         String managerUserAddress = userAddy;
@@ -105,8 +101,6 @@ public class manager_locker_list extends DialogFragment {
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
             managerUserAddress = managerUserAddress.substring(0,lastSlash);
-            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
         CollectionReference ref = db.collection("boxes");
         ref.whereGreaterThanOrEqualTo("boxAddress", managerUserAddress)
@@ -144,8 +138,6 @@ public class manager_locker_list extends DialogFragment {
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
             managerUserAddress = managerUserAddress.substring(0,lastSlash);
-            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
 
         CollectionReference ref = db.collection("boxes");
@@ -168,23 +160,18 @@ public class manager_locker_list extends DialogFragment {
                                 Timestamp deliveryTime = (Timestamp) document.get("events.deliveryTimestamp");
                                 Date deliveryDate = deliveryTime.toDate();
                                 lockers = new ArrayList<>();
-
-                                //userArrayList.add(tmp);
                                 String formatted_data[];
                                 if(lockers == null || lockers.size() == 0)
                                 {
                                     lockers.add("No lockers to show");
                                 }
-                                //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1, lockers);
-                                //lockerListView.setAdapter(arrayAdapter);
                                 RecyclerViewLockerItem temp = new RecyclerViewLockerItem(accessCode, boxNumber, unit, deliveryDate, pickupDate, false);
                                 lockerItemArrayList.add(temp);
                                 adapter.notifyDataSetChanged();
                             }
 
                         } else {
-                            //Toast.makeText(manager_user_list.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+
                         }
                     }
                 });
@@ -209,8 +196,7 @@ public class manager_locker_list extends DialogFragment {
 
 
                         } else {
-                            //Toast.makeText(LoginActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+
                         }
                     }
                 });

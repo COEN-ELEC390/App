@@ -92,7 +92,6 @@ public class DeleteUserCheckFragment extends DialogFragment {
                 Toast.makeText(getActivity(), "User Removed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), ManagerActivity.class);
                 startActivity(intent);
-                //finish();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {

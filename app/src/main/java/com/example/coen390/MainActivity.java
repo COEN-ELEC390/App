@@ -61,8 +61,6 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
-    AppCompatButton logoutButton;
-    Button refreshFeed;
     boolean firstCall;
     ArrayList<String> currentUserAddress;
     TextView nothingReadyForPickup, welcomeMessageTV;
@@ -77,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<HashMap<String, Object>> unformattedEventList = new ArrayList<>();
     FragmentManager fragmentManager;
     SharedPreferencesHelper spHelper;
-    User currentUser;
-    ArrayList<String> deliveriesArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,15 +92,10 @@ public class MainActivity extends AppCompatActivity {
         titleText.setText("Your deliveries");
         titleText.setGravity(25);
         titleText.setTextSize(20);
-        //eventListView.addHeaderView(titleText);
         currentUserAddress = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        //currentUser = queryCurrentUserData(getApplicationContext());
         Log.d("eventListView", eventListView.toString());
-        //Log.d("FORMATTED EVENT LIST", formattedEventList.toString());
-        //arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, formattedEventList);
-        //eventListView.setAdapter(arrayAdapter);
         toolbar = (Toolbar) findViewById(R.id.profileToolbar);
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
@@ -182,9 +173,7 @@ public class MainActivity extends AppCompatActivity {
                         String token = task.getResult();
                         FCM = token;
                         // Log and toast
-                        //String msg = getString(R.string.msg_token_fmt, token);
                         Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         //------------------------------------------------
@@ -261,8 +250,6 @@ public class MainActivity extends AppCompatActivity {
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData());
-                                //User userInfo = document.toObject(User.class);
-                                //Log.d("userInfo UID", userInfo.getUid());
                                 Role = String.valueOf(document.getData().get("role"));
                                 String country =  String.valueOf(document.getData().get("country"));
                                 String province =  String.valueOf(document.getData().get("province"));
@@ -302,7 +289,6 @@ public class MainActivity extends AppCompatActivity {
                                 Map<String, HashMap<String, Object>> events = (Map<String, HashMap<String, Object>>)document.getData().get("events");
                                 currentUserAddress.clear();
                                 currentUserAddress.add(combinedAddress);
-                                //----------------------------------------
                                 //-----------------------------------------------------------firebase cloud messaging config
                                 DocumentReference userRef = db.collection("users").document(combinedAddress);
 
@@ -317,7 +303,6 @@ public class MainActivity extends AppCompatActivity {
 
                                                 // Get new FCM registration token
                                                 String token = task.getResult();
-                                                //FCM = token;
                                                 userRef
                                                         .update("FCM_TOKEN", FCM)
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -333,9 +318,7 @@ public class MainActivity extends AppCompatActivity {
                                                             }
                                                         });
                                                 // Log and toast
-                                                //String msg = getString(R.string.msg_token_fmt, token);
                                                 Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
-                                                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                 //------------------------------------------------
@@ -352,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("events map", events.toString());
                                     int numberOfEvents = events.size();
                                     int count = 0;
-                                    //List<Map<String, Object>> eventEntries = null;// = new List<Map<String, Object>>;
 
                                     for(Map.Entry<String, HashMap<String, Object>> e: events.entrySet())
                                     {
@@ -363,7 +345,6 @@ public class MainActivity extends AppCompatActivity {
                                         Timestamp pickupTime = null;
                                         for(Map.Entry<String, Object> eventData : subMap.entrySet())
                                         {
-                                            //Log.d("eventData", eventData.toString());
                                             if(eventData.getKey().toString().contains("deliveryTimestamp"))
                                             {
                                                 deliveryTime = (Timestamp) eventData.getValue();
@@ -402,7 +383,6 @@ public class MainActivity extends AppCompatActivity {
                                         }
 
                                     }
-                                    //unformattedEventList = sortByDate(unformattedEventList);
                                     sortByDate(unformattedEventList);
 
                                     for(int i = 0; i < unformattedEventList.size(); i++)
@@ -419,18 +399,13 @@ public class MainActivity extends AppCompatActivity {
                                 nothingReadyForPickup.setText("You have no deliveries that are ready for pickup");
                             }
                             arrayAdapter = new EventListAdapter(MainActivity.this, formattedEventList);
-                            //binding.listview.setAdapter(listAdapter);
-                            //binding.listview.setClickable(true);
-                            //arrayAdapter = new ArrayAdapter<String>(cc,android.R.layout.simple_list_item_1, formattedEventList);
                             eventListView.setAdapter(arrayAdapter);
                         } else {
                             Toast.makeText(MainActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
         return loggedInUser[0];
-        //deliveriesArrayList =
 
     }
     private static void sortByDate(ArrayList<HashMap<String, Object>> arrayList) {
@@ -481,7 +456,6 @@ public class MainActivity extends AppCompatActivity {
         welcomeMessageTV.setText("Welcome " + userFirstName + "");
         Date date = new Date();
         Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("GMT-4"));
-        //currentTime.setTime(date);
         Log.d("CURRENT TIME", String.valueOf(currentTime.get(Calendar.HOUR_OF_DAY)));
         if(currentTime.get(Calendar.HOUR_OF_DAY)<12)
         {

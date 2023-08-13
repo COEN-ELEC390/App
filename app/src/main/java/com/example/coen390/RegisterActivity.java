@@ -48,7 +48,7 @@ import java.util.Map;
 import io.grpc.android.BuildConfig;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText emailEdit, passwordEdit, firstNameEdit, lastNameEdit, countryEdit, provinceEdit, cityEdit, streetEdit, addressEdit, apartmentNumberEdit, phoneEdit;
+    EditText emailEdit, passwordEdit, firstNameEdit, lastNameEdit, apartmentNumberEdit, phoneEdit;
     AppCompatButton registerButton;
     FirebaseAuth mAuth;
     TextView loginTV;
@@ -74,18 +74,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         registerButton = findViewById(R.id.registerButton);
-        //registerButton.setActivated(false);
         mAuth = FirebaseAuth.getInstance();
         loginTV = findViewById(R.id.loginLink);
         emailEdit = findViewById(R.id.emailTV);
         passwordEdit = findViewById(R.id.passwordTV);
         firstNameEdit = findViewById(R.id.firstNameTV);
         lastNameEdit = findViewById(R.id.lastNameTV);
-        //countryEdit = findViewById(R.id.countryTV);
-        //provinceEdit = findViewById(R.id.provinceTV);
-        //cityEdit = findViewById(R.id.cityTV);
-        //streetEdit = findViewById(R.id.streetTV);
-        //addressEdit = findViewById(R.id.addressTV);
         apartmentNumberEdit = findViewById(R.id.unitTV);
         phoneEdit = findViewById(R.id.phoneTV);
         EditText phoneNumber = (EditText)findViewById(R.id.phoneTV);
@@ -94,8 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
         PlacesClient placesClient = Places.createClient(this);
         autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteSupportFragment.setHint("Building Address");
-        //List<String> placeTypes = new ArrayList<String>();
-        //placeTypes.add()
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextSize(14.5f);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setTextColor(Color.BLACK);
         ((EditText)autocompleteSupportFragment.getView().findViewById(com.google.android.libraries.places.R.id.places_autocomplete_search_input)).setHintTextColor(Color.BLACK);
@@ -227,8 +219,6 @@ public class RegisterActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 if (task.isSuccessful()) {
                                                     // Sign in success, update UI with the signed-in user's information
-                                                    //Log.d(TAG, "createUserWithEmail:success");
-                                                    //Toast.makeText(RegisterActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
                                                     FirebaseUser user = mAuth.getCurrentUser();//don't need?
 
 
@@ -272,13 +262,10 @@ public class RegisterActivity extends AppCompatActivity {
                                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);//login redirects to main
                                                     startActivity(intent);
                                                     finish();
-                                                    //updateUI(user);
                                                 } else {
                                                     // If sign in fails, display a message to the user.
-                                                    //Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                                     Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                                             Toast.LENGTH_SHORT).show();
-                                                    //updateUI(null);
                                                 }
                                             }
                                         });
@@ -289,7 +276,6 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 });
-                //-------------------------------------------------------------
 
             }
         });

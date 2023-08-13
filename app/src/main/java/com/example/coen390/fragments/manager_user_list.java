@@ -78,7 +78,6 @@ public class manager_user_list extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_userlist, container);
         userListView = view.findViewById(R.id.userListView);
-        //testTextView = view.findViewById(R.id.testTV);
         queryCurrentUserData(view);
         userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,13 +86,11 @@ public class manager_user_list extends DialogFragment {
                 String lastName = usersInBuilding.get(position).getLastName();
                 String firstName = usersInBuilding.get(position).getFirstName();
                 String unitNum = usersInBuilding.get(position).getUnit();
-                //Log.d("Selected Unit", unitToInspect);
                 if (unitToInspect == null)
                 {
                     return;
                 }
                 else {
-                        //dataPasser.onDataPass(unitToInspect);
                     ManagerActivity managerActivity = ((ManagerActivity) getActivity());
                     Intent intent;
                     intent = new Intent(managerActivity, ManagerUserProfileActivity.class);
@@ -118,8 +115,6 @@ public class manager_user_list extends DialogFragment {
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
             managerUserAddress = managerUserAddress.substring(0,lastSlash);
-            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
         CollectionReference ref = db.collection("users");
         ref.whereGreaterThanOrEqualTo("address", managerUserAddress)
@@ -157,8 +152,6 @@ public class manager_user_list extends DialogFragment {
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
             managerUserAddress = managerUserAddress.substring(0,lastSlash);
-            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
 
         CollectionReference ref = db.collection("users");
@@ -206,8 +199,7 @@ public class manager_user_list extends DialogFragment {
                             }
 
                         } else {
-                            //Toast.makeText(manager_user_list.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+
                         }
                     }
                 });
@@ -231,8 +223,7 @@ public class manager_user_list extends DialogFragment {
 
 
                         } else {
-                            //Toast.makeText(LoginActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+
                         }
                     }
                 });

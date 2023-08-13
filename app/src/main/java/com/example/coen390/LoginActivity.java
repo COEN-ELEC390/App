@@ -121,10 +121,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    //Log.w(TAG, "signInWithEmail:failure", task.getException());
                                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
                                 }
                             }
                         });
@@ -135,7 +133,6 @@ public class LoginActivity extends AppCompatActivity {
 
     void loginRedirect()
     {
-        //FirebaseUser user = mAuth.getCurrentUser();//needed?
         db.collection("users")
                 .whereEqualTo("uid", currentUser.getUid())
                 .get()
@@ -149,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
                             String firstName = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData().get("role"));
-                                //User userInfo = document.toObject(User.class);
                                 address = document.getData().get("address").toString();
                                 firstName = document.getData().get("firstName").toString();
                                 Role = String.valueOf(document.getData().get("role"));
@@ -184,7 +180,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             else
                             {
-                                //updateUI(user);
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, MainActivity.class);
                                 spHelper.saveSignedInUserAddress(address);
@@ -197,7 +192,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(LoginActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -217,8 +211,7 @@ public class LoginActivity extends AppCompatActivity {
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
             managerUserAddress = managerUserAddress.substring(0,lastSlash);
-            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
+
         }
         Log.d("managerUserAddress", managerUserAddress);
         CollectionReference ref = db.collection("users");
@@ -261,8 +254,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         } else {
-                            //Toast.makeText(manager_user_list.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
+
                         }
                     }
                 });
@@ -296,7 +288,6 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     });
                             // Send token to your backend via HTTPS
-                            // ...
                         } else {
                             // Handle error -> task.getException();
                         }

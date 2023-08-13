@@ -70,8 +70,6 @@ public class ManagerActivity extends AppCompatActivity {
     protected SharedPreferencesHelper spHelper;
     ArrayList<String> formatted_data;
 
-
-    AppCompatButton logoutButton;
     FirebaseUser user;
     FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -84,7 +82,6 @@ public class ManagerActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.profileToolbar);
         setSupportActionBar(toolbar);
         firstCall = true;
-        //logoutButton = findViewById(R.id.logout_button);
         viewUsersButton = findViewById(R.id.viewUsersButton);
         viewLockersButton = findViewById(R.id.viewLockersButton);
         unverifiedUsersLV = findViewById(R.id.unverifiedUsersLV);
@@ -96,7 +93,6 @@ public class ManagerActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         fragmentManager = getSupportFragmentManager();
-        //Toast.makeText(this, "Welcome to manager view!", Toast.LENGTH_SHORT).show();
         if(user == null)
         {
             Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
@@ -137,7 +133,6 @@ public class ManagerActivity extends AppCompatActivity {
                             }
                         }
                     });
-            //managerUser = queryCurrentUserData(getApplicationContext());
         }
 
         viewUsersButton.setOnClickListener(new View.OnClickListener() {
@@ -177,9 +172,7 @@ public class ManagerActivity extends AppCompatActivity {
                         String token = task.getResult();
                         FCM = token;
                         // Log and toast
-                        //String msg = getString(R.string.msg_token_fmt, token);
                         Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         //------------------------------------------------
@@ -195,8 +188,7 @@ public class ManagerActivity extends AppCompatActivity {
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
             managerUserAddress = managerUserAddress.substring(0,lastSlash);
-            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
+
         }
 
         CollectionReference ref = db.collection("users");
@@ -268,8 +260,6 @@ public class ManagerActivity extends AppCompatActivity {
                             String Role = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("document STUFFFFF", document.getId() + " => " + document.getData());
-                                //User userInfo = document.toObject(User.class);
-                                //Log.d("userInfo UID", userInfo.getUid());
                                 Role = String.valueOf(document.getData().get("role"));
                                 String country =  String.valueOf(document.getData().get("country"));
                                 String province =  String.valueOf(document.getData().get("province"));
@@ -339,9 +329,7 @@ public class ManagerActivity extends AppCompatActivity {
                                                             }
                                                         });
                                                 // Log and toast
-                                                //String msg = getString(R.string.msg_token_fmt, token);
                                                 Log.d("FIREBASE CLOUD MESSAGING TOKEN", token);
-                                                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                 //------------------------------------------------getting unverified users
@@ -351,7 +339,6 @@ public class ManagerActivity extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(ManagerActivity.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -374,8 +361,6 @@ public class ManagerActivity extends AppCompatActivity {
         {
             int lastSlash = managerUserAddress.lastIndexOf("|");
             managerUserAddress = managerUserAddress.substring(0,lastSlash);
-            //String substringToDelete = managerUserAddress.substring(lastSlash, managerUserAddress.length());
-            //managerUserAddress = managerUserAddress.replace(Pattern.quote(substringToDelete),"");
         }
 
         CollectionReference ref = db.collection("users");
@@ -410,14 +395,13 @@ public class ManagerActivity extends AppCompatActivity {
                                 else {
                                     continue;
                                 }
-                                //userArrayList.add(tmp);
 
                                 Log.d("User tmp", tmp.getUnit());
                                 if(usersInBuilding == null || usersInBuilding.size() == 0)
                                 {
                                     formatted_data.clear();
                                     //formatted_data = new String[1];
-                                    formatted_data.add("No users to display"); //+ managerUser.getCountry();
+                                    formatted_data.add("No users to display");
                                 }
                                 else {
 
@@ -427,8 +411,6 @@ public class ManagerActivity extends AppCompatActivity {
                             }
 
                         } else {
-                            //Toast.makeText(manager_user_list.this, "Error accessing documents", Toast.LENGTH_SHORT).show();
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -466,7 +448,6 @@ public class ManagerActivity extends AppCompatActivity {
         welcomeMessageTV.setText("Welcome " + userFirstName + "");
         Date date = new Date();
         Calendar currentTime = Calendar.getInstance(TimeZone.getTimeZone("GMT-4"));
-        //currentTime.setTime(date);
         Log.d("CURRENT TIME", String.valueOf(currentTime.get(Calendar.HOUR_OF_DAY)));
         if(currentTime.get(Calendar.HOUR_OF_DAY)<12)
         {
